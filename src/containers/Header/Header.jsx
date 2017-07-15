@@ -1,0 +1,19 @@
+import React from 'react'
+import PropTypes from 'prop-types'
+import styles from './Header.scss'
+
+function Header(props) {
+    return (
+        <div className={styles['app-bar']}>
+            <button className="fa fa-bars fa-lg" onClick={props.onClick} ref={props.btnRef} />
+            <h1 className={styles.title}>Google 表单</h1>
+        </div>
+    )
+}
+
+Header.propTypes = {
+    onClick: PropTypes.func.isRequired,
+    btnRef: PropTypes.func.isRequired,
+}
+
+export default Header

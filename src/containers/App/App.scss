@@ -1,0 +1,9 @@
+@import '../../styles/mixins/mixins';
+@import '../../styles/variables.scss';
+
+.container::before {
+    content: '';
+    @include center(fixed);
+    z-index: $app-bg-z-index;
+    background: $app-bg-color;
+}

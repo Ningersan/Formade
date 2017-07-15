@@ -1,0 +1,48 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins/mixins.scss';
+
+.homescreen {
+    margin: 4rem auto;
+    width: 67%;
+    .header {
+        height: 3.5em;
+        line-height: 3.5em;
+        font-size: .875rem;
+        color: $gray;
+    }
+    .docs-item-empty {
+        margin-top: -1.2em;
+        height: 8em;
+        font-size: 1.125rem;
+        text-align: center;
+        background-color: $white;
+        border-radius: .12em;
+        box-shadow: 0 .055em .167em rgba(0,0,0,.1);
+        .note {
+            padding-top: 1.5em;
+            margin-bottom: .7em;
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: $gray-dark;
+        }
+        .add {
+            @include button;
+            width: 7.5em;
+            height: 2.2em;
+            font-size: 1.125rem;
+            letter-spacing: .0625em;
+            color: $white;
+            border-radius: .11em;
+            background-color: #ff5252;
+            box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),
+                        0 1px 5px 0 rgba(0,0,0,0.12), 
+                        0 3px 1px -2px rgba(0,0,0,0.2);
+            &:hover {
+                background-color: #E57373;
+                box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14), 
+                            0 1px 7px 0 rgba(0,0,0,0.12), 
+                            0 3px 1px -1px rgba(0,0,0,0.2);
+            }
+        }
+    }
+}

@@ -1,0 +1,38 @@
+@import '../../../../styles/mixins/mixins.scss';
+@import '../../../../styles/variables.scss';
+
+.wrap {
+    @include center($bottom: none);
+    box-sizing: border-box;
+    width: $edit-area-width;
+    font-size: 1.25rem;
+    background-color: $white;
+    .header {
+        @include editorViewCard;
+        &:focus {
+            outline: none;
+            border-left-color: $blue;
+        }
+        .title {
+            @include input;
+            height: 1.6em;
+            font-size: 2rem;
+            &:focus {
+                border-bottom: 1.5px solid $brand-primary;
+            }
+        }
+        .description {
+            @include textarea(.5px solid $edit-input-underline-color);
+            width: 100%;
+            margin-top: 1.5em;
+            font-size: .875rem;
+            &::before {
+                content: attr(data-content);
+                color: $gray-light;
+            }
+            &:focus {
+                border-bottom: 1.8px solid $brand-primary;
+            }
+        }
+    }
+}

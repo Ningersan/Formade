@@ -1,0 +1,56 @@
+@mixin button {
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    color: inherit;
+    background: transparent;
+}
+
+@mixin input($width: 100%, $border-bottom: .5px solid rgba(0,0,0,0.12)) {
+    width: $width;
+    display: block;
+    border: 0;
+    border-bottom: $border-bottom;
+    outline: 0;
+    background: transparent;
+}
+
+@mixin textarea($border-bottom) {
+    display: block;
+    border: 0;
+    border-bottom: $border-bottom;
+    outline: 0;
+    resize: none;
+    background: transparent;
+}
+
+@mixin center($position: absolute, $top: 0, $left: 0, $right: 0, $bottom: 0) {
+    position: $position;
+    margin: 0 auto;
+    top: $top;
+    left: $left;
+    right: $right;
+    bottom: $bottom;
+}
+
+@mixin editorViewCard() {
+    box-sizing: border-box;
+    padding: 30px 24px 38px 42px;
+    border-left: 3px solid #fff;
+    box-shadow: 2px 0 2px -2px rgba(0,0,0,.12),
+                -2px 0 2px -2px rgba(0,0,0,.12);
+}
+
+@mixin symbol() {
+    padding-top: .25em;
+    margin-right: .7em;
+    &::before {
+        content: "";
+        display: inline-block;
+        width: .8em;
+        height: .8em;
+        border: 2px solid $gray-lighter;
+        border-radius: 50%;
+    }
+}

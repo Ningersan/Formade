@@ -1,0 +1,138 @@
+@import '../../../../styles/mixins/mixins.scss';
+@import '../../../../styles/variables.scss';
+@import '../Main/Main.scss';
+
+.main {
+    @include editorViewCard;
+    padding-bottom: .2em;
+    transition: all .3s ease;
+    &:focus {
+        outline: none;
+    }
+    input {
+        @include input;
+        width: 70%;
+    }
+    .title {
+        font-size: 1.25rem;
+        height: 1.5em;
+        &:focus {
+            border-bottom: 1.5px solid $brand-primary;
+        }
+    }
+    .list {
+        display: flex;
+        align-items: center;
+        height: 2.6em;
+        &:hover {
+            .delete-option {
+                display: block;
+            }
+        }
+    }
+    .option {
+        flex: 1;
+        height: 1.8em;
+        border-bottom: none;
+        font-size: .8125rem;
+        &:hover {
+            border-bottom: .5px solid $edit-input-underline-color;
+        }
+        &:focus {
+            border-bottom: 1.8px solid $brand-primary;
+        }
+    }
+    .other {
+        @extend .option;
+        color: $gray-lighter;
+    }
+    .add-option {
+        font-size: .8125rem;
+        color: #4285f4;
+        cursor: pointer;
+        &:focus {
+            outline: none;
+        }
+    }
+    .conjunction {
+        margin: 0 .2em;
+        font-size: .8125rem;
+    }
+    .symbol-radio {
+        @include symbol;
+        &::before {
+            border-radius: 50%;
+        }
+    }
+    .symbol-checkbox {
+        @include symbol;
+        &::before {
+            border-radius: .15em;
+        }
+    }
+    .delete-option {
+        display: none;
+        font-size: 1.4em;
+        color: $edit-delete-button-color;
+        cursor: pointer;
+        &:hover {
+            color: $edit-delete-button-hover-color;
+        }
+        &::after {
+            content: 'x';
+        }
+    }
+    .add {
+        @extend .list;
+    }
+    .control {
+        display: none;
+        margin-top: 1em;
+        width: 100%;
+        border-top: 1px solid $edit-input-underline-color;
+        overflow: hidden;
+        .footer-right {
+            float: right;
+            > div {
+                display: inline-block;
+                width: 3rem;
+                height: 3rem;
+                font-size: 22px;
+                text-align: center;
+                line-height: 3rem;
+                color: $edit-icon-color;
+                cursor: pointer;
+            }
+            .copy-question {
+                &:focus {
+                    outline: none;
+                }
+            }
+            .delete-question {
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+    }
+}
+
+.edit-active {
+    > .add {
+        display: flex;
+    }
+    > .control {
+        display: block;
+    }
+    border-left-color: $blue;
+    box-shadow: 5px 0 4px -4px rgba(0,0,0,.24),
+                -5px 0 4px -4px rgba(0,0,0,.24),
+                0 15px 10px -10px rgba(0,0,0,.4),
+                0 -7px 6px -6px rgba(0,0,0,.4);
+}
+
+:global(.hidden) {
+    display: none;
+}
+
+

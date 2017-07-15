@@ -1,0 +1,94 @@
+@import '../../../../styles/variables.scss';
+@import '../../../../styles/mixins/mixins.scss';
+
+.top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $edit-top-height;
+    font-size: 1.25rem;
+    background-color: $brand-primary;
+    .header {
+        padding-top: 1em;
+        height: 2.5em;
+        color: $white;
+    }
+    .left {
+        float: left;
+        text-align: center;
+        a {
+            width: 2.5em;
+            height: 1.5em;
+        }
+        .title {
+            @include input(6.2em, none);
+            display: inline-block;
+            padding-bottom: 5px;
+            color: $white;
+            vertical-align: text-top;
+            transition: border-bottom .3s cubic-bezier(0.4,0,0.2,1);
+            &:focus {
+                border-bottom: 2px solid $white;
+            }
+        }
+    }
+    .right {
+        float: right;
+        font-size: 18px;
+        a {
+            margin-right: 1.5em;
+        }
+        .save {
+            @include button;
+            margin-right: 2em;
+            width: 5em;
+            height: 2.5em;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 3px;
+            color: $brand-primary;
+            background-color: $white;
+        }
+    }
+    .bottom {
+        position: absolute;
+        bottom: 0;
+        z-index: 999;
+        width: 100%;
+        font-size: 1rem;
+        height: 3em;
+        .tab {
+            margin: 0 auto;
+            width: $edit-area-width;
+            height: inherit;
+            line-height: 3em;
+            border-bottom: 1px solid $edit-input-underline-color;
+            background-color: $white;
+            .question {
+                margin: 0 auto;
+                display: block;
+                width: 5em;
+                height: 2.8em;
+                text-align: center;
+                color: $brand-primary;
+                cursor: pointer;
+                &:hover {
+                    border-bottom: 1.5px solid $brand-primary;
+                }
+            }
+        }
+    }
+}
+
+.edit-bg {
+    scroll-behavior: smooth;
+    position: absolute;
+    top: 11rem;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    overflow: scrollY;
+    z-index: $edit-z-index;
+    background-color: $edit-bg-color;
+}
