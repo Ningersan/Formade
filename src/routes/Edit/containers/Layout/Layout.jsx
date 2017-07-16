@@ -26,14 +26,13 @@ class Layout extends React.Component {
     }
 
     handleScrollChange() {
-        let topAreaHeightNum = parseFloat(this.topArea.style.height)
-
-        topAreaHeightNum -= window.scrollY
-
-        if (topAreaHeightNum >= 121) {
-            const heightPx = `${topAreaHeightNum}px`
-            this.topArea.style.height = heightPx
-            this.editBgArea.style.top = heightPx
+        const topArea = this.topArea
+        if (window.scrollY >= 58) {
+            topArea.style.height = '121px'
+            topArea.style.position = 'fixed'
+        } else {
+            topArea.style.height = '176px'
+            topArea.style.position = 'absolute'
         }
     }
 
@@ -58,8 +57,8 @@ class Layout extends React.Component {
             </div>
         )
 
-        const headerBottom = (
-            <div className={styles.bottom}>
+        const topFooter = (
+            <div className={styles.footer}>
                 <div className={styles.tab}>
                     <span className={styles.question}>问题</span>
                 </div>
@@ -73,7 +72,7 @@ class Layout extends React.Component {
             }))
 
         const topAreaStyle = {
-            height: '176px',
+            position: 'absolute',
         }
 
         return (
@@ -86,12 +85,10 @@ class Layout extends React.Component {
                     <div className={styles.header}>
                         {headerLeft}
                         {headerRight}
-                        {headerBottom}
                     </div>
+                    {topFooter}
                 </div>
-                <div ref={el => (this.editBgArea = el)} className={styles['edit-bg']}>
-                    <div className="Main">{main}</div>
-                </div>
+                <div className="Main">{main}</div>
             </div>
         )
     }

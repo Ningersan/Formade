@@ -2,7 +2,7 @@
 @import '../../../../styles/variables.scss';
 
 .wrap {
-    @include center($bottom: none);
+    margin: 0 auto 12rem auto;
     box-sizing: border-box;
     width: $edit-area-width;
     font-size: 1.25rem;
