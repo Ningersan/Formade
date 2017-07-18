@@ -12,10 +12,13 @@ class Main extends React.Component {
             questions: [{
                 options: ['选项 1', '选项 2'],
                 type: 'radio',
+                isRequired: false,
             }],
         }
         this.handleFocus = this.handleFocus.bind(this)
         this.handleDescBlur = this.handleDescBlur.bind(this)
+        this.handleSetType = this.handleSetType.bind(this)
+        this.handleToggleRequired = this.handleToggleRequired.bind(this)
         this.handleAddQuestion = this.handleAddQuestion.bind(this)
         this.handleDeleteQuestion = this.handleDeleteQuestion.bind(this)
         this.handleCopyQuestion = this.handleCopyQuestion.bind(this)
@@ -58,7 +61,6 @@ class Main extends React.Component {
     }
 
     handleCopyQuestion(index) {
-        console.log(deepCopy)
         const questions = this.state.questions.slice()
         const targetQuestion = deepCopy(questions[index])
         questions.splice((index + 1), 0, targetQuestion)
@@ -97,6 +99,24 @@ class Main extends React.Component {
         }
     }
 
+    handleSetType(index) {
+        return (type) => {
+            const questions = Array.from(this.state.questions)
+            questions[index].type = type
+            this.setState({
+                questions,
+            })
+        }
+    }
+
+    handleToggleRequired(index) {
+        const questions = Array.from(this.state.questions)
+        questions[index].isRequired = !questions[index].isRequired
+        this.setState({
+            questions,
+        })
+    }
+
     render() {
         const header = (
             <div tabIndex="-1" className={styles.header}>
@@ -133,8 +153,10 @@ class Main extends React.Component {
                       handleAddOption={() => this.handleAddOption(index)}
                       handleDeleteOption={this.handleDeleteOption(index)}
                       handleOptionChange={this.handleOptionChange(index)}
-                      handleDeleteQuestion={() => this.handleDeleteQuestion(index)}
+                      handleSetType={this.handleSetType(index)}
+                      handleToggleRequired={() => this.handleToggleRequired(index)}
                       handleCopyQuestion={() => this.handleCopyQuestion(index)}
+                      handleDeleteQuestion={() => this.handleDeleteQuestion(index)}
                     />
                 ))}
             </div>

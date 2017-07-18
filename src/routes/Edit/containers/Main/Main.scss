@@ -9,6 +9,7 @@
     background-color: $white;
     .header {
         @include editorViewCard;
+        margin: 176px auto 0 auto;
         &:focus {
             outline: none;
             border-left-color: $blue;

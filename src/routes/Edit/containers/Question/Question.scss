@@ -14,13 +14,61 @@
         width: 70%;
     }
     .title {
+        display: inline-block;
         font-size: 1.25rem;
         height: 1.5em;
         &:focus {
             border-bottom: 1.5px solid $brand-primary;
         }
     }
-    .list {
+    .type-chooser {
+        box-sizing: border-box; 
+        display: inline-block;
+        position: relative;
+        margin-left: 5%;
+        vertical-align: bottom;
+        font-size: .95rem;
+        border-radius: 3px;
+        color: $gray;
+        cursor: pointer;
+        background: $gray-white;
+        &:hover {
+            .menu-types {
+                display: inline-block;
+            }
+        }
+        .type {
+            padding: .8em 1.5em;
+            .content {
+                margin: 0 2em 0 .5em;
+            }
+        }
+        .menu-types {
+            display: none;
+            position: absolute;
+            top: -1em;
+            margin: 0;
+            padding: 0;
+            z-index: 1;
+            background-color: $white;
+            box-shadow: 0 0 4px rgba(0,0,0,.12),
+                        0 2px 6px rgba(0,0,0,.24);
+            .menu-item {
+                padding: .8em 1.5em;
+                list-style: none;
+                &:hover {
+                    background-color: $gray-white;
+                }
+                &:focus {
+                    outline: none;
+                }
+                .content {
+                    margin: 0 2.7em 0 .5em;
+                }
+            }
+        }
+    }
+    .item {
         display: flex;
         align-items: center;
         height: 2.6em;
@@ -83,7 +131,7 @@
         }
     }
     .add {
-        @extend .list;
+        @extend .item;
     }
     .control {
         display: none;
@@ -113,6 +161,19 @@
                     outline: none;
                 }
             }
+            .required-toggle {
+                margin-top: -2px;
+                width: 4em;
+                vertical-align: bottom;
+                font-size: 1rem;
+                .required {
+                    display: inline-block;
+                    margin: 0 .5em;
+                    width: 1em;
+                    height: 1em;
+                    vertical-align: middle;
+                }
+            }
         }
     }
 }
@@ -134,5 +195,3 @@
 :global(.hidden) {
     display: none;
 }
-
-

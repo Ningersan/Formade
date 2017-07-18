@@ -9,11 +9,13 @@ class Question extends React.Component {
         this.state = {
             hasOther: false,
             isActive: false,
+            showTypeMenu: false,
         }
         this.handleClick = this.handleClick.bind(this)
         this.handleaddOther = this.handleaddOther.bind(this)
         this.handleDeleteOther = this.handleDeleteOther.bind(this)
         this.renderOption = this.renderOption.bind(this)
+        this.renderTypeChooser = this.renderTypeChooser.bind(this)
     }
 
     componentWillMount() {
@@ -29,13 +31,7 @@ class Question extends React.Component {
     }
 
     handleClick(e) {
-        let isActive = null
-
-        if (this.mainEle.contains(e.target)) {
-            isActive = true
-        } else {
-            isActive = false
-        }
+        const isActive = this.mainEle.contains(e.target)
 
         this.setState({
             isActive,
@@ -56,9 +52,14 @@ class Question extends React.Component {
 
     renderOther() {
         return (
-            <div className={styles.list}>
+            <div className={styles.item}>
                 <div className={this.getSymbolClassNameByType()} />
-                <input type="text" className={styles.other} defaultValue="其他" disabled />
+                <input
+                  type="text"
+                  className={styles.other}
+                  defaultValue="其他"
+                  disabled
+                />
                 <div
                   role="button"
                   tabIndex="0"
@@ -71,7 +72,7 @@ class Question extends React.Component {
 
     renderOption(option, index) {
         return (
-            <div className={styles.list} key={index}>
+            <div className={styles.item} key={index}>
                 <div className={this.getSymbolClassNameByType()} />
                 <Input
                   className={styles.option}
@@ -84,6 +85,42 @@ class Question extends React.Component {
                   className={styles['delete-option']}
                   onClick={() => this.props.handleDeleteOption(index)}
                 />
+            </div>
+        )
+    }
+
+    renderTypeChooser() {
+        const [curType, curTypeClassName] = this.props.type === 'radio' ? ['单选题', 'fa fa-lg fa-circle-o'] : ['多选题', 'fa fa-lg fa-check-square']
+        const menu = (
+            <div className={styles['menu-types']}>
+                <div
+                  tabIndex="0"
+                  role="button"
+                  className={styles['menu-item']}
+                  onClick={() => this.props.handleSetType('radio')}
+                >
+                    <i className="fa fa-lg fa-circle-o" />
+                    <span className={styles.content}>单选题</span>
+                </div>
+                <div
+                  tabIndex="0"
+                  role="button"
+                  className={styles['menu-item']}
+                  onClick={() => this.props.handleSetType('checkbox')}
+                >
+                    <i className="fa fa-lg fa-check-square" />
+                    <span className={styles.content}>多选题</span>
+                </div>
+            </div>
+        )
+        return (
+            <div className={styles['type-chooser']}>
+                <div className={styles.type}>
+                    <i className={curTypeClassName} />
+                    <span className={styles.content}>{curType}</span>
+                    <i className="fa fa-lg fa-caret-down" />
+                </div>
+                {menu}
             </div>
         )
     }
@@ -118,6 +155,7 @@ class Question extends React.Component {
               className={questionClassName}
             >
                 <Input className={styles.title} defaultValue="未命名的问题" />
+                {this.renderTypeChooser()}
                 {options}
                 {this.state.hasOther && this.renderOther()}
                 {addOptions}
@@ -139,10 +177,16 @@ class Question extends React.Component {
                         >
                             <i className="fa fa-trash-o" />
                         </div>
-                        <label>
-                            <span>必填</span>
-                            <i className="fa fa-check" />
-                        </label>
+                        <div className={styles['required-toggle']}>
+                            <label>
+                                <input
+                                  type="checkbox"
+                                  className={styles.required}
+                                  onChange={this.props.handleToggleRequired}
+                                />
+                                必填
+                            </label>
+                        </div>
                         <div>
                             <i className="fa fa-ellipsis-v" />
                         </div>
@@ -161,6 +205,8 @@ Question.propTypes = {
     handleOptionChange: PropTypes.func.isRequired,
     handleCopyQuestion: PropTypes.func.isRequired,
     handleDeleteQuestion: PropTypes.func.isRequired,
+    handleSetType: PropTypes.func.isRequired,
+    handleToggleRequired: PropTypes.func.isRequired,
 }
 
 export default Question
