@@ -27,6 +27,8 @@
 
         "react/jsx-indent": [1, 4],
 
+        "no-plusplus": 0,
+
         // 使用windows换行符
         "linebreak-style": ["error", "windows"],
 

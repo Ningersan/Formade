@@ -7,13 +7,10 @@ class Question extends React.Component {
     constructor() {
         super()
         this.state = {
-            hasOther: false,
             isActive: false,
             showTypeMenu: false,
         }
         this.handleClick = this.handleClick.bind(this)
-        this.handleaddOther = this.handleaddOther.bind(this)
-        this.handleDeleteOther = this.handleDeleteOther.bind(this)
         this.renderOption = this.renderOption.bind(this)
         this.renderTypeChooser = this.renderTypeChooser.bind(this)
     }
@@ -31,23 +28,12 @@ class Question extends React.Component {
     }
 
     handleClick(e) {
-        const isActive = this.mainEle.contains(e.target)
-
-        this.setState({
-            isActive,
-        })
-    }
-
-    handleaddOther() {
-        this.setState({
-            hasOther: true,
-        })
-    }
-
-    handleDeleteOther() {
-        this.setState({
-            hasOther: false,
-        })
+        if (this.mainEle) {
+            const isActive = this.mainEle.contains(e.target)
+            this.setState({
+                isActive,
+            })
+        }
     }
 
     renderOther() {
@@ -64,7 +50,7 @@ class Question extends React.Component {
                   role="button"
                   tabIndex="0"
                   className={styles['delete-option']}
-                  onClick={this.handleDeleteOther}
+                  onClick={this.props.handleRemoveOther}
                 />
             </div>
         )
@@ -83,7 +69,7 @@ class Question extends React.Component {
                   role="button"
                   tabIndex="0"
                   className={styles['delete-option']}
-                  onClick={() => this.props.handleDeleteOption(index)}
+                  onClick={() => this.props.handleRemoveOption(index)}
                 />
             </div>
         )
@@ -97,7 +83,7 @@ class Question extends React.Component {
                   tabIndex="0"
                   role="button"
                   className={styles['menu-item']}
-                  onClick={() => this.props.handleSetType('radio')}
+                  onClick={() => this.props.handleSetQuestionType('radio')}
                 >
                     <i className="fa fa-lg fa-circle-o" />
                     <span className={styles.content}>单选题</span>
@@ -106,7 +92,7 @@ class Question extends React.Component {
                   tabIndex="0"
                   role="button"
                   className={styles['menu-item']}
-                  onClick={() => this.props.handleSetType('checkbox')}
+                  onClick={() => this.props.handleSetQuestionType('checkbox')}
                 >
                     <i className="fa fa-lg fa-check-square" />
                     <span className={styles.content}>多选题</span>
@@ -142,7 +128,7 @@ class Question extends React.Component {
                   role="button"
                   tabIndex="0"
                   className={styles['add-option']}
-                  onClick={this.handleaddOther}
+                  onClick={this.props.handleAddOther}
                 >添加其他</span>
             </div>
         )
@@ -157,7 +143,7 @@ class Question extends React.Component {
                 <Input className={styles.title} defaultValue="未命名的问题" />
                 {this.renderTypeChooser()}
                 {options}
-                {this.state.hasOther && this.renderOther()}
+                {this.props.hasOther && this.renderOther()}
                 {addOptions}
                 <div className={styles.control}>
                     <div className={styles['footer-right']}>
@@ -173,7 +159,7 @@ class Question extends React.Component {
                           role="button"
                           tabIndex="0"
                           className={styles['delete-question']}
-                          onClick={this.props.handleDeleteQuestion}
+                          onClick={this.props.handleRemoveQuestion}
                         >
                             <i className="fa fa-trash-o" />
                         </div>
@@ -182,7 +168,7 @@ class Question extends React.Component {
                                 <input
                                   type="checkbox"
                                   className={styles.required}
-                                  onChange={this.props.handleToggleRequired}
+                                  onChange={this.props.handleToggleQuestion}
                                 />
                                 必填
                             </label>
@@ -198,15 +184,18 @@ class Question extends React.Component {
 }
 
 Question.propTypes = {
-    options: PropTypes.array.isRequired,
     type: PropTypes.string.isRequired,
+    hasOther: PropTypes.bool.isRequired,
+    options: PropTypes.array.isRequired,
     handleAddOption: PropTypes.func.isRequired,
-    handleDeleteOption: PropTypes.func.isRequired,
     handleOptionChange: PropTypes.func.isRequired,
+    handleRemoveOption: PropTypes.func.isRequired,
     handleCopyQuestion: PropTypes.func.isRequired,
-    handleDeleteQuestion: PropTypes.func.isRequired,
-    handleSetType: PropTypes.func.isRequired,
-    handleToggleRequired: PropTypes.func.isRequired,
+    handleSetQuestionType: PropTypes.func.isRequired,
+    handleToggleQuestion: PropTypes.func.isRequired,
+    handleRemoveQuestion: PropTypes.func.isRequired,
+    handleAddOther: PropTypes.func.isRequired,
+    handleRemoveOther: PropTypes.func.isRequired,
 }
 
 export default Question

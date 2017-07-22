@@ -75,6 +75,9 @@
         &:hover {
             .delete-option {
                 display: block;
+                &:focus {
+                    outline: none;
+                }
             }
         }
     }

@@ -1,30 +1,59 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Menu from '../Menu/Menu'
 import Question from '../Question/Question'
-import { deepCopy } from '../../../../scripts/utils.js'
+import * as questionnaireActions from '../../../../actions/questionnaire'
 import styles from './Main.scss'
 
-class Main extends React.Component {
+const mapStateToProps = state => ({
+    questions: state,
+})
+
+const mapDispatchToProps = dispatch => ({
+    addQuestion(type) {
+        dispatch(questionnaireActions.addQuestion(type))
+    },
+    setQuestionType(index) {
+        return (type) => {
+            dispatch(questionnaireActions.setQuestionType(index, type))
+        }
+    },
+    toggleQuestion(index) {
+        dispatch(questionnaireActions.toggleQuestion(index))
+    },
+    copyQuestion(index) {
+        dispatch(questionnaireActions.copyQuestion(index))
+    },
+    removeQuestion(index) {
+        dispatch(questionnaireActions.removeQuestion(index))
+    },
+    addOption(index) {
+        dispatch(questionnaireActions.addOption(index))
+    },
+    optionChange(questionIndex) {
+        return optionIndex => (e) => {
+            dispatch(questionnaireActions.optionChange(questionIndex, optionIndex, e))
+        }
+    },
+    removeOption(questionIndex) {
+        return (optionIndex) => {
+            dispatch(questionnaireActions.removeOption(questionIndex, optionIndex))
+        }
+    },
+    addOther(index) {
+        dispatch(questionnaireActions.addOther(index))
+    },
+    removeOther(index) {
+        dispatch(questionnaireActions.removeOther(index))
+    },
+})
+
+class EditMain extends React.Component {
     constructor() {
         super()
-        this.state = {
-            questions: [{
-                options: ['选项 1', '选项 2'],
-                type: 'radio',
-                isRequired: false,
-            }],
-        }
         this.handleFocus = this.handleFocus.bind(this)
         this.handleDescBlur = this.handleDescBlur.bind(this)
-        this.handleSetType = this.handleSetType.bind(this)
-        this.handleToggleRequired = this.handleToggleRequired.bind(this)
-        this.handleAddQuestion = this.handleAddQuestion.bind(this)
-        this.handleDeleteQuestion = this.handleDeleteQuestion.bind(this)
-        this.handleCopyQuestion = this.handleCopyQuestion.bind(this)
-        this.handleAddOption = this.handleAddOption.bind(this)
-        this.handleDeleteOption = this.handleDeleteOption.bind(this)
-        this.handleOptionChange = this.handleOptionChange.bind(this)
     }
 
     handleFocus(e) {
@@ -39,82 +68,6 @@ class Main extends React.Component {
         if (this.descriptionInput.textContent === '') {
             this.descriptionInput.dataset.content = '表单说明'
         }
-    }
-
-    handleAddQuestion(type) {
-        const questions = Array.from(this.state.questions)
-        questions.push({
-            options: ['选项 1', '选项 2'],
-            type,
-        })
-        this.setState({
-            questions,
-        })
-    }
-
-    handleDeleteQuestion(index) {
-        const questions = Array.from(this.state.questions)
-        questions.splice(index, 1)
-        this.setState({
-            questions,
-        })
-    }
-
-    handleCopyQuestion(index) {
-        const questions = this.state.questions.slice()
-        const targetQuestion = deepCopy(questions[index])
-        questions.splice((index + 1), 0, targetQuestion)
-        this.setState({
-            questions,
-        })
-    }
-
-    handleAddOption(index) {
-        const questions = Array.from(this.state.questions)
-        const options = questions[index].options
-        options.push(`选项 ${options.length + 1}`)
-        this.setState({
-            questions,
-        })
-    }
-
-    handleDeleteOption(questionIndex) {
-        return (optionIndex) => {
-            const questions = Array.from(this.state.questions)
-            const options = questions[questionIndex].options
-            options.splice(optionIndex, 1)
-            this.setState({
-                questions,
-            })
-        }
-    }
-
-    handleOptionChange(questionIndex) {
-        return optionIndex => (e) => {
-            const questions = Array.from(this.state.questions)
-            questions[questionIndex].options[optionIndex] = e.target.value
-            this.setState({
-                questions,
-            })
-        }
-    }
-
-    handleSetType(index) {
-        return (type) => {
-            const questions = Array.from(this.state.questions)
-            questions[index].type = type
-            this.setState({
-                questions,
-            })
-        }
-    }
-
-    handleToggleRequired(index) {
-        const questions = Array.from(this.state.questions)
-        questions[index].isRequired = !questions[index].isRequired
-        this.setState({
-            questions,
-        })
     }
 
     render() {
@@ -140,23 +93,27 @@ class Main extends React.Component {
                 </div>
             </div>
         )
+        const questions = this.props.questions
 
         return (
             <div className={styles.wrap}>
-                <Menu handleAddQuestion={this.handleAddQuestion} />
+                <Menu handleAddQuestion={this.props.addQuestion} />
                 {header}
-                {this.state.questions.map((option, index) => (
+                {questions.map((question, index) => (
                     <Question
-                      key={index}
-                      type={this.state.questions[index].type}
-                      options={this.state.questions[index].options}
-                      handleAddOption={() => this.handleAddOption(index)}
-                      handleDeleteOption={this.handleDeleteOption(index)}
-                      handleOptionChange={this.handleOptionChange(index)}
-                      handleSetType={this.handleSetType(index)}
-                      handleToggleRequired={() => this.handleToggleRequired(index)}
-                      handleCopyQuestion={() => this.handleCopyQuestion(index)}
-                      handleDeleteQuestion={() => this.handleDeleteQuestion(index)}
+                      key={question.id}
+                      type={questions[index].type}
+                      options={questions[index].options}
+                      hasOther={questions[index].hasOther}
+                      handleSetQuestionType={this.props.setQuestionType(index)}
+                      handleToggleQuestion={() => this.props.toggleQuestion(index)}
+                      handleCopyQuestion={() => this.props.copyQuestion(index)}
+                      handleRemoveQuestion={() => this.props.removeQuestion(index)}
+                      handleAddOption={() => this.props.addOption(index)}
+                      handleOptionChange={this.props.optionChange(index)}
+                      handleRemoveOption={this.props.removeOption(index)}
+                      handleAddOther={() => this.props.addOther(index)}
+                      handleRemoveOther={() => this.props.removeOther(index)}
                     />
                 ))}
             </div>
@@ -164,9 +121,29 @@ class Main extends React.Component {
     }
 }
 
-Main.propTypes = {
-    title: PropTypes.string,
-    handleTitleChange: PropTypes.func,
+EditMain.propTypes = {
+    title: PropTypes.string.isRequired,
+    questions: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            type: PropTypes.string.isRequired,
+            hasOther: PropTypes.bool.isRequired,
+            options: PropTypes.array.isRequired,
+        }).isRequired
+    ).isRequired,
+    handleTitleChange: PropTypes.func.isRequired,
+    addQuestion: PropTypes.func.isRequired,
+    setQuestionType: PropTypes.func.isRequired,
+    toggleQuestion: PropTypes.func.isRequired,
+    copyQuestion: PropTypes.func.isRequired,
+    removeQuestion: PropTypes.func.isRequired,
+    addOption: PropTypes.func.isRequired,
+    optionChange: PropTypes.func.isRequired,
+    removeOption: PropTypes.func.isRequired,
+    addOther: PropTypes.func.isRequired,
+    removeOther: PropTypes.func.isRequired,
 }
+
+const Main = connect(mapStateToProps, mapDispatchToProps)(EditMain)
 
 export default Main
