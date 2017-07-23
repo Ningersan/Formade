@@ -23,7 +23,9 @@
     },
     "rules": {
         // 缩进4格
-        "indent": [1 , 4],
+        "indent": [1 , 4, {
+                "SwitchCase": 1
+            }],
 
         "react/jsx-indent": [1, 4],
 

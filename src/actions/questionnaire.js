@@ -1,55 +1,75 @@
 import * as Types from '../constants/QuestionnaireActionTypes'
 
-export const addQuestion = questionType => ({
+export const addQuestion = type => ({
     type: Types.ADD_QUESTION,
-    questionType,
+    payload: {
+        type,
+    },
 })
 
 export const copyQuestion = index => ({
     type: Types.COPY_QUESTION,
-    index,
+    payload: {
+        index,
+    },
 })
 
-export const setQuestionType = (index, questionType) => ({
+export const setQuestionType = (index, type) => ({
     type: Types.SET_QUESTION_TYPE,
-    index,
-    questionType,
+    payload: {
+        index,
+        type,
+    },
 })
 
 export const toggleQuestion = index => ({
     type: Types.TOGGLE_QUESTION,
-    index,
+    payload: {
+        index,
+    },
 })
 
 export const removeQuestion = index => ({
     type: Types.REMOVE_QUESTION,
-    index,
+    payload: {
+        index,
+    },
 })
 
 export const addOption = index => ({
     type: Types.ADD_OPTION,
-    index,
+    payload: {
+        index,
+    },
 })
 
 export const optionChange = (questionIndex, optionIndex, event) => ({
     type: Types.OPTION_CHANGE,
-    questionIndex,
-    optionIndex,
-    event,
+    payload: {
+        questionIndex,
+        optionIndex,
+        event,
+    },
 })
 
 export const removeOption = (questionIndex, optionIndex) => ({
     type: Types.REMOVE_OPTION,
-    questionIndex,
-    optionIndex,
+    payload: {
+        questionIndex,
+        optionIndex,
+    },
 })
 
 export const addOther = index => ({
     type: Types.ADD_OTHER,
-    index,
+    payload: {
+        index,
+    },
 })
 
 export const removeOther = index => ({
     type: Types.REMOVE_OTHER,
-    index,
+    payload: {
+        index,
+    }
 })
