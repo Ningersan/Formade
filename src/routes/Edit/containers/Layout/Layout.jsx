@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import store from '../../../../index'
 import styles from './Layout.scss'
 
 class Layout extends React.Component {
@@ -36,10 +37,14 @@ class Layout extends React.Component {
         }
     }
 
+    handleBackHome() {
+        console.log(store.getState())
+    }
+
     render() {
         const headerLeft = (
             <div className={styles.left}>
-                <Link to="/" className="fa fa-arrow-left fa-lg" />
+                <Link to="/" className="fa fa-arrow-left fa-lg" onClick={this.handleBackHome} />
                 <input
                   type="text"
                   className={styles.title}

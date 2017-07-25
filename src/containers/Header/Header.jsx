@@ -6,7 +6,7 @@ function Header(props) {
     return (
         <div className={styles['app-bar']}>
             <button className="fa fa-bars fa-lg" onClick={props.onClick} ref={props.btnRef} />
-            <h1 className={styles.title}>Google 表单</h1>
+            <h1 className={styles.title}>Formade</h1>
         </div>
     )
 }

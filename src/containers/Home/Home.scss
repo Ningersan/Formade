@@ -45,4 +45,36 @@
             }
         }
     }
+    .form-list {
+        width: 100%;
+        color: $black;
+        font-size: .875rem;
+        border-collapse: collapse;
+        .form-icon {
+            padding-left: 1.5em;
+            color: $brand-primary;
+        }
+        .form-title {
+            padding-left: 1em;
+        }
+        .state {
+            color: $gray;
+        }
+        .deadline {
+            color: $gray;
+        }
+        .more {
+            display: block;
+            width: 2em;
+            height: 2em;
+            line-height: 2em;
+            color: $gray-light;
+            text-align: center;
+            border-radius: 50%;
+            &:hover {
+                color: $brand-primary;
+                background-color: $gray-white;
+            }
+        }
+    }
 }

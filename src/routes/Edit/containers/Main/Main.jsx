@@ -7,7 +7,7 @@ import * as questionnaireActions from '../../../../actions/questionnaire'
 import styles from './Main.scss'
 
 const mapStateToProps = state => ({
-    questions: state,
+    questions: state.editing.questions,
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -54,6 +54,7 @@ class EditMain extends React.Component {
         super()
         this.handleFocus = this.handleFocus.bind(this)
         this.handleDescBlur = this.handleDescBlur.bind(this)
+        this.handleAddQuestion = this.handleAddQuestion.bind(this)
     }
 
     handleFocus(e) {
@@ -68,6 +69,12 @@ class EditMain extends React.Component {
         if (this.descriptionInput.textContent === '') {
             this.descriptionInput.dataset.content = '表单说明'
         }
+    }
+
+    handleAddQuestion(index) {
+        this.props.addQuestion(index)
+
+        console.log(this.props.questions)
     }
 
     render() {
@@ -97,14 +104,14 @@ class EditMain extends React.Component {
 
         return (
             <div className={styles.wrap}>
-                <Menu handleAddQuestion={this.props.addQuestion} />
+                <Menu handleAddQuestion={this.handleAddQuestion} />
                 {header}
                 {questions.map((question, index) => (
                     <Question
                       key={question.id}
-                      type={questions[index].type}
-                      options={questions[index].options}
-                      hasOther={questions[index].hasOther}
+                      type={question.type}
+                      options={question.options}
+                      hasOther={question.hasOther}
                       handleSetQuestionType={this.props.setQuestionType(index)}
                       handleToggleQuestion={() => this.props.toggleQuestion(index)}
                       handleCopyQuestion={() => this.props.copyQuestion(index)}
