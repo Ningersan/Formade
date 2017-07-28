@@ -36,4 +36,22 @@
             }
         }
     }
+    .menu {
+        position: fixed;
+        top: 30%;
+        right: 15%;
+        width: 3rem;
+        color: $edit-icon-color;
+        background-color: $white;
+        .add-question {
+            width: 2em;
+            height: 2.25em;
+            margin: 0 auto;
+            line-height: 2.25em;
+            text-align: center;
+            &:focus {
+                outline: none;
+            }
+        }
+    }
 }

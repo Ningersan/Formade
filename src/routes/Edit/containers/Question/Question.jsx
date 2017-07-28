@@ -140,7 +140,10 @@ class Question extends React.Component {
               ref={el => (this.mainEle = el)}
               className={questionClassName}
             >
-                <Input className={styles.title} defaultValue="未命名的问题" />
+                <Input
+                  className={styles.title}
+                  value={this.props.title}
+                />
                 {this.renderTypeChooser()}
                 {options}
                 {this.props.hasOther && this.renderOther()}
@@ -184,6 +187,7 @@ class Question extends React.Component {
 }
 
 Question.propTypes = {
+    title: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     hasOther: PropTypes.bool.isRequired,
     options: PropTypes.array.isRequired,

@@ -1,5 +1,34 @@
 import * as Types from '../constants/QuestionnaireActionTypes'
 
+export const addQuestionnaire = () => ({
+    type: Types.ADD_QUESTIONNAIRE,
+})
+
+export const saveQuestionnaire = () => ({
+    type: Types.SAVE_QUESTIONNAIRE,
+})
+
+export const editQuestionnaire = index => ({
+    type: Types.EDIT_QUESTIONNAIRE,
+    payload: {
+        index,
+    },
+})
+
+export const removeQuestionnaire = index => ({
+    type: Types.REMOVE_QUESTIONNAIRE,
+    payload: {
+        index,
+    },
+})
+
+export const saveText = text => ({
+    type: Types.SAVE_TEXT,
+    payload: {
+        text,
+    },
+})
+
 export const addQuestion = type => ({
     type: Types.ADD_QUESTION,
     payload: {
@@ -71,5 +100,5 @@ export const removeOther = index => ({
     type: Types.REMOVE_OTHER,
     payload: {
         index,
-    }
+    },
 })

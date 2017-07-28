@@ -1,16 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import Menu from '../Menu/Menu'
+import Menu from '../../../../components/Menu/Menu'
 import Question from '../Question/Question'
 import * as questionnaireActions from '../../../../actions/questionnaire'
 import styles from './Main.scss'
 
 const mapStateToProps = state => ({
-    questions: state.editing.questions,
+    editing: state.editing,
 })
 
 const mapDispatchToProps = dispatch => ({
+    saveText(title) {
+        dispatch(questionnaireActions.saveText(title))
+    },
     addQuestion(type) {
         dispatch(questionnaireActions.addQuestion(type))
     },
@@ -54,7 +57,7 @@ class EditMain extends React.Component {
         super()
         this.handleFocus = this.handleFocus.bind(this)
         this.handleDescBlur = this.handleDescBlur.bind(this)
-        this.handleAddQuestion = this.handleAddQuestion.bind(this)
+        this.handleTitleChange = this.handleTitleChange.bind(this)
     }
 
     handleFocus(e) {
@@ -71,10 +74,8 @@ class EditMain extends React.Component {
         }
     }
 
-    handleAddQuestion(index) {
-        this.props.addQuestion(index)
-
-        console.log(this.props.questions)
+    handleTitleChange(e) {
+        this.props.saveText(e.target.value)
     }
 
     render() {
@@ -84,9 +85,9 @@ class EditMain extends React.Component {
                     <input
                       type="text"
                       className={styles.title}
-                      value={this.props.title}
+                      value={this.props.editing.title}
                       onFocus={this.handleFocus}
-                      onChange={this.props.handleTitleChange}
+                      onChange={this.handleTitleChange}
                       ref={(input) => { this.titleInput = input }}
                     />
                     <div
@@ -100,15 +101,40 @@ class EditMain extends React.Component {
                 </div>
             </div>
         )
-        const questions = this.props.questions
+
+        const menu = (
+            <Menu wrapClassName={styles.menu}>
+                <div
+                  role="button"
+                  tabIndex="0"
+                  title="添加单选"
+                  className={styles['add-question']}
+                  onClick={() => this.props.addQuestion('radio')}
+                >
+                    <i className="fa fa-lg fa-circle-o" />
+                </div>
+                <div
+                  role="button"
+                  tabIndex="0"
+                  title="添加多选"
+                  className={styles['add-question']}
+                  onClick={() => this.props.addQuestion('checkbox')}
+                >
+                    <i className="fa fa-lg fa-check-square" />
+                </div>
+            </Menu>
+        )
+
+        const questions = this.props.editing.questions
 
         return (
             <div className={styles.wrap}>
-                <Menu handleAddQuestion={this.handleAddQuestion} />
+                {menu}
                 {header}
                 {questions.map((question, index) => (
                     <Question
                       key={question.id}
+                      title={question.title}
                       type={question.type}
                       options={question.options}
                       hasOther={question.hasOther}
@@ -129,16 +155,18 @@ class EditMain extends React.Component {
 }
 
 EditMain.propTypes = {
-    title: PropTypes.string.isRequired,
-    questions: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            type: PropTypes.string.isRequired,
-            hasOther: PropTypes.bool.isRequired,
-            options: PropTypes.array.isRequired,
-        }).isRequired
-    ).isRequired,
-    handleTitleChange: PropTypes.func.isRequired,
+    editing: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+        questions: PropTypes.arrayOf(
+            PropTypes.shape({
+                id: PropTypes.number.isRequired,
+                title: PropTypes.string.isRequired,
+                type: PropTypes.string.isRequired,
+                hasOther: PropTypes.bool.isRequired,
+                options: PropTypes.array.isRequired,
+            }).isRequired).isRequired,
+    }).isRequired,
+    saveText: PropTypes.func.isRequired,
     addQuestion: PropTypes.func.isRequired,
     setQuestionType: PropTypes.func.isRequired,
     toggleQuestion: PropTypes.func.isRequired,

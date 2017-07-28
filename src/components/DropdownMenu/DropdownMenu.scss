@@ -1,0 +1,16 @@
+@import '../../styles/variables.scss';
+
+.wrap {
+    &:focus {
+        outline: none;
+    }
+    .menu {
+        position: absolute;
+        padding: 0;
+        z-index: $menu-z-index;
+        color: $gray;
+        background-color: $white;
+        box-shadow: 0 0 4px rgba(0,0,0,.12),
+                    0 2px 6px rgba(0,0,0,.24);
+    }
+}

@@ -1,15 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import store from '../../../../index'
+import { connect } from 'react-redux'
+import * as questionnaireActions from '../../../../actions/questionnaire'
 import styles from './Layout.scss'
 
-class Layout extends React.Component {
+const mapStateToProps = state => ({
+    editing: state.editing,
+})
+
+const mapDispatchToProps = dispatch => ({
+    saveText(title) {
+        dispatch(questionnaireActions.saveText(title))
+    },
+    saveQuestionnaire() {
+        dispatch(questionnaireActions.saveQuestionnaire())
+    },
+})
+
+class LayoutScreen extends React.Component {
     constructor() {
         super()
-        this.state = {
-            title: '未命名的表单',
-        }
         this.handleScrollChange = this.handleScrollChange.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
     }
@@ -23,7 +34,7 @@ class Layout extends React.Component {
     }
 
     handleTitleChange(e) {
-        this.setState({ title: e.target.value })
+        this.props.saveText(e.target.value)
     }
 
     handleScrollChange() {
@@ -37,19 +48,24 @@ class Layout extends React.Component {
         }
     }
 
-    handleBackHome() {
-        console.log(store.getState())
+    handleInputFocus(e) {
+        e.currentTarget.select()
     }
 
     render() {
         const headerLeft = (
             <div className={styles.left}>
-                <Link to="/" className="fa fa-arrow-left fa-lg" onClick={this.handleBackHome} />
+                <Link
+                  to="/"
+                  className="fa fa-arrow-left fa-lg"
+                  onClick={() => this.props.saveQuestionnaire()}
+                />
                 <input
                   type="text"
                   className={styles.title}
-                  value={this.state.title}
+                  value={this.props.editing.title}
                   onChange={this.handleTitleChange}
+                  onFocus={this.handleInputFocus}
                 />
             </div>
         )
@@ -58,7 +74,7 @@ class Layout extends React.Component {
             <div className={styles.right}>
                 <Link to="/" className="fa fa-eye fa-lg" />
                 <Link to="/" className="fa fa-info fa-lg" />
-                <button className={styles.save}>保存</button>
+                <a className={styles.save}>保存</a>
             </div>
         )
 
@@ -69,12 +85,6 @@ class Layout extends React.Component {
                 </div>
             </div>
         )
-
-        const main = React.Children.map(this.props.children,
-            child => React.cloneElement(child, {
-                title: this.state.title,
-                handleTitleChange: this.handleTitleChange,
-            }))
 
         const topAreaStyle = {
             position: 'absolute',
@@ -93,14 +103,21 @@ class Layout extends React.Component {
                     </div>
                     {topFooter}
                 </div>
-                <div className="Main">{main}</div>
+                <div className="Main">{this.props.children}</div>
             </div>
         )
     }
 }
 
-Layout.propTypes = {
+LayoutScreen.propTypes = {
+    editing: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+    }).isRequired,
     children: PropTypes.element.isRequired,
+    saveText: PropTypes.func.isRequired,
+    saveQuestionnaire: PropTypes.func.isRequired,
 }
+
+const Layout = connect(mapStateToProps, mapDispatchToProps)(LayoutScreen)
 
 export default Layout

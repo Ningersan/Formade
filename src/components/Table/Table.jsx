@@ -18,7 +18,10 @@ const renderTds = (contents, tdStyles) => contents.map((content, index) => {
 
 const renderTrs = (contents, style) => contents.map((content, index) => {
     return (
-        <tr key={`${content}-${index}`} className={styles['table-tr']}>
+        <tr
+          key={`${content}-${index}`}
+          className={styles['table-tr']}
+        >
             { renderTds(content, style) }
         </tr>
     )

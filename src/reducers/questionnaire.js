@@ -1,29 +1,61 @@
 import { deepCopy } from '../scripts/utils'
 
+const list = []
 let nextQuestionId = 0
 
 const initEditing = {
     questionnaireId: -1,
     title: '未命名的表单',
-    deadline: 0,
-    questions: [],
-    questionId: -1,
-    options: ['选项 1', '选项 2'],
-    optionId: -1,
-    hasOther: false,
+    status: '未发布',
+    deadline: '2017年7月26日',
+    questions: [{
+        title: '未命名的问题',
+        id: nextQuestionId++,
+        type: 'radio',
+        isRequired: false,
+        hasOther: false,
+        options: ['选项 1', '选项 2'],
+    }],
 }
 
 const initState = {
+    list,
     editing: deepCopy(initEditing),
 }
 
 const questionnaires = (state = initState, action) => {
     switch (action.type) {
+        case 'ADD_QUESTIONNAIRE': {
+            return { ...state, editing: { ...initEditing, questionnaireId: list.length } }
+        }
+        case 'SAVE_QUESTIONNAIRE': {
+            const { list, editing } = state
+            list[editing.questionnaireId] = { ...editing }
+            return { ...state, list }
+        }
+        case 'EDIT_QUESTIONNAIRE': {
+            const { list, editing } = state
+            const { index } = action.payload
+            return { ...state, editing: { ...list[index] } }
+        }
+        case 'REMOVE_QUESTIONNAIRE': {
+            const list = deepCopy(state.list)
+            const { index } = action.payload
+            list.splice(index, 1)
+            return { ...state, list }
+        }
+        case 'SAVE_TEXT': {
+            const editing = deepCopy(state.editing)
+            const { text } = action.payload
+            editing.title = text
+            return { ...state, editing }
+        }
         case 'ADD_QUESTION': {
             const editing = deepCopy(state.editing)
             const { type } = action.payload
             editing.questions.push({
                 id: nextQuestionId++,
+                title: '未命名的问题',
                 type,
                 isRequired: false,
                 hasOther: false,

@@ -50,9 +50,12 @@ body {
             }
             .save {
                 @include button;
+                display: inline-block;
                 margin-right: 2em;
                 width: 5em;
                 height: 2.5em;
+                line-height: 2.5em;
+                vertical-align: middle;
                 font-size: 14px;
                 font-weight: 500;
                 border-radius: 3px;
