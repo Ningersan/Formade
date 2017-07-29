@@ -37,34 +37,26 @@
                 display: inline-block;
             }
         }
+        &:focus {
+            outline: none;
+        }
         .type {
             padding: .8em 1.5em;
             .content {
                 margin: 0 2em 0 .5em;
             }
         }
-        .menu-types {
-            display: none;
-            position: absolute;
-            top: -1em;
-            margin: 0;
-            padding: 0;
-            z-index: 1;
-            background-color: $white;
-            box-shadow: 0 0 4px rgba(0,0,0,.12),
-                        0 2px 6px rgba(0,0,0,.24);
-            .menu-item {
-                padding: .8em 1.5em;
-                list-style: none;
-                &:hover {
-                    background-color: $gray-white;
-                }
-                &:focus {
-                    outline: none;
-                }
-                .content {
-                    margin: 0 2.7em 0 .5em;
-                }
+        .type-item {
+            padding: .8em 1.5em;
+            list-style: none;
+            &:hover {
+                background-color: $gray-white;
+            }
+            &:focus {
+                outline: none;
+            }
+            .content {
+                margin: 0 2.7em 0 .5em;
             }
         }
     }

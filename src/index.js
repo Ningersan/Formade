@@ -1,17 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import questionnaires from './reducers/questionnaire'
 import App from './containers/App/App'
 import Edit from './routes/Edit/Edit'
+import store from './store/store'
 import './styles/normalize.scss'
-
-const store = createStore(questionnaires)
-store.subscribe(() => {
-    console.log(store.getState())
-})
 
 ReactDOM.render((
     <Provider store={store}>
@@ -24,4 +18,3 @@ ReactDOM.render((
     </Provider>
 ), document.getElementById('root'))
 
-export default store

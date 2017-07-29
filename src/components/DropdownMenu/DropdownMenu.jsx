@@ -23,7 +23,7 @@ class DropdownMenu extends React.Component {
             <div
               role="button"
               tabIndex="0"
-              className={styles.wrap}
+              className={this.props.wrapClassName}
               onClick={this.handleClick}
             >
                 {this.props.dropdownButton}
@@ -32,6 +32,7 @@ class DropdownMenu extends React.Component {
                     (
                         <Menu
                           wrapClassName={styles.menu}
+                          wrapStyle={this.props.menuStyle}
                         >
                             {this.props.children}
                         </Menu>
@@ -45,6 +46,7 @@ class DropdownMenu extends React.Component {
 DropdownMenu.propTypes = {
     children: PropTypes.array.isRequired,
     dropdownButton: PropTypes.element.isRequired,
+    wrapClassName: PropTypes.string.isRequired,
     menuStyle: PropTypes.object.isRequired,
 }
 

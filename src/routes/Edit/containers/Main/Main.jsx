@@ -102,8 +102,16 @@ class EditMain extends React.Component {
             </div>
         )
 
+        const menuStyle = {
+            top: '30%',
+            right: '15%',
+        }
+
         const menu = (
-            <Menu wrapClassName={styles.menu}>
+            <Menu
+              wrapClassName={styles.menu}
+              wrapStyle={menuStyle}
+            >
                 <div
                   role="button"
                   tabIndex="0"

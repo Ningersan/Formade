@@ -66,9 +66,10 @@ class HomeScreen extends React.Component {
         const dropdownButton = (
             <a className={styles['dropdown-button']}><i className="fa fa-ellipsis-v fa-lg" /></a>
         )
-        console.log(this.buttonRef)
+
         return (
             <DropdownMenu
+              wrapClassName={styles['dropdown-menu']}
               dropdownButton={dropdownButton}
               menuStyle={menuStyle}
               buttonRef={this.buttonRef}
@@ -152,6 +153,7 @@ HomeScreen.propTypes = {
     questionnaires: PropTypes.array.isRequired,
     addQuestionnaire: PropTypes.func.isRequired,
     editQuestionnaire: PropTypes.func.isRequired,
+    removeQuestionnaire: PropTypes.func.isRequired,
 }
 
 const Home = connect(mapStateToProps, mapDispatchToProps)(HomeScreen)

@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Input from '../../../../components/Input/Input'
+import DropdownMenu from '../../../../components/DropdownMenu/DropdownMenu'
 import styles from './Question.scss'
 
 class Question extends React.Component {
@@ -77,12 +78,26 @@ class Question extends React.Component {
 
     renderTypeChooser() {
         const [curType, curTypeClassName] = this.props.type === 'radio' ? ['单选题', 'fa fa-lg fa-circle-o'] : ['多选题', 'fa fa-lg fa-check-square']
-        const menu = (
-            <div className={styles['menu-types']}>
+        const button = (
+            <div className={styles.type}>
+                <i className={curTypeClassName} />
+                <span className={styles.content}>{curType}</span>
+                <i className="fa fa-lg fa-caret-down" />
+            </div>
+        )
+        const menuStyle = {
+            top: '-1em',
+        }
+        return (
+            <DropdownMenu
+              wrapClassName={styles['type-chooser']}
+              menuStyle={menuStyle}
+              dropdownButton={button}
+            >
                 <div
                   tabIndex="0"
                   role="button"
-                  className={styles['menu-item']}
+                  className={styles['type-item']}
                   onClick={() => this.props.handleSetQuestionType('radio')}
                 >
                     <i className="fa fa-lg fa-circle-o" />
@@ -91,23 +106,13 @@ class Question extends React.Component {
                 <div
                   tabIndex="0"
                   role="button"
-                  className={styles['menu-item']}
+                  className={styles['type-item']}
                   onClick={() => this.props.handleSetQuestionType('checkbox')}
                 >
                     <i className="fa fa-lg fa-check-square" />
                     <span className={styles.content}>多选题</span>
                 </div>
-            </div>
-        )
-        return (
-            <div className={styles['type-chooser']}>
-                <div className={styles.type}>
-                    <i className={curTypeClassName} />
-                    <span className={styles.content}>{curType}</span>
-                    <i className="fa fa-lg fa-caret-down" />
-                </div>
-                {menu}
-            </div>
+            </DropdownMenu>
         )
     }
 
