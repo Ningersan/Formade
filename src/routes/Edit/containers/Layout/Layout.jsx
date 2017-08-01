@@ -29,7 +29,7 @@ class LayoutScreen extends React.Component {
         document.addEventListener('scroll', this.handleScrollChange, false)
     }
 
-    componentWillUnMount() {
+    componentWillUnmount() {
         document.removeEventListener('scroll', this.handleScrollChange, false)
     }
 
@@ -72,7 +72,11 @@ class LayoutScreen extends React.Component {
 
         const headerRight = (
             <div className={styles.right}>
-                <Link to="/" className="fa fa-eye fa-lg" />
+                <Link
+                  to="/fill"
+                  className="fa fa-eye fa-lg"
+                  onClick={this.props.saveQuestionnaire}
+                />
                 <Link to="/" className="fa fa-info fa-lg" />
                 <a className={styles.save}>保存</a>
             </div>

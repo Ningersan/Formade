@@ -15,6 +15,10 @@ export const editQuestionnaire = index => ({
     },
 })
 
+export const submitQuestionnaire = () => ({
+    type: Types.SUBMIT_QUESTIONNAIRE,
+})
+
 export const removeQuestionnaire = index => ({
     type: Types.REMOVE_QUESTIONNAIRE,
     payload: {
@@ -22,10 +26,20 @@ export const removeQuestionnaire = index => ({
     },
 })
 
-export const saveText = text => ({
+export const saveText = (text, index) => ({
     type: Types.SAVE_TEXT,
     payload: {
         text,
+        index,
+    },
+})
+
+export const saveTitle = (text, type, questionIndex) => ({
+    type: Types.SAVE_TITLE,
+    payload: {
+        text,
+        type,
+        questionIndex,
     },
 })
 
@@ -72,12 +86,21 @@ export const addOption = index => ({
     },
 })
 
-export const optionChange = (questionIndex, optionIndex, event) => ({
-    type: Types.OPTION_CHANGE,
+export const editOption = (questionIndex, optionIndex, event) => ({
+    type: Types.EDIT_OPTION,
     payload: {
         questionIndex,
         optionIndex,
         event,
+    },
+})
+
+export const chooseOption = (questionIndex, optionIndex, type) => ({
+    type: Types.CHOOSE_OPTION,
+    payload: {
+        questionIndex,
+        optionIndex,
+        type,
     },
 })
 

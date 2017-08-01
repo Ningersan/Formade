@@ -15,7 +15,18 @@ const initEditing = {
         isRequired: false,
         hasOther: false,
         options: ['选项 1', '选项 2'],
+    },
+    {
+        title: '未命名的问题',
+        id: nextQuestionId++,
+        type: 'checkbox',
+        isRequired: false,
+        hasOther: false,
+        options: ['选项 1', '选项 2'],
     }],
+
+    // record fill data
+    data: [],
 }
 
 const initState = {
@@ -38,6 +49,14 @@ const questionnaires = (state = initState, action) => {
             const { index } = action.payload
             return { ...state, editing: { ...list[index] } }
         }
+        case 'SUBMIT_QUESTIONNAIRE': {
+            const editing = deepCopy(state.editing)
+            const { list } = state
+            const { questionnaireId, data } = editing
+            list[questionnaireId].data.push(data)
+            editing.data = []
+            return { ...state, list, editing }
+        }
         case 'REMOVE_QUESTIONNAIRE': {
             const list = deepCopy(state.list)
             const { index } = action.payload
@@ -46,8 +65,14 @@ const questionnaires = (state = initState, action) => {
         }
         case 'SAVE_TEXT': {
             const editing = deepCopy(state.editing)
-            const { text } = action.payload
-            editing.title = text
+            const { text, index } = action.payload
+            editing.data[index] = text
+            return { ...state, editing }
+        }
+        case 'SAVE_TITLE': {
+            const editing = deepCopy(state.editing)
+            const { text, type, questionIndex } = action.payload
+            type === 'questionnaire' ? editing.title = text : editing.questions[questionIndex].title = text
             return { ...state, editing }
         }
         case 'ADD_QUESTION': {
@@ -98,11 +123,30 @@ const questionnaires = (state = initState, action) => {
             options.push(`选项 ${options.length + 1}`)
             return { ...state, editing }
         }
-        case 'OPTION_CHANGE': {
+        case 'EDIT_OPTION': {
             const editing = deepCopy(state.editing)
             const { questionIndex, optionIndex, event } = action.payload
             const options = editing.questions[questionIndex].options
             options[optionIndex] = event.target.value
+            return { ...state, editing }
+        }
+        case 'CHOOSE_OPTION': {
+            const editing = deepCopy(state.editing)
+            const { data } = editing
+            const { questionIndex, optionIndex, type } = action.payload
+            if (type === 'radio') {
+                data[questionIndex] = optionIndex
+            }
+            if (type === 'checkbox') {
+                let index = null
+                if (!data[questionIndex]) {
+                    data[questionIndex] = [optionIndex]
+                    return { ...state, editing }
+                }
+
+                index = data[questionIndex].indexOf(optionIndex)
+                index !== -1 ? data[questionIndex].splice(index, 1) : data[questionIndex].push(optionIndex)
+            }
             return { ...state, editing }
         }
         case 'REMOVE_OPTION': {

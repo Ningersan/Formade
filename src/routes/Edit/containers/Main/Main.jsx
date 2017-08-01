@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Menu from '../../../../components/Menu/Menu'
+import Textarea from '../../../../components/Textarea/Textarea'
 import Question from '../Question/Question'
 import * as questionnaireActions from '../../../../actions/questionnaire'
 import styles from './Main.scss'
@@ -11,8 +12,10 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    saveText(title) {
-        dispatch(questionnaireActions.saveText(title))
+    saveTitle(questionIndex) {
+        return (title, type) => {
+            dispatch(questionnaireActions.saveTitle(title, type, questionIndex))
+        }
     },
     addQuestion(type) {
         dispatch(questionnaireActions.addQuestion(type))
@@ -34,9 +37,9 @@ const mapDispatchToProps = dispatch => ({
     addOption(index) {
         dispatch(questionnaireActions.addOption(index))
     },
-    optionChange(questionIndex) {
+    editOption(questionIndex) {
         return optionIndex => (e) => {
-            dispatch(questionnaireActions.optionChange(questionIndex, optionIndex, e))
+            dispatch(questionnaireActions.editOption(questionIndex, optionIndex, e))
         }
     },
     removeOption(questionIndex) {
@@ -55,27 +58,16 @@ const mapDispatchToProps = dispatch => ({
 class EditMain extends React.Component {
     constructor() {
         super()
-        this.handleFocus = this.handleFocus.bind(this)
-        this.handleDescBlur = this.handleDescBlur.bind(this)
+        this.handleTitleFocus = this.handleTitleFocus.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
     }
 
-    handleFocus(e) {
-        if (e.target === this.titleInput) {
-            this.titleInput.select()
-        } else {
-            this.descriptionInput.dataset.content = ''
-        }
-    }
-
-    handleDescBlur() {
-        if (this.descriptionInput.textContent === '') {
-            this.descriptionInput.dataset.content = '表单说明'
-        }
+    handleTitleFocus() {
+        this.titleInput.select()
     }
 
     handleTitleChange(e) {
-        this.props.saveText(e.target.value)
+        this.props.saveTitle(null)(e.target.value, 'questionnaire')
     }
 
     render() {
@@ -86,17 +78,13 @@ class EditMain extends React.Component {
                       type="text"
                       className={styles.title}
                       value={this.props.editing.title}
-                      onFocus={this.handleFocus}
+                      onFocus={this.handleTitleFocus}
                       onChange={this.handleTitleChange}
                       ref={(input) => { this.titleInput = input }}
                     />
-                    <div
-                      contentEditable="true"
-                      data-content="表单说明"
+                    <Textarea
                       className={styles.description}
-                      onFocus={this.handleFocus}
-                      onBlur={this.handleDescBlur}
-                      ref={(input) => { this.descriptionInput = input }}
+                      placeholder="表单说明"
                     />
                 </div>
             </div>
@@ -119,7 +107,7 @@ class EditMain extends React.Component {
                   className={styles['add-question']}
                   onClick={() => this.props.addQuestion('radio')}
                 >
-                    <i className="fa fa-lg fa-circle-o" />
+                    <i className="fa fa-circle-o fa-lg" />
                 </div>
                 <div
                   role="button"
@@ -128,7 +116,16 @@ class EditMain extends React.Component {
                   className={styles['add-question']}
                   onClick={() => this.props.addQuestion('checkbox')}
                 >
-                    <i className="fa fa-lg fa-check-square" />
+                    <i className="fa fa-check-square fa-lg" />
+                </div>
+                <div
+                  role="button"
+                  tabIndex="0"
+                  title="添加文本"
+                  className={styles['add-question']}
+                  onClick={() => this.props.addQuestion('text')}
+                >
+                    <i className="fa fa-pencil-square-o fa-lg" />
                 </div>
             </Menu>
         )
@@ -146,12 +143,13 @@ class EditMain extends React.Component {
                       type={question.type}
                       options={question.options}
                       hasOther={question.hasOther}
+                      handleSaveTitle={this.props.saveTitle(index)}
                       handleSetQuestionType={this.props.setQuestionType(index)}
                       handleToggleQuestion={() => this.props.toggleQuestion(index)}
                       handleCopyQuestion={() => this.props.copyQuestion(index)}
                       handleRemoveQuestion={() => this.props.removeQuestion(index)}
                       handleAddOption={() => this.props.addOption(index)}
-                      handleOptionChange={this.props.optionChange(index)}
+                      handleOptionChange={this.props.editOption(index)}
                       handleRemoveOption={this.props.removeOption(index)}
                       handleAddOther={() => this.props.addOther(index)}
                       handleRemoveOther={() => this.props.removeOther(index)}
@@ -174,14 +172,14 @@ EditMain.propTypes = {
                 options: PropTypes.array.isRequired,
             }).isRequired).isRequired,
     }).isRequired,
-    saveText: PropTypes.func.isRequired,
+    saveTitle: PropTypes.func.isRequired,
     addQuestion: PropTypes.func.isRequired,
     setQuestionType: PropTypes.func.isRequired,
     toggleQuestion: PropTypes.func.isRequired,
     copyQuestion: PropTypes.func.isRequired,
     removeQuestion: PropTypes.func.isRequired,
     addOption: PropTypes.func.isRequired,
-    optionChange: PropTypes.func.isRequired,
+    editOption: PropTypes.func.isRequired,
     removeOption: PropTypes.func.isRequired,
     addOther: PropTypes.func.isRequired,
     removeOther: PropTypes.func.isRequired,

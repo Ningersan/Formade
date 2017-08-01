@@ -1,0 +1,86 @@
+@import '../../../../styles/mixins/mixins.scss';
+@import '../../../../styles/variables.scss';
+
+.question {
+    padding: 1em;
+    font-size: 1rem;
+    color: rgba(0,0,0,.87);
+    .title {
+        font-size: 1.1em;
+        line-height: 1.5em;
+    }
+    .option-list {
+        margin-top: .5em;
+        .option-item-wrap {
+            display: block;
+            padding: .5em 0;
+            cursor: pointer;
+            .label-wrap {
+                display: flex;
+                align-items: center;
+                .toggle {
+                    position: absolute;
+                    opacity: 0;
+                }
+                .toggle:checked + .radio-icon {
+                    border-color: $brand-primary;
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        display: block;
+                        top: 50%;
+                        left: 50%;
+                        width: .65em;
+                        height: .65em;
+                        transform: translate(-50%,-50%);
+                        border-radius: 50%;
+                        background-color: $brand-primary;
+                    }
+                }
+                .toggle:checked + .checkbox-icon {
+                    border-color: $brand-primary;
+                    background-color: $brand-primary;
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        display: block;
+                        top: -.1em;
+                        left: .2em;
+                        width: .325em;
+                        height: .65em;
+                        border: 2px solid $white;
+                        border-top-color: transparent;
+                        border-left-color: transparent;
+                        transform: rotate(40deg);
+                    }
+                }
+                .radio-icon {
+                    position: relative;
+                    @include optionIcon(1em, $gray, 50%);
+                    transition: all .5s ease;
+                }
+                .checkbox-icon {
+                    position: relative;
+                    @include optionIcon(1em, $gray, .1em);
+                    transition: all .5s ease;
+                }
+                .option-text {
+                    padding-left: .6em;
+                }
+            }
+        }
+        .textarea {
+            @include textarea(1px solid $edit-input-underline-color);
+            margin-top: 1em;
+            min-height: 1.3em;
+            font-size: 1rem;
+            &::before {
+                content: attr(data-content);
+                color: $gray-light;
+            }
+            &:focus {
+                border-bottom: 1.8px solid $brand-primary;
+            }
+        }
+    }
+}

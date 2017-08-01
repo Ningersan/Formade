@@ -77,7 +77,18 @@ class Question extends React.Component {
     }
 
     renderTypeChooser() {
-        const [curType, curTypeClassName] = this.props.type === 'radio' ? ['单选题', 'fa fa-lg fa-circle-o'] : ['多选题', 'fa fa-lg fa-check-square']
+        const { type } = this.props
+        let [curType, curTypeClassName] = [null, null]
+        if (type === 'radio') {
+            curType = '单选题'
+            curTypeClassName = 'fa fa-lg fa-circle-o'
+        } else if (type === 'checkbox') {
+            curType = '多选题'
+            curTypeClassName = 'fa fa-lg fa-check-square'
+        } else {
+            curType = '文本'
+            curTypeClassName = 'fa fa-lg fa-check-square'
+        }
         const button = (
             <div className={styles.type}>
                 <i className={curTypeClassName} />
@@ -95,22 +106,31 @@ class Question extends React.Component {
               dropdownButton={button}
             >
                 <div
-                  tabIndex="0"
                   role="button"
+                  tabIndex="0"
                   className={styles['type-item']}
                   onClick={() => this.props.handleSetQuestionType('radio')}
                 >
-                    <i className="fa fa-lg fa-circle-o" />
+                    <i className="fa fa-circle-o fa-lg" />
                     <span className={styles.content}>单选题</span>
                 </div>
                 <div
-                  tabIndex="0"
                   role="button"
+                  tabIndex="0"
                   className={styles['type-item']}
                   onClick={() => this.props.handleSetQuestionType('checkbox')}
                 >
-                    <i className="fa fa-lg fa-check-square" />
+                    <i className="fa fa-check-square fa-lg" />
                     <span className={styles.content}>多选题</span>
+                </div>
+                <div
+                  role="button"
+                  tabIndex="0"
+                  className={styles['type-item']}
+                  onClick={() => this.props.handleSetQuestionType('text')}
+                >
+                    <i className="fa fa-pencil-square-o fa-lg fa-fw" />
+                    <span className={styles.content}>文本</span>
                 </div>
             </DropdownMenu>
         )
@@ -137,6 +157,23 @@ class Question extends React.Component {
                 >添加其他</span>
             </div>
         )
+        const optionArea = (
+            <div>
+                {options}
+                {this.props.hasOther && this.renderOther()}
+                {addOptions}
+            </div>
+        )
+        const textArea = (
+            <div className={styles.textarea}>
+                <input
+                  type="text"
+                  className={styles.text}
+                  defaultValue="文本"
+                  disabled
+                />
+            </div>
+        )
 
         return (
             <div
@@ -147,12 +184,11 @@ class Question extends React.Component {
             >
                 <Input
                   className={styles.title}
-                  value={this.props.title}
+                  defaultValue={this.props.title}
+                  onBlur={this.props.handleSaveTitle}
                 />
                 {this.renderTypeChooser()}
-                {options}
-                {this.props.hasOther && this.renderOther()}
-                {addOptions}
+                {this.props.type === 'text' ? textArea : optionArea}
                 <div className={styles.control}>
                     <div className={styles['footer-right']}>
                         <div

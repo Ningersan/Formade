@@ -5,10 +5,15 @@ class Input extends React.Component {
     constructor() {
         super()
         this.handleFocus = this.handleFocus.bind(this)
+        this.handleBlur = this.handleBlur.bind(this)
     }
 
     handleFocus() {
         this.input.select()
+    }
+
+    handleBlur(e) {
+        this.props.onBlur(e.target.value, 'question')
     }
 
     render() {
@@ -22,6 +27,7 @@ class Input extends React.Component {
               value={value}
               onFocus={this.handleFocus}
               onChange={onChange}
+              onBlur={this.handleBlur}
             />
         )
     }
@@ -32,6 +38,7 @@ Input.propTypes = {
     defaultValue: PropTypes.string,
     value: PropTypes.string,
     onChange: PropTypes.func,
+    onBlur: PropTypes.func,
 }
 
 export default Input

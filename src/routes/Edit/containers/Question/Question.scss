@@ -85,6 +85,16 @@
             border-bottom: 1.8px solid $brand-primary;
         }
     }
+    .textarea {
+        margin: 1em 0 2em 0;
+        .text {
+            width: 83%;
+            font-size: .875rem;
+            line-height: 1em;
+            color: rgba(0,0,0,0.38);
+            border-bottom: .5px dotted rgba(0,0,0,.52);
+        }
+    }
     .other {
         @extend .option;
         color: $gray-lighter;
@@ -102,16 +112,12 @@
         font-size: .8125rem;
     }
     .symbol-radio {
-        @include symbol;
-        &::before {
-            border-radius: 50%;
-        }
+        @include optionIcon(.8em, $gray-lighter, 50%);
+        margin-right: .7em;
     }
     .symbol-checkbox {
-        @include symbol;
-        &::before {
-            border-radius: .15em;
-        }
+        @include optionIcon(.8em, $gray-lighter, .15em);
+        margin-right: .7em;
     }
     .delete-option {
         display: none;
