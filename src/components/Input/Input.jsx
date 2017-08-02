@@ -13,7 +13,9 @@ class Input extends React.Component {
     }
 
     handleBlur(e) {
-        this.props.onBlur(e.target.value, 'question')
+        if (this.props.saveTitle) {
+            this.props.saveTitle(e.target.value, 'question')
+        }
     }
 
     render() {
@@ -38,7 +40,7 @@ Input.propTypes = {
     defaultValue: PropTypes.string,
     value: PropTypes.string,
     onChange: PropTypes.func,
-    onBlur: PropTypes.func,
+    saveTitle: PropTypes.func,
 }
 
 export default Input

@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Menu from '../../../../components/Menu/Menu'
+import Input from '../../../../components/Input/Input'
 import Textarea from '../../../../components/Textarea/Textarea'
 import Question from '../Question/Question'
 import * as questionnaireActions from '../../../../actions/questionnaire'
@@ -15,6 +16,11 @@ const mapDispatchToProps = dispatch => ({
     saveTitle(questionIndex) {
         return (title, type) => {
             dispatch(questionnaireActions.saveTitle(title, type, questionIndex))
+        }
+    },
+    saveText(type) {
+        return (text) => {
+            dispatch(questionnaireActions.saveText(text, type))
         }
     },
     addQuestion(type) {
@@ -74,17 +80,15 @@ class EditMain extends React.Component {
         const header = (
             <div tabIndex="-1" className={styles.header}>
                 <div className={styles.info}>
-                    <input
-                      type="text"
+                    <Input
                       className={styles.title}
                       value={this.props.editing.title}
-                      onFocus={this.handleTitleFocus}
                       onChange={this.handleTitleChange}
-                      ref={(input) => { this.titleInput = input }}
                     />
                     <Textarea
                       className={styles.description}
                       placeholder="表单说明"
+                      onSaveText={this.props.saveText('description')}
                     />
                 </div>
             </div>

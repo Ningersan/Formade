@@ -185,7 +185,7 @@ class Question extends React.Component {
                 <Input
                   className={styles.title}
                   defaultValue={this.props.title}
-                  onBlur={this.props.handleSaveTitle}
+                  saveTitle={this.props.handleSaveTitle}
                 />
                 {this.renderTypeChooser()}
                 {this.props.type === 'text' ? textArea : optionArea}
@@ -232,6 +232,7 @@ Question.propTypes = {
     type: PropTypes.string.isRequired,
     hasOther: PropTypes.bool.isRequired,
     options: PropTypes.array.isRequired,
+    handleSaveTitle: PropTypes.func.isRequired,
     handleAddOption: PropTypes.func.isRequired,
     handleOptionChange: PropTypes.func.isRequired,
     handleRemoveOption: PropTypes.func.isRequired,

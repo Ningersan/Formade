@@ -16,9 +16,9 @@ const mapDispatchToProps = dispatch => ({
             dispatch(questionnaireActions.chooseOption(questionId, optionId, type))
         }
     },
-    saveText(questionId) {
+    saveText(questionId, type) {
         return (text) => {
-            dispatch(questionnaireActions.saveText(text, questionId))
+            dispatch(questionnaireActions.saveText(text, type, questionId))
         }
     },
     submitQuestionnaire() {
@@ -85,7 +85,7 @@ class FillMain extends React.Component {
                                   type={question.type}
                                   options={question.options}
                                   handleChooseOption={this.props.chooseOption(index)}
-                                  handleSaveText={this.props.saveText(index)}
+                                  handleSaveText={this.props.saveText(index, 'answer')}
                                 />
                             ))
                             :

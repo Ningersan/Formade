@@ -6,6 +6,7 @@ let nextQuestionId = 0
 const initEditing = {
     questionnaireId: -1,
     title: '未命名的表单',
+    description: '',
     status: '未发布',
     deadline: '2017年7月26日',
     questions: [{
@@ -65,8 +66,9 @@ const questionnaires = (state = initState, action) => {
         }
         case 'SAVE_TEXT': {
             const editing = deepCopy(state.editing)
-            const { text, index } = action.payload
-            editing.data[index] = text
+            const { text, type, index } = action.payload
+            console.log(type)
+            type === 'answer' ? editing.data[index] = text : editing.description = text
             return { ...state, editing }
         }
         case 'SAVE_TITLE': {

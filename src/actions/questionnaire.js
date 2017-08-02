@@ -26,10 +26,11 @@ export const removeQuestionnaire = index => ({
     },
 })
 
-export const saveText = (text, index) => ({
+export const saveText = (text, type, index) => ({
     type: Types.SAVE_TEXT,
     payload: {
         text,
+        type,
         index,
     },
 })
