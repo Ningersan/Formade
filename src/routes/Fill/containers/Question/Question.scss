@@ -8,6 +8,13 @@
     .title {
         font-size: 1.1em;
         line-height: 1.5em;
+        .tips-text {
+            margin-left: .2em;
+            margin-top: .5em;
+            color: $red;
+            font-size: 1.25rem;
+            vertical-align: text-top;
+        }
     }
     .option-list {
         margin-top: .5em;
@@ -82,5 +89,10 @@
                 border-bottom: 1.8px solid $brand-primary;
             }
         }
+    }
+    .warning-text {
+        margin-top: .5em;
+        color: $red;
+        font-size: 1.25;
     }
 }

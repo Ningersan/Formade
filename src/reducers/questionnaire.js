@@ -1,6 +1,6 @@
 import { deepCopy } from '../scripts/utils'
 
-const list = []
+const list = localStorage.list ? JSON.parse(localStorage.list) : []
 let nextQuestionId = 0
 
 const initEditing = {
@@ -42,7 +42,17 @@ const questionnaires = (state = initState, action) => {
         }
         case 'SAVE_QUESTIONNAIRE': {
             const { list, editing } = state
-            list[editing.questionnaireId] = { ...editing }
+            const questionnaire = list[editing.questionnaireId]
+            const data = questionnaire ? deepCopy(questionnaire.data) : []
+            list[editing.questionnaireId] = { ...editing, data }
+            localStorage.list = JSON.stringify(list)
+            editing.data = []
+            return { ...state, list }
+        }
+        case 'RENAME_QUESTIONNAIRE': {
+            const list = deepCopy(state.list)
+            const { value, index } = action.payload
+            list[index].title = value
             return { ...state, list }
         }
         case 'EDIT_QUESTIONNAIRE': {
@@ -52,9 +62,10 @@ const questionnaires = (state = initState, action) => {
         }
         case 'SUBMIT_QUESTIONNAIRE': {
             const editing = deepCopy(state.editing)
-            const { list } = state
+            const list = deepCopy(state.list)
             const { questionnaireId, data } = editing
-            list[questionnaireId].data.push(data)
+            list[questionnaireId].data.push(deepCopy(data))
+            localStorage.list = JSON.stringify(list)
             editing.data = []
             return { ...state, list, editing }
         }
@@ -62,12 +73,12 @@ const questionnaires = (state = initState, action) => {
             const list = deepCopy(state.list)
             const { index } = action.payload
             list.splice(index, 1)
+            localStorage.list = JSON.stringify(list)
             return { ...state, list }
         }
         case 'SAVE_TEXT': {
             const editing = deepCopy(state.editing)
             const { text, type, index } = action.payload
-            console.log(type)
             type === 'answer' ? editing.data[index] = text : editing.description = text
             return { ...state, editing }
         }
@@ -97,6 +108,14 @@ const questionnaires = (state = initState, action) => {
             const targetQuestion = deepCopy(questions[index])
             targetQuestion.id++
             questions.splice((index + 1), 0, targetQuestion)
+            return { ...state, editing }
+        }
+        case 'SORT_QUESTION': {
+            const editing = deepCopy(state.editing)
+            const { from, to } = action.payload
+            const { questions } = editing
+            const target = questions.splice(from, 1)[0]
+            questions.splice(to, 0, target)
             return { ...state, editing }
         }
         case 'SET_QUESTION_TYPE': {
@@ -145,7 +164,6 @@ const questionnaires = (state = initState, action) => {
                     data[questionIndex] = [optionIndex]
                     return { ...state, editing }
                 }
-
                 index = data[questionIndex].indexOf(optionIndex)
                 index !== -1 ? data[questionIndex].splice(index, 1) : data[questionIndex].push(optionIndex)
             }

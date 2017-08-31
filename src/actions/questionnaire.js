@@ -8,11 +8,23 @@ export const saveQuestionnaire = () => ({
     type: Types.SAVE_QUESTIONNAIRE,
 })
 
+export const renameQuestionnaire = (value, index) => ({
+    type: Types.RENAME_QUESTIONNAIRE,
+    payload: {
+        value,
+        index,
+    },
+})
+
 export const editQuestionnaire = index => ({
     type: Types.EDIT_QUESTIONNAIRE,
     payload: {
         index,
     },
+})
+
+export const fillQuestionnaire = () => ({
+    type: Types.FILL_QUESTIONNAIRE,
 })
 
 export const submitQuestionnaire = () => ({
@@ -55,6 +67,14 @@ export const copyQuestion = index => ({
     type: Types.COPY_QUESTION,
     payload: {
         index,
+    },
+})
+
+export const sortQuestion = (from, to) => ({
+    type: Types.SORT_QUESTION,
+    payload: {
+        from,
+        to,
     },
 })
 

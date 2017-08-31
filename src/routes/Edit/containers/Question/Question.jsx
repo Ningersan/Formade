@@ -179,9 +179,18 @@ class Question extends React.Component {
             <div
               role="button"
               tabIndex="-1"
+              draggable="true"
               ref={el => (this.mainEle = el)}
               className={questionClassName}
+              onDragStart={this.props.handleDragStart}
+              onDragEnter={this.props.handleDragEnter}
+              onDrop={this.handleDrop}
             >
+                <div
+                  className={styles['drag-handle']}
+                >
+                    <i className="fa fa-ellipsis-h fa-lg" />
+                </div>
                 <Input
                   className={styles.title}
                   defaultValue={this.props.title}
@@ -232,6 +241,8 @@ Question.propTypes = {
     type: PropTypes.string.isRequired,
     hasOther: PropTypes.bool.isRequired,
     options: PropTypes.array.isRequired,
+    handleDragStart: PropTypes.func.isRequired,
+    handleDragEnter: PropTypes.func.isRequired,
     handleSaveTitle: PropTypes.func.isRequired,
     handleAddOption: PropTypes.func.isRequired,
     handleOptionChange: PropTypes.func.isRequired,

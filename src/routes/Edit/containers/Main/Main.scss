@@ -2,14 +2,12 @@
 @import '../../../../styles/variables.scss';
 
 .wrap {
-    margin: 0 auto 12rem auto;
     box-sizing: border-box;
-    width: $edit-area-width;
     font-size: 1.25rem;
-    background-color: $white;
     .header {
         @include editorViewCard;
         margin: 176px auto 0 auto;
+        padding-top: 1.6rem;
         &:focus {
             outline: none;
             border-left-color: $blue;
@@ -51,5 +49,10 @@
                 outline: none;
             }
         }
+    }
+    .placeholder {
+        background-color: $edit-bg-color;
+        box-shadow: 2px 0 2px -2px rgba(0,0,0,.12),
+                   -2px 0 2px -2px rgba(0,0,0,.12);
     }
 }

@@ -1,0 +1,78 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins/mixins.scss';
+
+.dialog-mask {
+    @include center(fixed);
+    background-color: rgba(0,0,0,0.74);
+    .dialog {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 1.5em;
+        width: 20em;
+        height: 9.5em;
+        font-size: 1rem;
+        background-color: $white;
+        box-shadow: rgba(255,255,255,.9) 0px 1px 0px inset,
+                    rgba(0,0,0,.03) 0px -1px 0px inset,
+                    rgba(0,0,0,.15) 0 15px 10px,
+                    rgba(0,0,0,.3) 0 8px 36px;
+        .dialog-header {
+            margin: .2em 0 1.4em 0;
+            .rename {
+                width: 100%;
+                font-size: 1.1rem;
+            }
+            .close {
+                position: absolute;
+                top: 0;
+                right: .5em;
+                width: 1em;
+                height: 1em;
+                font-size: 1.2rem;
+                color: $gray-light;
+                cursor: pointer;
+                text-align: right;
+                &:hover {
+                    color: $edit-delete-button-hover-color;
+                }
+            }
+        }
+        .dialog-remainder {
+            display: inline-block;
+            margin-bottom: 1.3em;
+            font-size: .9rem;
+            color: $gray;
+        }
+        #user-input {
+            width: 100%;
+            font-size: .875rem;
+            padding-left: .4em;
+            line-height: 1.5em;
+        }
+        .dialog-button-field {
+            margin-top: 1.5em;
+            button {
+                @include button;
+                margin-right: 1em;
+                padding: .2em .6em;
+                border-radius: 2px;
+                font-size: .875rem;
+            }
+            .confirm {
+                color: $white;
+                background-color: $blue;
+                &:hover {
+                    background-color: #357ae8;
+                }
+            }
+            .cancel {
+                background-color: $gray-white;
+                &:hover {
+                    background-color: $gray-lighter;
+                }
+            }
+        }
+    }
+}

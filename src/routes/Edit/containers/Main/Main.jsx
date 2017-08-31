@@ -37,6 +37,9 @@ const mapDispatchToProps = dispatch => ({
     copyQuestion(index) {
         dispatch(questionnaireActions.copyQuestion(index))
     },
+    sortQuestion(sourceIndex, targetIndex) {
+        dispatch(questionnaireActions.sortQuestion(sourceIndex, targetIndex))
+    },
     removeQuestion(index) {
         dispatch(questionnaireActions.removeQuestion(index))
     },
@@ -66,6 +69,8 @@ class EditMain extends React.Component {
         super()
         this.handleTitleFocus = this.handleTitleFocus.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
+        this.handleDragStart = this.handleDragStart.bind(this)
+        this.handleDragEnter = this.handleDragEnter.bind(this)
     }
 
     handleTitleFocus() {
@@ -76,9 +81,79 @@ class EditMain extends React.Component {
         this.props.saveTitle(null)(e.target.value, 'questionnaire')
     }
 
+    handleDragStart(index) {
+        return (e) => {
+            e.dataTransfer.effectAllowed = 'move'
+            this.dragElement = e.currentTarget
+            this.dragElementIndex = index
+        }
+    }
+
+    handleDragEnter(index) {
+        return (e) => {
+            event.preventDefault()
+
+            const dragElement = this.dragElement
+            const lastChild = dragElement.parentNode.lastElementChild
+            const nextToLastChild = lastChild.previousElementSibling
+            const upEnterElement = dragElement.previousElementSibling.previousElementSibling
+            let downEnterElement = null
+
+            if (dragElement === lastChild) {
+                downEnterElement = null
+            } else if (dragElement === nextToLastChild) {
+                downEnterElement = dragElement.nextElementSibling
+            } else {
+                downEnterElement = dragElement.nextElementSibling.nextElementSibling
+            }
+
+            if (e.target === upEnterElement || e.target === downEnterElement) {
+                let placeholder = null
+                const targetElement = e.target === upEnterElement ? dragElement.previousElementSibling : downEnterElement
+                let targetIndex = e.target === upEnterElement ? index + 1 : index - 1
+
+                if (e.target === downEnterElement && downEnterElement === lastChild) {
+                    targetIndex++
+                }
+
+                placeholder = this.creatPlaceholder(this.dragElementIndex, targetIndex)
+                dragElement.style.display = 'none'
+
+                if (e.target === downEnterElement && downEnterElement === lastChild) {
+                    dragElement.parentNode.appendChild(placeholder)
+                } else {
+                    dragElement.parentNode.insertBefore(placeholder, targetElement)
+                }
+            }
+        }
+    }
+
+    creatPlaceholder(from, to) {
+        const dragElement = this.dragElement
+        const placeholder = document.createElement('div')
+
+        placeholder.className = styles.placeholder
+        placeholder.style.width = `${dragElement.offsetWidth}px`
+        placeholder.style.height = `${dragElement.offsetHeight}px`
+
+        placeholder.addEventListener('drop', () => {
+            this.props.sortQuestion(from, to)
+            dragElement.style.display = 'block'
+            dragElement.parentNode.removeChild(placeholder)
+        }, false)
+        placeholder.addEventListener('dragover', (e) => {
+            e.preventDefault()
+        }, false)
+        placeholder.addEventListener('dragleave', () => {
+            dragElement.parentNode.removeChild(placeholder)
+        }, false)
+
+        return placeholder
+    }
+
     render() {
         const header = (
-            <div tabIndex="-1" className={styles.header}>
+            <div tabIndex="-1" className={styles.header} onDragEnter={this.handleDragEnter(-1)}>
                 <div className={styles.info}>
                     <Input
                       className={styles.title}
@@ -146,6 +221,8 @@ class EditMain extends React.Component {
                       title={question.title}
                       type={question.type}
                       options={question.options}
+                      handleDragStart={this.handleDragStart(index)}
+                      handleDragEnter={this.handleDragEnter(index)}
                       hasOther={question.hasOther}
                       handleSaveTitle={this.props.saveTitle(index)}
                       handleSetQuestionType={this.props.setQuestionType(index)}
@@ -176,11 +253,13 @@ EditMain.propTypes = {
                 options: PropTypes.array.isRequired,
             }).isRequired).isRequired,
     }).isRequired,
+    saveText: PropTypes.func.isRequired,
     saveTitle: PropTypes.func.isRequired,
     addQuestion: PropTypes.func.isRequired,
     setQuestionType: PropTypes.func.isRequired,
     toggleQuestion: PropTypes.func.isRequired,
     copyQuestion: PropTypes.func.isRequired,
+    sortQuestion: PropTypes.func.isRequired,
     removeQuestion: PropTypes.func.isRequired,
     addOption: PropTypes.func.isRequired,
     editOption: PropTypes.func.isRequired,

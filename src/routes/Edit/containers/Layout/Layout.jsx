@@ -16,6 +16,9 @@ const mapDispatchToProps = dispatch => ({
     saveQuestionnaire() {
         dispatch(questionnaireActions.saveQuestionnaire())
     },
+    fillQuestionnaire() {
+        dispatch(questionnaireActions.fillQuestionnaire())
+    },
 })
 
 class LayoutScreen extends React.Component {
@@ -85,7 +88,24 @@ class LayoutScreen extends React.Component {
         const topFooter = (
             <div className={styles.footer}>
                 <div className={styles.tab}>
-                    <span className={styles.question}>问题</span>
+                    <div className={styles['content-wrap']}>
+                        <label>
+                            <input
+                              type="radio"
+                              name="content"
+                              className={styles.placeholder}
+                              defaultChecked
+                            />
+                            <Link to="/edit" className={styles.content}>问题</Link>
+                        </label>
+                        <label>
+                            <input type="radio" name="content" className={styles.placeholder} />
+                            <Link
+                              to="/response"
+                              className={styles.content}
+                            >回复</Link>
+                        </label>
+                    </div>
                 </div>
             </div>
         )
@@ -107,7 +127,7 @@ class LayoutScreen extends React.Component {
                     </div>
                     {topFooter}
                 </div>
-                <div className="Main">{this.props.children}</div>
+                <div className={styles.main}>{this.props.children}</div>
             </div>
         )
     }

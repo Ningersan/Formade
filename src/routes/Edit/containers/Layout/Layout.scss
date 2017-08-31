@@ -77,18 +77,33 @@ body {
             line-height: 3em;
             border-bottom: 1px solid $edit-input-underline-color;
             background-color: $white;
-            .question {
+            .content-wrap {
                 margin: 0 auto;
-                display: block;
-                width: 5em;
-                height: 2.8em;
-                text-align: center;
-                color: $brand-primary;
-                cursor: pointer;
-                &:hover {
+                width: 10rem;
+                .placeholder {
+                    position: absolute;
+                    opacity: 0;
+                }
+                .placeholder:checked + .content {
+                    color: $brand-primary;
                     border-bottom: 1.5px solid $brand-primary;
+                }
+                .content {
+                    display: inline-block;
+                    width: 5em;
+                    height: 2.8em;
+                    text-align: center;
+                    color: $gray;
+                    cursor: pointer;
+                    transition: color .5s ease;
                 }
             }
         }
     }
+}
+
+.main {
+    margin: 0 auto 12rem auto;
+    width: $edit-area-width;
+    background-color: $white;
 }

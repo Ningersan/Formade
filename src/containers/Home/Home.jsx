@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import * as questionnaireActions from '../../actions/questionnaire'
 import Table from '../../components/Table/Table'
 import DropdownMenu from '../../components/DropdownMenu/DropdownMenu'
+import Dialog from '../../components/Dialog/Dialog'
 import styles from './Home.scss'
 
 const titleItem = (title, handle) => (
@@ -44,12 +45,29 @@ const mapDispatchToProps = dispatch => ({
     editQuestionnaire(index) {
         dispatch(questionnaireActions.editQuestionnaire(index))
     },
+    renameQuestionnaire(value, index) {
+        dispatch(questionnaireActions.renameQuestionnaire(value, index))
+    },
     removeQuestionnaire(index) {
         dispatch(questionnaireActions.removeQuestionnaire(index))
     },
 })
 
 class HomeScreen extends React.Component {
+    constructor() {
+        super()
+        this.state = {
+            showDialog: false,
+        }
+        this.handleshowDialog = this.handleshowDialog.bind(this)
+    }
+
+    handleshowDialog(flag) {
+        this.setState({
+            showDialog: flag,
+        })
+    }
+
     renderEmptyScreen() {
         return (
             <div className={styles['docs-item-empty']}>
@@ -76,6 +94,7 @@ class HomeScreen extends React.Component {
             >
                 <a
                   className={styles['rename-button']}
+                  onClick={() => { this.handleshowDialog(true) }}
                 >
                     <i className="fa fa-eraser fa-lg" /><span>重命名</span>
                 </a>
@@ -144,6 +163,13 @@ class HomeScreen extends React.Component {
                         />
                     : this.renderEmptyScreen()}
                 </div>
+                {
+                    this.state.showDialog &&
+                    <Dialog
+                      showDialog={this.handleshowDialog}
+                      renameQuestionnaire={this.props.renameQuestionnaire}
+                    />
+                }
             </div>
         )
     }

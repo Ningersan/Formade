@@ -1,6 +1,5 @@
 @import '../../../../styles/mixins/mixins.scss';
 @import '../../../../styles/variables.scss';
-@import '../Main/Main.scss';
 
 .main {
     @include editorViewCard;
@@ -12,6 +11,14 @@
     input {
         @include input;
         width: 70%;
+    }
+    .drag-handle {
+        height: 1.835rem;
+        line-height: 1.835rem;
+        text-align: center;
+        font-size: .875rem;
+        color: $gray-lighter;
+        cursor: move;
     }
     .title {
         display: inline-block;
