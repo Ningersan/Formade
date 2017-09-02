@@ -82,7 +82,6 @@ body {
                 width: 10rem;
                 .placeholder {
                     position: absolute;
-                    opacity: 0;
                 }
                 .placeholder:checked + .content {
                     color: $brand-primary;

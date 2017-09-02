@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Question from '../Question/Question'
@@ -177,4 +177,4 @@ FillMain.propTypes = {
 
 const Fill = connect(mapStateToProps, mapDispatchToProps)(FillMain)
 
-export default Fill
+export default withRouter(Fill)

@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Menu from '../../../../components/Menu/Menu'
 import Input from '../../../../components/Input/Input'
@@ -270,4 +271,4 @@ EditMain.propTypes = {
 
 const Main = connect(mapStateToProps, mapDispatchToProps)(EditMain)
 
-export default Main
+export default withRouter(Main)

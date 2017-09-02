@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as questionnaireActions from '../../../../actions/questionnaire'
 import styles from './Layout.scss'
@@ -100,10 +100,7 @@ class LayoutScreen extends React.Component {
                         </label>
                         <label>
                             <input type="radio" name="content" className={styles.placeholder} />
-                            <Link
-                              to="/response"
-                              className={styles.content}
-                            >回复</Link>
+                            <Link to="/edit/response" className={styles.content}>回复</Link>
                         </label>
                     </div>
                 </div>
@@ -144,4 +141,4 @@ LayoutScreen.propTypes = {
 
 const Layout = connect(mapStateToProps, mapDispatchToProps)(LayoutScreen)
 
-export default Layout
+export default withRouter(Layout)

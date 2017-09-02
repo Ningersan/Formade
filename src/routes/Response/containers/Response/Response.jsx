@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import Layout from '../Layout/Layout'
+import { withRouter } from 'react-router-dom'
 import Chart from '../Chart/Chart'
 import styles from './Response.scss'
 
@@ -37,7 +37,6 @@ class Answer extends React.Component {
                         data: statistic,
                     },
                 }
-                console.log(configure)
                 return (
                     <Chart option={configure} />
                 )
@@ -82,26 +81,28 @@ class Answer extends React.Component {
         const { questionnaires, editing } = this.props
         const questionnaire = questionnaires[editing.questionnaireId]
         const data = questionnaire ? questionnaire.data : []
-        console.log(data)
         return (
-            <Layout>
-                <div>
-                    <div className={styles['response-number']}>{`（${data.length}条回复）`}</div>
-                    {
-                        data.length ?
-                        questionnaire.questions.map((question, index) => (
-                            <div key={index}>
-                                {this.renderChart(question, index, data)}
-                            </div>
-                        ))
-                        : null
-                    }
-                </div>
-            </Layout>
+            <div>
+                <div className={styles['response-number']}>{`（${data.length}条回复）`}</div>
+                {
+                    data.length ?
+                    questionnaire.questions.map((question, index) => (
+                        <div key={index}>
+                            {this.renderChart(question, index, data)}
+                        </div>
+                    ))
+                    : null
+                }
+            </div>
         )
     }
 }
 
+Answer.propTypes = {
+    questionnaires: PropTypes.array.isRequired,
+    editing: PropTypes.object.isRequired,
+}
+
 const Response = connect(mapStateToProps)(Answer)
 
-export default Response
+export default withRouter(Response)

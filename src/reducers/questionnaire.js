@@ -1,7 +1,7 @@
 import { deepCopy } from '../scripts/utils'
 
-const list = localStorage.list ? JSON.parse(localStorage.list) : []
 let nextQuestionId = 0
+const list = localStorage.list ? JSON.parse(localStorage.list) : []
 
 const initEditing = {
     questionnaireId: -1,
