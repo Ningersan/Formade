@@ -1,9 +1,10 @@
 @import '../../../../styles/variables.scss';
 @import '../../../../styles/mixins/mixins.scss';
 
-.test {
-    color: $brand-primary;
-    margin: 176px auto 0 auto;
+.chart-container {
+    padding: 3em 2em;
     width: 100%;
-    height: 200px;
+    height: 18.75em;
+    color: $brand-primary;
+    border-bottom: 1px solid $edit-bg-color;
 }

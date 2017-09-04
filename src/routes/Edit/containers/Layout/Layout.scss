@@ -80,13 +80,6 @@ body {
             .content-wrap {
                 margin: 0 auto;
                 width: 10rem;
-                .placeholder {
-                    position: absolute;
-                }
-                .placeholder:checked + .content {
-                    color: $brand-primary;
-                    border-bottom: 1.5px solid $brand-primary;
-                }
                 .content {
                     display: inline-block;
                     width: 5em;
@@ -95,6 +88,10 @@ body {
                     color: $gray;
                     cursor: pointer;
                     transition: color .5s ease;
+                }
+                .active {
+                    color: $brand-primary;
+                    border-bottom: 1.5px solid $brand-primary;
                 }
             }
         }

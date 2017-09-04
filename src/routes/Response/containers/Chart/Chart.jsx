@@ -1,6 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import echarts from '../../../../scripts/echarts'
+import echarts from 'echarts/lib/echarts'
+import 'echarts/lib/chart/pie'
+import 'echarts/lib/chart/bar'
+import 'echarts/lib/component/tooltip'
+import 'echarts/lib/component/title'
+import 'echarts/lib/component/legendScroll'
 import styles from './Chart.scss'
 
 class Chart extends React.Component {
@@ -10,9 +15,13 @@ class Chart extends React.Component {
     }
     render() {
         return (
-            <div className={styles.test} ref={(el) => { this.div = el }} />
+            <div className={styles['chart-container']} ref={(el) => { this.div = el }} />
         )
     }
+}
+
+Chart.propTypes = {
+    option: PropTypes.object.isRequired,
 }
 
 export default Chart

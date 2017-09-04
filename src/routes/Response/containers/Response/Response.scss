@@ -5,6 +5,37 @@
     margin: 176px auto 0 auto;
     padding: 1em;
     width: 100%;
-    height: 5em;
+    height: 1em;
     font-size: 1.3rem;
+    border-bottom: 1px solid $edit-bg-color;
+}
+
+.text-area {
+    padding: 3em 2em;
+    .title {
+        font-size: 1.25rem;
+        color: $gray-darker;
+    }
+    .count {
+        margin: .5em;
+        font-size: .825rem;
+        color: $gray-light;
+    }
+    .response-text-area {
+        margin: 2em auto;
+        padding-bottom: 2em;
+        width: 80%;
+        .response-text {
+            width: 100%;
+            padding-left: 1em;
+            font-size: 1rem;
+            line-height: 2;
+        }
+        .response-text:nth-child(odd) {
+            background-color: rgb(237, 231, 246);
+        }
+        .response-text:nth-child(even) {
+            background-color: rgba(237, 231, 246, 0.25);
+        }
+    }
 }

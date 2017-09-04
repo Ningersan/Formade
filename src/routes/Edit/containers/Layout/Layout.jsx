@@ -24,8 +24,12 @@ const mapDispatchToProps = dispatch => ({
 class LayoutScreen extends React.Component {
     constructor() {
         super()
+        this.state = {
+            editIsActive: true,
+        }
         this.handleScrollChange = this.handleScrollChange.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
+        this.handleTabClick = this.handleTabClick.bind(this)
     }
 
     componentWillMount() {
@@ -51,11 +55,20 @@ class LayoutScreen extends React.Component {
         }
     }
 
+    handleTabClick() {
+        this.setState({
+            editIsActive: !this.state.editIsActive,
+        })
+    }
+
     handleInputFocus(e) {
         e.currentTarget.select()
     }
 
     render() {
+        const editorTabClassName = this.state.editIsActive ? `${styles.content} ${styles.active}` : styles.content
+        const responseTabClassName = !this.state.editIsActive ? `${styles.content} ${styles.active}` : styles.content
+
         const headerLeft = (
             <div className={styles.left}>
                 <Link
@@ -89,19 +102,16 @@ class LayoutScreen extends React.Component {
             <div className={styles.footer}>
                 <div className={styles.tab}>
                     <div className={styles['content-wrap']}>
-                        <label>
-                            <input
-                              type="radio"
-                              name="content"
-                              className={styles.placeholder}
-                              defaultChecked
-                            />
-                            <Link to="/edit" className={styles.content}>问题</Link>
-                        </label>
-                        <label>
-                            <input type="radio" name="content" className={styles.placeholder} />
-                            <Link to="/edit/response" className={styles.content}>回复</Link>
-                        </label>
+                        <Link
+                          to="/edit"
+                          className={editorTabClassName}
+                          onClick={this.handleTabClick}
+                        >问题</Link>
+                        <Link
+                          to="/edit/response"
+                          className={responseTabClassName}
+                          onClick={this.handleTabClick}
+                        >回复</Link>
                     </div>
                 </div>
             </div>
