@@ -170,15 +170,10 @@ class EditMain extends React.Component {
             </div>
         )
 
-        const menuStyle = {
-            top: '30%',
-            right: '15%',
-        }
-
         const menu = (
             <Menu
               wrapClassName={styles.menu}
-              wrapStyle={menuStyle}
+              itemClassName={styles['menu-item']}
             >
                 <div
                   role="button"
@@ -187,7 +182,7 @@ class EditMain extends React.Component {
                   className={styles['add-question']}
                   onClick={() => this.props.addQuestion('radio')}
                 >
-                    <i className="fa fa-circle-o fa-lg" />
+                    <a className={styles['radio-button']}><i className="iconfont icon-radiobutton" /></a>
                 </div>
                 <div
                   role="button"
@@ -196,7 +191,7 @@ class EditMain extends React.Component {
                   className={styles['add-question']}
                   onClick={() => this.props.addQuestion('checkbox')}
                 >
-                    <i className="fa fa-check-square fa-lg" />
+                    <a className={styles['checkbox-button']}><i className="iconfont icon-check-box" /></a>
                 </div>
                 <div
                   role="button"
@@ -205,7 +200,7 @@ class EditMain extends React.Component {
                   className={styles['add-question']}
                   onClick={() => this.props.addQuestion('text')}
                 >
-                    <i className="fa fa-pencil-square-o fa-lg" />
+                    <a className={styles['text-button']}><i className="iconfont icon-text" /></a>
                 </div>
             </Menu>
         )

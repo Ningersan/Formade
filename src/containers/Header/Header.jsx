@@ -5,7 +5,7 @@ import styles from './Header.scss'
 function Header(props) {
     return (
         <div className={styles['app-bar']}>
-            <button className="fa fa-bars fa-lg" onClick={props.onClick} ref={props.btnRef} />
+            <button className="iconfont icon-menu" onClick={props.onClick} ref={props.btnRef} />
             <h1 className={styles.title}>Formade</h1>
         </div>
     )

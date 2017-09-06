@@ -62,6 +62,9 @@
             &:focus {
                 outline: none;
             }
+            .radio-button, .checkbox-button, .text-button {
+                font-weight: bolder;
+            }
             .content {
                 margin: 0 2.7em 0 .5em;
             }

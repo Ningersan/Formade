@@ -81,13 +81,13 @@ class Question extends React.Component {
         let [curType, curTypeClassName] = [null, null]
         if (type === 'radio') {
             curType = '单选题'
-            curTypeClassName = 'fa fa-lg fa-circle-o'
+            curTypeClassName = 'iconfont icon-radiobutton'
         } else if (type === 'checkbox') {
             curType = '多选题'
-            curTypeClassName = 'fa fa-lg fa-check-square'
+            curTypeClassName = 'iconfont icon-check-box'
         } else {
             curType = '文本'
-            curTypeClassName = 'fa fa-lg fa-check-square'
+            curTypeClassName = 'iconfont icon-text'
         }
         const button = (
             <div className={styles.type}>
@@ -111,7 +111,7 @@ class Question extends React.Component {
                   className={styles['type-item']}
                   onClick={() => this.props.handleSetQuestionType('radio')}
                 >
-                    <i className="fa fa-circle-o fa-lg" />
+                    <a className={styles['radio-button']}><i className="iconfont icon-radiobutton" /></a>
                     <span className={styles.content}>单选题</span>
                 </div>
                 <div
@@ -120,7 +120,7 @@ class Question extends React.Component {
                   className={styles['type-item']}
                   onClick={() => this.props.handleSetQuestionType('checkbox')}
                 >
-                    <i className="fa fa-check-square fa-lg" />
+                    <a className={styles['checkbox-button']}><i className="iconfont icon-check-box" /></a>
                     <span className={styles.content}>多选题</span>
                 </div>
                 <div
@@ -129,7 +129,7 @@ class Question extends React.Component {
                   className={styles['type-item']}
                   onClick={() => this.props.handleSetQuestionType('text')}
                 >
-                    <i className="fa fa-pencil-square-o fa-lg fa-fw" />
+                    <a className={styles['text-button']}><i className="iconfont icon-text" /></a>
                     <span className={styles.content}>文本</span>
                 </div>
             </DropdownMenu>

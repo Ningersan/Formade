@@ -8,22 +8,26 @@
         background-color: $brand-primary;
         .link {
             float: right;
-            margin: 1em;
-            padding: .9em 1.5em;
-            font-size: 1rem;
-            color: $white;
-            cursor: pointer;
-            border-radius: 3px;
-            background-color: rgb(179, 136, 255);
+            margin: 2em;
+            .edit-link {
+                border-radius: 3px;
+                padding: .4em .8em;
+                font-size: 1.5rem;
+                color: $white;
+                background-color: rgb(179, 136, 255);
+            }
         }
     }
     .main {
         position: relative;
         top: -6rem;
         margin: 0 auto 12rem auto;
-        width: $fill-area-width;
+        width: 85%;
         background-color: $white;
         box-shadow: 0 1px 4px 0 rgba(0,0,0,0.37);
+        @media all and (min-width: 640px) {
+            width: $fill-area-width;
+        }
         .banner {
             height: .5rem;
             background-color: rgb(179, 136, 255);

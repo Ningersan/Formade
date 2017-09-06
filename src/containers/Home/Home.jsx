@@ -79,10 +79,11 @@ class HomeScreen extends React.Component {
 
     renderDropDownMenu(index) {
         const menuStyle = {
-            marginLeft: '-6em',
+            marginTop: '.8em',
+            marginLeft: '-12.7em',
         }
         const dropdownButton = (
-            <a className={styles['dropdown-button']}><i className="fa fa-ellipsis-v fa-lg" /></a>
+            <a className={styles['dropdown-button']}><i className="iconfont icon-ellipsisv" /></a>
         )
 
         return (
@@ -96,18 +97,18 @@ class HomeScreen extends React.Component {
                   className={styles['rename-button']}
                   onClick={() => { this.handleshowDialog(true) }}
                 >
-                    <i className="fa fa-eraser fa-lg" /><span>重命名</span>
+                    <i className="iconfont icon-aa" /><span className={styles['icon-text']}>重命名</span>
                 </a>
                 <a
                   className={styles['delete-button']}
                   onClick={() => this.props.removeQuestionnaire(index)}
                 >
-                    <i className="fa fa-trash fa-lg" /><span>删除</span>
+                    <i className="iconfont icon-lajitong" /><span className={styles['icon-text']}>删除</span>
                 </a>
                 <a
                   className={styles['release-button']}
                 >
-                    <i className="fa fa-share-alt fa-lg" /><span>发布</span>
+                    <i className="iconfont icon-tingzhi" /><span className={styles['icon-text']}>停止回复</span>
                 </a>
             </DropdownMenu>
         )

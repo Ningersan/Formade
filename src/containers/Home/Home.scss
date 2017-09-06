@@ -3,7 +3,10 @@
 
 .homescreen {
     margin: 4rem auto;
-    width: 67%;
+    width: 100%;
+    @media all and (min-width: 640px) {
+        width: 67%;
+    }
     .header {
         height: 3.5em;
         font-size: .875rem;
@@ -12,6 +15,9 @@
             display: inline-block;
             width: 50%;
             line-height: 3.5em;
+            @media all and (max-width: 640px) {
+                margin-left: 1.5em;
+            }
         }
         .menu-bar-right {
             float: right;
@@ -105,12 +111,20 @@
             }
             .rename-button, .delete-button, .release-button {
                 display: inline-block;
-                padding: .9em 1.2em;
+                padding: .5em 1.2em;
+                font-size: 1.2rem;
+                color: $gray;
                 &:hover {
+                    color: $black;
                     background-color: $gray-white;
                 }
-                span {
-                    padding: 0 6em 0 2em;
+                .icon-text {
+                    display: inline-block;
+                    padding: 0 6em 0 1em;
+                    width: 4em;
+                    font-size: .8rem;
+                    color: $black;
+                    vertical-align: .2em;
                 }
             }
         }

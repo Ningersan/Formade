@@ -36,9 +36,27 @@
     }
     .menu {
         position: fixed;
-        width: 3rem;
+        left: 5%;
+        bottom: 0;
+        width: 90%;
+        font-size: 1.4rem;
         color: $edit-icon-color;
         background-color: $white;
+        box-shadow: 0 1px 6px #616161;
+        @media all and (min-width: 640px) {
+            top: 30%;
+            right: 15%;
+            bottom: auto;
+            left: auto;
+            width: 3rem;
+        }
+        .menu-item {
+            cursor: pointer;
+            @media all and (max-width: 640px) {
+                display: inline-block;
+                width: 33%;
+            }
+        }
         .add-question {
             width: 2em;
             height: 2.25em;
@@ -47,6 +65,9 @@
             text-align: center;
             &:focus {
                 outline: none;
+            }
+            .radio-button, .checkbox-button, .text-button {
+                font-weight: bolder;
             }
         }
     }

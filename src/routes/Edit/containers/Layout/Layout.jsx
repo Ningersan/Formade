@@ -73,9 +73,11 @@ class LayoutScreen extends React.Component {
             <div className={styles.left}>
                 <Link
                   to="/"
-                  className="fa fa-arrow-left fa-lg"
+                  className={styles['backup-link']}
                   onClick={() => this.props.saveQuestionnaire()}
-                />
+                >
+                    <i className="iconfont icon-arrow-left" />
+                </Link>
                 <input
                   type="text"
                   className={styles.title}
@@ -90,10 +92,14 @@ class LayoutScreen extends React.Component {
             <div className={styles.right}>
                 <Link
                   to="/fill"
-                  className="fa fa-eye fa-lg"
+                  className={styles['fill-link']}
                   onClick={this.props.saveQuestionnaire}
-                />
-                <Link to="/" className="fa fa-info fa-lg" />
+                >
+                    <i className="iconfont icon-tianxie" />
+                </Link>
+                <Link to="/" className={styles['home-link']}>
+                    <i className="iconfont icon-info" />
+                </Link>
                 <a className={styles.save}>保存</a>
             </div>
         )

@@ -116,7 +116,7 @@ class Answer extends React.Component {
             }
             case 'text': {
                 data.forEach((answer) => {
-                    if (!answer[questionIndex] === undefined) {
+                    if (!(typeof answer[questionIndex] === 'undefined')) {
                         statistic.push(answer[questionIndex])
                     }
                 })

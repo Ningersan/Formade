@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styles from './Menu.scss'
 
 function Menu(props) {
     return (
@@ -9,7 +8,7 @@ function Menu(props) {
           style={props.wrapStyle}
         >
             {props.children.map((item, index) => (
-                <div key={index} className={styles['menu-item']}>
+                <div key={index} className={props.itemClassName}>
                     {item}
                 </div>
             ))}
@@ -20,8 +19,8 @@ function Menu(props) {
 Menu.propTypes = {
     children: PropTypes.array.isRequired,
     wrapClassName: PropTypes.string.isRequired,
-    wrapStyle: PropTypes.object.isRequired,
+    itemClassName: PropTypes.string,
+    wrapStyle: PropTypes.object,
 }
-
 
 export default Menu

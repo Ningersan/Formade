@@ -117,8 +117,10 @@ class FillMain extends React.Component {
                     <div className={styles.link}>
                         <Link
                           to="/edit"
-                          className="fa fa-pencil fa-lg"
-                        />
+                          className={styles['edit-link']}
+                        >
+                            <i className="iconfont icon-edit" />
+                        </Link>
                     </div>
                 </div>
                 <form className={styles.main}>

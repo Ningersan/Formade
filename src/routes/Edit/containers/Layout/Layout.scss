@@ -26,9 +26,10 @@ body {
         .left {
             float: left;
             text-align: center;
-            a {
-                width: 2.5em;
-                height: 1.5em;
+            .backup-link {
+                margin: 0 1em;
+                font-size: 1.5rem;
+                vertical-align: middle;
             }
             .title {
                 @include input(6.2em, none);
@@ -43,10 +44,17 @@ body {
             }
         }
         .right {
+            display: flex;
+            align-items: center;
             float: right;
             font-size: 18px;
-            a {
+            .fill-link {
                 margin-right: 1.5em;
+                font-size: 1.2em;
+            }
+            .home-link {
+                margin-right: 1.5em;
+                font-size: 1.3em;
             }
             .save {
                 @include button;
@@ -72,11 +80,14 @@ body {
         height: 3em;
         .tab {
             margin: 0 auto;
-            width: $edit-area-width;
+            width: 100%;
             height: inherit;
             line-height: 3em;
             border-bottom: 1px solid $edit-input-underline-color;
             background-color: $white;
+            @media all and (min-width: 640px) {
+                width: $edit-area-width;
+            }
             .content-wrap {
                 margin: 0 auto;
                 width: 10rem;
@@ -100,6 +111,11 @@ body {
 
 .main {
     margin: 0 auto 12rem auto;
-    width: $edit-area-width;
+    width: 100%;
     background-color: $white;
+    @media all and (min-width: 640px) {
+        width: $edit-area-width;
+    }
 }
+
+

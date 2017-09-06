@@ -12,6 +12,7 @@ class Chart extends React.Component {
     componentDidMount() {
         const myChart = echarts.init(this.div)
         myChart.setOption(this.props.option)
+        window.addEventListener('resize', () => { myChart.resize() }, false)
     }
     render() {
         return (
