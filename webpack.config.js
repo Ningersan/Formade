@@ -95,6 +95,14 @@ module.exports = {
             },
 
             {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    { loader: 'css-loader' },
+                ],
+            },
+
+            {
                 test: /\.(png|jpg|jpeg|gif)$/,
                 use: [
                     {
@@ -103,6 +111,15 @@ module.exports = {
                             limit: 10000,
                             name: './img/[name].[ext]',
                         },
+                    },
+                ],
+            },
+
+            {
+                test: /\.(woff|woff2|svg|eot|ttf)\??.*$/,
+                use: [
+                    {
+                        loader: 'url-loader?limit=30000&name=[name]-[hash].[ext]',
                     },
                 ],
             },
