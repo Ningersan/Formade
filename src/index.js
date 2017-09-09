@@ -9,7 +9,7 @@ import store from './store/store'
 import './styles/normalize.css'
 import './styles/iconfont.css'
 
-localStorage.clear()
+// localStorage.clear()
 
 ReactDOM.render((
     <Provider store={store}>
