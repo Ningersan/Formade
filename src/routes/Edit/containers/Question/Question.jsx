@@ -186,10 +186,8 @@ class Question extends React.Component {
               onDragEnter={this.props.handleDragEnter}
               onDrop={this.handleDrop}
             >
-                <div
-                  className={styles['drag-handle']}
-                >
-                    <i className="fa fa-ellipsis-h fa-lg" />
+                <div className={styles['drag-handle']}>
+                    <a className={styles['drag-icon']}><i className="iconfont icon-drag" /></a>
                 </div>
                 <Input
                   className={styles.title}
@@ -206,7 +204,7 @@ class Question extends React.Component {
                           className={styles['copy-question']}
                           onClick={this.props.handleCopyQuestion}
                         >
-                            <i className="fa fa-clone" />
+                            <a className={styles['copy-icon']}><i className="iconfont icon-copydownlink" /></a>
                         </div>
                         <div
                           role="button"
@@ -214,7 +212,7 @@ class Question extends React.Component {
                           className={styles['delete-question']}
                           onClick={this.props.handleRemoveQuestion}
                         >
-                            <i className="fa fa-trash-o" />
+                            <a className={styles['delete-icon']}><i className="iconfont icon-delete" /></a>
                         </div>
                         <div className={styles['required-toggle']}>
                             <label>
@@ -226,8 +224,8 @@ class Question extends React.Component {
                                 必填
                             </label>
                         </div>
-                        <div>
-                            <i className="fa fa-ellipsis-v" />
+                        <div className={styles.more}>
+                            <a className={styles['more-icon']}><i className="iconfont icon-ellipsis-v" /></a>
                         </div>
                     </div>
                 </div>

@@ -19,6 +19,10 @@
         font-size: .875rem;
         color: $gray-lighter;
         cursor: move;
+        .drag-icon {
+            display: inline-block;
+            transform: rotate(90deg);
+        }
     }
     .title {
         display: inline-block;
@@ -183,6 +187,12 @@
                     width: 1em;
                     height: 1em;
                     vertical-align: middle;
+                }
+            }
+            .more {
+                .more-icon {
+                    vertical-align: middle;
+                    font-size: .7em;
                 }
             }
         }
