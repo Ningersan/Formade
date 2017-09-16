@@ -38,6 +38,7 @@ const initState = {
 const questionnaires = (state = initState, action) => {
     switch (action.type) {
         case 'ADD_QUESTIONNAIRE': {
+            const { list } = state
             return { ...state, editing: { ...initEditing, questionnaireId: list.length } }
         }
         case 'SAVE_QUESTIONNAIRE': {
