@@ -6,6 +6,7 @@ import App from './containers/App/App'
 import Edit from './routes/Edit/index'
 import Fill from './routes/Fill/containers/Fill/Fill'
 import store from './store/store'
+import './scripts/initEvent'
 import './styles/normalize.css'
 import './styles/iconfont.css'
 
