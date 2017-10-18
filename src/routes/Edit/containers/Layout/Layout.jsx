@@ -68,7 +68,6 @@ class LayoutScreen extends React.Component {
     render() {
         const editorTabClassName = this.state.editIsActive ? `${styles.content} ${styles.active}` : styles.content
         const responseTabClassName = !this.state.editIsActive ? `${styles.content} ${styles.active}` : styles.content
-
         const headerLeft = (
             <div className={styles.left}>
                 <Link

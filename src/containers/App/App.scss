@@ -7,3 +7,7 @@
     z-index: $app-bg-z-index;
     background: $app-bg-color;
 }
+
+:global(.hidden) {
+    display: none;
+}

@@ -9,7 +9,6 @@ class Question extends React.Component {
         super()
         this.state = {
             isActive: false,
-            showTypeMenu: false,
         }
         this.handleClick = this.handleClick.bind(this)
         this.renderOption = this.renderOption.bind(this)
@@ -21,18 +20,13 @@ class Question extends React.Component {
     }
 
     getSymbolClassNameByType() {
-        return this.props.type === 'radio' ? styles['symbol-radio'] : styles['symbol-checkbox']
-    }
-
-    componentWillUnMount() {
-        document.removeEventListener('click', this.handleClick, false)
+        return { radio: styles['symbol-radio'], checkbox: styles['symbol-checkbox'] }[this.props.type]
     }
 
     handleClick(e) {
         if (this.mainEle) {
-            const isActive = this.mainEle.contains(e.target)
             this.setState({
-                isActive,
+                isActive: this.mainEle.contains(e.target),
             })
         }
     }
@@ -78,17 +72,21 @@ class Question extends React.Component {
 
     renderTypeChooser() {
         const { type } = this.props
-        let [curType, curTypeClassName] = [null, null]
-        if (type === 'radio') {
-            curType = '单选题'
-            curTypeClassName = 'iconfont icon-radiobutton'
-        } else if (type === 'checkbox') {
-            curType = '多选题'
-            curTypeClassName = 'iconfont icon-check-box'
-        } else {
-            curType = '文本'
-            curTypeClassName = 'iconfont icon-text'
-        }
+        const { curType, curTypeClassName } = {
+            radio: {
+                curType: '单选题',
+                curTypeClassName: 'iconfont icon-radiobutton',
+            },
+            checkbox: {
+                curType: '多选题',
+                curTypeClassName: 'iconfont icon-check-box',
+            },
+            text: {
+                curType: '文本',
+                curTypeClassName: 'iconfont icon-text',
+            },
+        }[type]
+
         const button = (
             <div className={styles.type}>
                 <i className={curTypeClassName} />
@@ -99,6 +97,7 @@ class Question extends React.Component {
         const menuStyle = {
             top: '-1em',
         }
+
         return (
             <DropdownMenu
               wrapClassName={styles['type-chooser']}

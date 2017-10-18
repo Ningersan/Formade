@@ -16,7 +16,9 @@ module.exports = {
     },
 
     // 引用但是不打包的文件
-
+    externals: {
+        'react.min.js': 'window.React',
+    },
 
     plugins: [
         // 设置LoaderOptionsPlugin 开启代码压缩

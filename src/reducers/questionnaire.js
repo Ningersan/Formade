@@ -52,7 +52,7 @@ const questionnaires = (state = initState, action) => {
         }
         case 'RENAME_QUESTIONNAIRE': {
             const list = deepCopy(state.list)
-            const { value, index } = action.payload
+            const { index, value } = action.payload
             list[index].title = value
             return { ...state, list }
         }
