@@ -7,6 +7,11 @@
     width: 100%;
     height: 1em;
     font-size: 1.3rem;
+}
+
+.noresponse {
+    color: $red;
+    padding: 0 1em 1em 1.8em;
     border-bottom: 1px solid $edit-bg-color;
 }
 

@@ -51,6 +51,9 @@ const mapDispatchToProps = dispatch => ({
     removeQuestionnaire(index) {
         dispatch(questionnaireActions.removeQuestionnaire(index))
     },
+    stopResponse(index) {
+        dispatch(questionnaireActions.stopResponse(index))
+    },
 })
 
 class HomeScreen extends React.Component {
@@ -78,6 +81,13 @@ class HomeScreen extends React.Component {
     }
 
     renderDropDownMenu(index) {
+        // toggle resonse button state
+        const isStoped = this.props.questionnaires[index].stopResponse
+        const start = { responseText: '开始回复', responseClassName: 'iconfont icon-start' }
+        const stop = { responseText: '停止回复', responseClassName: 'iconfont icon-tingzhi' }
+        const { responseText, responseClassName } = isStoped ? start : stop
+
+        // set style and button
         const menuStyle = {
             marginTop: '.8em',
             marginLeft: '-12.7em',
@@ -107,8 +117,9 @@ class HomeScreen extends React.Component {
                 </a>
                 <a
                   className={styles['release-button']}
+                  onClick={() => this.props.stopResponse(index)}
                 >
-                    <i className="iconfont icon-tingzhi" /><span className={styles['icon-text']}>停止回复</span>
+                    <i className={responseClassName} /><span className={styles['icon-text']}>{responseText}</span>
                 </a>
             </DropdownMenu>
         )
@@ -180,7 +191,9 @@ HomeScreen.propTypes = {
     questionnaires: PropTypes.array.isRequired,
     addQuestionnaire: PropTypes.func.isRequired,
     editQuestionnaire: PropTypes.func.isRequired,
+    renameQuestionnaire: PropTypes.func.isRequired,
     removeQuestionnaire: PropTypes.func.isRequired,
+    stopResponse: PropTypes.func.isRequired,
 }
 
 const Home = connect(mapStateToProps, mapDispatchToProps)(HomeScreen)

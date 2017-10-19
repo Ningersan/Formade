@@ -17,9 +17,11 @@ class DropdownMenu extends React.Component {
     }
 
     handleClick(e) {
-        this.setState({
-            isActive: this.button.contains(e.target) && !this.state.isActive,
-        })
+        if (this.button) {
+            this.setState({
+                isActive: this.button.contains(e.target) && !this.state.isActive,
+            })
+        }
     }
 
     render() {

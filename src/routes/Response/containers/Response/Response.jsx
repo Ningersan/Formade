@@ -141,7 +141,8 @@ class Answer extends React.Component {
         const data = questionnaire ? questionnaire.data : []
         return (
             <div>
-                <div className={styles['response-number']}>{`（${data.length}条回复）`}</div>
+                <p className={styles['response-number']}>{`（${data.length}条回复）`}</p>
+                {editing.stopResponse && <p className={styles.noresponse}>此表单已不接受回复</p>}
                 {
                     data.length ?
                     questionnaire.questions.map((question, index) => (

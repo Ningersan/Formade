@@ -1,5 +1,12 @@
 import * as Types from '../constants/QuestionnaireActionTypes'
 
+export const stopResponse = index => ({
+    type: Types.STOP_RESPONSE,
+    payload: {
+        index,
+    },
+})
+
 export const addQuestionnaire = () => ({
     type: Types.ADD_QUESTIONNAIRE,
 })

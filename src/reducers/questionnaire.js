@@ -7,7 +7,8 @@ const initEditing = {
     questionnaireId: -1,
     title: '未命名的表单',
     description: '',
-    status: '未发布',
+    status: '发布中',
+    stopResponse: false,
     deadline: '2017年7月26日',
     questions: [{
         title: '未命名的问题',
@@ -37,6 +38,13 @@ const initState = {
 
 const questionnaires = (state = initState, action) => {
     switch (action.type) {
+        case 'STOP_RESPONSE': {
+            const list = deepCopy(state.list)
+            const { index } = action.payload
+            const status = list[index].stopResponse
+            list[index].stopResponse = !status
+            return { ...state, list }
+        }
         case 'ADD_QUESTIONNAIRE': {
             const { list } = state
             return { ...state, editing: { ...initEditing, questionnaireId: list.length } }
