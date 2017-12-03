@@ -143,15 +143,15 @@ class FillMain extends React.Component {
                                 !this.state.isSubmit ?
                                 questions.map((question, index) => (
                                     <Question
-                                        key={index}
-                                        isFilled={this.state.isFilled[index]}
-                                        title={question.title}
-                                        type={question.type}
-                                        isRequired={question.isRequired}
-                                        options={question.options}
-                                        handleFill={() => { this.handleFill(index) }}
-                                        handleChooseOption={this.props.chooseOption(index)}
-                                        handleSaveText={this.props.saveText(index, 'answer')}
+                                      key={index}
+                                      isFilled={this.state.isFilled[index]}
+                                      title={question.title}
+                                      type={question.type}
+                                      isRequired={question.isRequired}
+                                      options={question.options}
+                                      handleFill={() => { this.handleFill(index) }}
+                                      handleChooseOption={this.props.chooseOption(index)}
+                                      handleSaveText={this.props.saveText(index, 'answer')}
                                     />
                                 ))
                                 :

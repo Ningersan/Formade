@@ -8,6 +8,26 @@
     background: $app-bg-color;
 }
 
-:global(.hidden) {
-    display: none;
+:global {
+    .hidden {
+        display: none;
+    }
+
+    .slide-enter {
+        transform: translateX(-100%);
+    }
+
+    .slide-enter.slide-enter-active {
+        transform: translateX(0);
+        transition: all 300ms;
+    }
+
+    .slide-leave {
+        transform: translateX(0);
+    }
+
+    .slide-leave-active {
+        transform: translateX(-100%);
+        transition: all 300ms;
+    }
 }

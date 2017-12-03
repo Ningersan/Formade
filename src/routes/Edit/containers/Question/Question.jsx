@@ -19,7 +19,7 @@ class Question extends React.Component {
         document.addEventListener('click', this.handleClick, false)
     }
 
-    getSymbolClassNameByType() {
+    getInputClassName() {
         return { radio: styles['symbol-radio'], checkbox: styles['symbol-checkbox'] }[this.props.type]
     }
 
@@ -34,7 +34,7 @@ class Question extends React.Component {
     renderOther() {
         return (
             <div className={styles.item}>
-                <div className={this.getSymbolClassNameByType()} />
+                <div className={this.getInputClassName()} />
                 <input
                   type="text"
                   className={styles.other}
@@ -54,7 +54,7 @@ class Question extends React.Component {
     renderOption(option, index) {
         return (
             <div className={styles.item} key={index}>
-                <div className={this.getSymbolClassNameByType()} />
+                <div className={this.getInputClassName()} />
                 <Input
                   className={styles.option}
                   value={option}
@@ -140,7 +140,7 @@ class Question extends React.Component {
         const options = this.props.options.map(this.renderOption)
         const addOptions = (
             <div className={styles.add}>
-                <div className={this.getSymbolClassNameByType()} />
+                <div className={this.getInputClassName()} />
                 <span
                   role="button"
                   tabIndex="0"

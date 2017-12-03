@@ -16,6 +16,10 @@ class DropdownMenu extends React.Component {
         document.addEventListener('click', this.handleClick, false)
     }
 
+    componentWillUnmount() {
+        document.removeEventListener('click', this.handleClick, false)
+    }
+
     handleClick(e) {
         if (this.button) {
             this.setState({
