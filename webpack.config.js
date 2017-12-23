@@ -18,6 +18,7 @@ module.exports = {
     // 引用但是不打包的文件
     externals: {
         'react.min.js': 'window.React',
+        'echarts': 'window.echarts',
     },
 
     plugins: [
@@ -50,18 +51,8 @@ module.exports = {
                 test: /.jsx?/,
                 use: {
                     loader: 'babel-loader',
-                    options: {
-                        babelrc: false,
-                        presets: [
-                            'es2015',
-                            'react',
-                        ],
-                        plugins: [
-                            'react-require',
-                            'transform-object-rest-spread',
-                        ],
-                    },
                 },
+                exclude: /node_modules/,
             },
 
             {

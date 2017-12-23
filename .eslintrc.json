@@ -1,5 +1,6 @@
 {
     "extends": "airbnb",
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaVersion": 2016,
         "sourceType": "module",
@@ -47,6 +48,8 @@
             }
         ],
         "react/forbid-prop-types": 0,
+
+        "react/jsx-no-bind": 0,
 
         // 强制无分号
         "semi": [

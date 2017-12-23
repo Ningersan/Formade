@@ -1,7 +1,15 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-class Input extends React.Component {
+class Input extends Component {
+    static propTypes = {
+        defaultValue: PropTypes.string,
+        value: PropTypes.string,
+        onChange: PropTypes.func,
+        saveTitle: PropTypes.func,
+        className: PropTypes.string.isRequired,
+    }
+
     constructor() {
         super()
         this.handleFocus = this.handleFocus.bind(this)
@@ -33,14 +41,6 @@ class Input extends React.Component {
             />
         )
     }
-}
-
-Input.propTypes = {
-    className: PropTypes.string.isRequired,
-    defaultValue: PropTypes.string,
-    value: PropTypes.string,
-    onChange: PropTypes.func,
-    saveTitle: PropTypes.func,
 }
 
 export default Input

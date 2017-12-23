@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { CSSTransitionGroup } from 'react-transition-group'
 import Header from '../Header/Header'
 import Siderbar from '../Siderbar/Siderbar'
 import Home from '../Home/Home'
 import styles from './App.scss'
 
-class App extends React.Component {
+class App extends Component {
     constructor() {
         super()
         this.state = {

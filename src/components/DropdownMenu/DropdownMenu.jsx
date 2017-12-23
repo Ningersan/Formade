@@ -1,14 +1,20 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import classnames from 'classnames'
 import Menu from '../Menu/Menu'
 import styles from './DropdownMenu.scss'
 
-class DropdownMenu extends React.Component {
+class DropdownMenu extends Component {
+    static propTypes = {
+        children: PropTypes.array.isRequired,
+        dropdownButton: PropTypes.element.isRequired,
+        wrapClassName: PropTypes.string.isRequired,
+        menuStyle: PropTypes.object.isRequired,
+    }
+
     constructor() {
         super()
-        this.state = {
-            isActive: false,
-        }
+        this.state = { isActive: false }
         this.handleClick = this.handleClick.bind(this)
     }
 
@@ -22,39 +28,36 @@ class DropdownMenu extends React.Component {
 
     handleClick(e) {
         if (this.button) {
-            this.setState({
-                isActive: this.button.contains(e.target) && !this.state.isActive,
-            })
+            this.setState(prevState => ({
+                isActive: this.button.contains(e.target) && !prevState.isActive,
+            }))
         }
     }
 
     render() {
-        const menuClassName = this.state.isActive ? styles.menu : `${styles.menu} hidden`
+        const { wrapClassName, dropdownButton, menuStyle, children } = this.props
+        const menuClassName = classnames({
+            [styles.menu]: true,
+            hidden: !this.state.isActive,
+        })
 
         return (
             <div
               role="button"
               tabIndex="0"
-              className={this.props.wrapClassName}
+              className={wrapClassName}
               ref={(ref) => { this.button = ref }}
             >
-                {this.props.dropdownButton}
+                {dropdownButton}
                 <Menu
                   wrapClassName={menuClassName}
-                  wrapStyle={this.props.menuStyle}
+                  wrapStyle={menuStyle}
                 >
-                    {this.props.children}
+                    {children}
                 </Menu>
             </div>
         )
     }
-}
-
-DropdownMenu.propTypes = {
-    children: PropTypes.array.isRequired,
-    dropdownButton: PropTypes.element.isRequired,
-    wrapClassName: PropTypes.string.isRequired,
-    menuStyle: PropTypes.object.isRequired,
 }
 
 export default DropdownMenu

@@ -9,63 +9,34 @@ import Question from '../Question/Question'
 import * as questionnaireActions from '../../../../actions/questionnaire'
 import styles from './Main.scss'
 
-const mapStateToProps = state => ({
-    editing: state.editing,
-})
-
-const mapDispatchToProps = dispatch => ({
-    saveTitle(questionIndex) {
-        return (title, type) => {
-            dispatch(questionnaireActions.saveTitle(title, type, questionIndex))
-        }
-    },
-    saveText(type) {
-        return (text) => {
-            dispatch(questionnaireActions.saveText(text, type))
-        }
-    },
-    addQuestion(type) {
-        dispatch(questionnaireActions.addQuestion(type))
-    },
-    setQuestionType(index) {
-        return (type) => {
-            dispatch(questionnaireActions.setQuestionType(index, type))
-        }
-    },
-    toggleQuestion(index) {
-        dispatch(questionnaireActions.toggleQuestion(index))
-    },
-    copyQuestion(index) {
-        dispatch(questionnaireActions.copyQuestion(index))
-    },
-    sortQuestion(sourceIndex, targetIndex) {
-        dispatch(questionnaireActions.sortQuestion(sourceIndex, targetIndex))
-    },
-    removeQuestion(index) {
-        dispatch(questionnaireActions.removeQuestion(index))
-    },
-    addOption(index) {
-        dispatch(questionnaireActions.addOption(index))
-    },
-    editOption(questionIndex) {
-        return optionIndex => (e) => {
-            dispatch(questionnaireActions.editOption(questionIndex, optionIndex, e))
-        }
-    },
-    removeOption(questionIndex) {
-        return (optionIndex) => {
-            dispatch(questionnaireActions.removeOption(questionIndex, optionIndex))
-        }
-    },
-    addOther(index) {
-        dispatch(questionnaireActions.addOther(index))
-    },
-    removeOther(index) {
-        dispatch(questionnaireActions.removeOther(index))
-    },
-})
-
 class EditMain extends React.Component {
+    static propTypes = {
+        editing: PropTypes.shape({
+            title: PropTypes.string.isRequired,
+            questions: PropTypes.arrayOf(
+                PropTypes.shape({
+                    id: PropTypes.number.isRequired,
+                    title: PropTypes.string.isRequired,
+                    type: PropTypes.string.isRequired,
+                    hasOther: PropTypes.bool.isRequired,
+                    options: PropTypes.array.isRequired,
+                }).isRequired).isRequired,
+        }).isRequired,
+        saveText: PropTypes.func.isRequired,
+        saveTitle: PropTypes.func.isRequired,
+        addQuestion: PropTypes.func.isRequired,
+        setQuestionType: PropTypes.func.isRequired,
+        toggleQuestion: PropTypes.func.isRequired,
+        copyQuestion: PropTypes.func.isRequired,
+        sortQuestion: PropTypes.func.isRequired,
+        removeQuestion: PropTypes.func.isRequired,
+        addOption: PropTypes.func.isRequired,
+        editOption: PropTypes.func.isRequired,
+        removeOption: PropTypes.func.isRequired,
+        addOther: PropTypes.func.isRequired,
+        removeOther: PropTypes.func.isRequired,
+    }
+
     constructor() {
         super()
         this.handleTitleFocus = this.handleTitleFocus.bind(this)
@@ -153,18 +124,23 @@ class EditMain extends React.Component {
     }
 
     render() {
+        const { editing, saveText, addQuestion, saveTitle, setQuestionType,
+            toggleQuestion, copyQuestion, removeQuestion, addOption,
+            editOption, removeOption, addOther, removeOther,
+         } = this.props
+
         const header = (
             <div tabIndex="-1" className={styles.header} onDragEnter={this.handleDragEnter(-1)}>
                 <div className={styles.info}>
                     <Input
                       className={styles.title}
-                      value={this.props.editing.title}
+                      value={editing.title}
                       onChange={this.handleTitleChange}
                     />
                     <Textarea
                       className={styles.description}
                       placeholder="表单说明"
-                      onSaveText={this.props.saveText('description')}
+                      onSaveText={saveText('description')}
                     />
                 </div>
             </div>
@@ -180,7 +156,7 @@ class EditMain extends React.Component {
                   tabIndex="0"
                   title="添加单选"
                   className={styles['add-question']}
-                  onClick={() => this.props.addQuestion('radio')}
+                  onClick={() => addQuestion('radio')}
                 >
                     <a className={styles['radio-button']}><i className="iconfont icon-radiobutton" /></a>
                 </div>
@@ -189,7 +165,7 @@ class EditMain extends React.Component {
                   tabIndex="0"
                   title="添加多选"
                   className={styles['add-question']}
-                  onClick={() => this.props.addQuestion('checkbox')}
+                  onClick={() => addQuestion('checkbox')}
                 >
                     <a className={styles['checkbox-button']}><i className="iconfont icon-check-box" /></a>
                 </div>
@@ -198,14 +174,14 @@ class EditMain extends React.Component {
                   tabIndex="0"
                   title="添加文本"
                   className={styles['add-question']}
-                  onClick={() => this.props.addQuestion('text')}
+                  onClick={() => addQuestion('text')}
                 >
                     <a className={styles['text-button']}><i className="iconfont icon-text" /></a>
                 </div>
             </Menu>
         )
 
-        const questions = this.props.editing.questions
+        const questions = editing.questions
 
         return (
             <div className={styles.wrap}>
@@ -220,16 +196,16 @@ class EditMain extends React.Component {
                       handleDragStart={this.handleDragStart(index)}
                       handleDragEnter={this.handleDragEnter(index)}
                       hasOther={question.hasOther}
-                      handleSaveTitle={this.props.saveTitle(index)}
-                      handleSetQuestionType={this.props.setQuestionType(index)}
-                      handleToggleQuestion={() => this.props.toggleQuestion(index)}
-                      handleCopyQuestion={() => this.props.copyQuestion(index)}
-                      handleRemoveQuestion={() => this.props.removeQuestion(index)}
-                      handleAddOption={() => this.props.addOption(index)}
-                      handleOptionChange={this.props.editOption(index)}
-                      handleRemoveOption={this.props.removeOption(index)}
-                      handleAddOther={() => this.props.addOther(index)}
-                      handleRemoveOther={() => this.props.removeOther(index)}
+                      handleSaveTitle={saveTitle(index)}
+                      handleSetQuestionType={setQuestionType(index)}
+                      handleToggleQuestion={() => toggleQuestion(index)}
+                      handleCopyQuestion={() => copyQuestion(index)}
+                      handleRemoveQuestion={() => removeQuestion(index)}
+                      handleAddOption={() => addOption(index)}
+                      handleOptionChange={editOption(index)}
+                      handleRemoveOption={removeOption(index)}
+                      handleAddOther={() => addOther(index)}
+                      handleRemoveOther={() => removeOther(index)}
                     />
                 ))}
             </div>
@@ -237,32 +213,61 @@ class EditMain extends React.Component {
     }
 }
 
-EditMain.propTypes = {
-    editing: PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        questions: PropTypes.arrayOf(
-            PropTypes.shape({
-                id: PropTypes.number.isRequired,
-                title: PropTypes.string.isRequired,
-                type: PropTypes.string.isRequired,
-                hasOther: PropTypes.bool.isRequired,
-                options: PropTypes.array.isRequired,
-            }).isRequired).isRequired,
-    }).isRequired,
-    saveText: PropTypes.func.isRequired,
-    saveTitle: PropTypes.func.isRequired,
-    addQuestion: PropTypes.func.isRequired,
-    setQuestionType: PropTypes.func.isRequired,
-    toggleQuestion: PropTypes.func.isRequired,
-    copyQuestion: PropTypes.func.isRequired,
-    sortQuestion: PropTypes.func.isRequired,
-    removeQuestion: PropTypes.func.isRequired,
-    addOption: PropTypes.func.isRequired,
-    editOption: PropTypes.func.isRequired,
-    removeOption: PropTypes.func.isRequired,
-    addOther: PropTypes.func.isRequired,
-    removeOther: PropTypes.func.isRequired,
-}
+const mapStateToProps = state => ({
+    editing: state.editing,
+})
+
+const mapDispatchToProps = dispatch => ({
+    saveTitle(questionIndex) {
+        return (title, type) => {
+            dispatch(questionnaireActions.saveTitle(title, type, questionIndex))
+        }
+    },
+    saveText(type) {
+        return (text) => {
+            dispatch(questionnaireActions.saveText(text, type))
+        }
+    },
+    addQuestion(type) {
+        dispatch(questionnaireActions.addQuestion(type))
+    },
+    setQuestionType(index) {
+        return (type) => {
+            dispatch(questionnaireActions.setQuestionType(index, type))
+        }
+    },
+    toggleQuestion(index) {
+        dispatch(questionnaireActions.toggleQuestion(index))
+    },
+    copyQuestion(index) {
+        dispatch(questionnaireActions.copyQuestion(index))
+    },
+    sortQuestion(sourceIndex, targetIndex) {
+        dispatch(questionnaireActions.sortQuestion(sourceIndex, targetIndex))
+    },
+    removeQuestion(index) {
+        dispatch(questionnaireActions.removeQuestion(index))
+    },
+    addOption(index) {
+        dispatch(questionnaireActions.addOption(index))
+    },
+    editOption(questionIndex) {
+        return optionIndex => (e) => {
+            dispatch(questionnaireActions.editOption(questionIndex, optionIndex, e))
+        }
+    },
+    removeOption(questionIndex) {
+        return (optionIndex) => {
+            dispatch(questionnaireActions.removeOption(questionIndex, optionIndex))
+        }
+    },
+    addOther(index) {
+        dispatch(questionnaireActions.addOther(index))
+    },
+    removeOther(index) {
+        dispatch(questionnaireActions.removeOther(index))
+    },
+})
 
 const Main = connect(mapStateToProps, mapDispatchToProps)(EditMain)
 

@@ -5,44 +5,40 @@ import styles from './Table.scss'
 const renderThs = (contents, thStyles) => contents.map((content, index) => {
     const thStyle = thStyles[index]
     return (
-        <th key={`${content}-${index}`} className={styles['table-th']} style={thStyle}>{content}</th>
+        <th key={index} className={styles['table-th']} style={thStyle}>{content}</th>
     )
 })
 
 const renderTds = (contents, tdStyles) => contents.map((content, index) => {
     const tdStyle = tdStyles[index]
     return (
-        <td key={`${content}-${index}`} style={tdStyle}>{content}</td>
+        <td key={index} style={tdStyle}>{content}</td>
     )
 })
 
-const renderTrs = (contents, style) => contents.map((content, index) => {
-    return (
+const renderTrs = (contents, style) => contents.map((content, index) => (
         <tr
-          key={`${content}-${index}`}
+          key={index}
           className={styles['table-tr']}
         >
             { renderTds(content, style) }
         </tr>
-    )
-})
+))
 
-class Table extends React.Component {
-    render() {
-        const { className, tableHead, tableBody, tableHeadStyle, tableBodyStyle } = this.props.data
-        return (
-            <table className={className}>
-                <thead className={styles['table-header']}>
-                    <tr>
-                        {renderThs(tableHead, tableHeadStyle)}
-                    </tr>
-                </thead>
-                <tbody>
-                    {renderTrs(tableBody, tableBodyStyle)}
-                </tbody>
-            </table>
-        )
-    }
+const Table = (props) => {
+    const { className, tableHead, tableBody, tableHeadStyle, tableBodyStyle } = props.data
+    return (
+        <table className={className}>
+            <thead className={styles['table-header']}>
+                <tr>
+                    {renderThs(tableHead, tableHeadStyle)}
+                </tr>
+            </thead>
+            <tbody>
+                {renderTrs(tableBody, tableBodyStyle)}
+            </tbody>
+        </table>
+    )
 }
 
 Table.propTypes = {
@@ -52,7 +48,7 @@ Table.propTypes = {
         tableBody: PropTypes.array.isRequired,
         tableHeadStyle: PropTypes.array.isRequired,
         tableBodyStyle: PropTypes.array.isRequired,
-    }).isRequired
+    }).isRequired,
 }
 
 export default Table

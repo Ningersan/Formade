@@ -2,16 +2,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 function Menu(props) {
+    const { wrapClassName, wrapStyle, children, itemClassName } = props
     return (
         <div
-          className={props.wrapClassName}
-          style={props.wrapStyle}
+          className={wrapClassName}
+          style={wrapStyle}
         >
-            {props.children.map((item, index) => (
-                <div key={index} className={props.itemClassName}>
-                    {item}
-                </div>
-            ))}
+            {
+                React.Children.map(children, (item, index) =>
+                    <div key={index} className={itemClassName}>{item}</div>
+                )
+            }
         </div>
     )
 }

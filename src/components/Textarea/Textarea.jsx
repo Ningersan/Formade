@@ -1,7 +1,13 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-class Textarea extends React.Component {
+class Textarea extends Component {
+    static propTypes = {
+        placeholder: PropTypes.string.isRequired,
+        className: PropTypes.string.isRequired,
+        onSaveText: PropTypes.func.isRequired,
+    }
+
     constructor() {
         super()
         this.handleFocus = this.handleFocus.bind(this)
@@ -16,7 +22,9 @@ class Textarea extends React.Component {
         if (this.input.textContent === '') {
             this.input.dataset.content = this.props.placeholder
         }
-        this.props.onSaveText(e.target.textContent)
+        if (this.props.onSaveText) {
+            this.props.onSaveText(e.target.textContent)
+        }
     }
 
     render() {
@@ -32,12 +40,6 @@ class Textarea extends React.Component {
             />
         )
     }
-}
-
-Textarea.propTypes = {
-    placeholder: PropTypes.string.isRequired,
-    className: PropTypes.string.isRequired,
-    onSaveText: PropTypes.func.isRequired,
 }
 
 export default Textarea

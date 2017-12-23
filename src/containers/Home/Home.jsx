@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -20,7 +20,7 @@ const titleItem = (title, handle) => (
     </Link>
 )
 
-const statusItem = state => (<div className={styles.state}>{state}</div>)
+const statusItem = state => <div className={styles.state}>{state}</div>
 
 const deadlineItem = date => <div className={styles.deadline}>{date}</div>
 
@@ -29,34 +29,19 @@ const creatFormButton = handleFunc => (
       to="/edit"
       className={styles['creat-form-btn']}
       onClick={handleFunc}
-    >
-    新建表单
-    </Link>
+    >新建表单</Link>
 )
 
-const mapStateToProps = state => ({
-    questionnaires: state.list,
-})
+class HomeScreen extends Component {
+    static propTypes = {
+        questionnaires: PropTypes.array.isRequired,
+        addQuestionnaire: PropTypes.func.isRequired,
+        editQuestionnaire: PropTypes.func.isRequired,
+        renameQuestionnaire: PropTypes.func.isRequired,
+        removeQuestionnaire: PropTypes.func.isRequired,
+        stopResponse: PropTypes.func.isRequired,
+    }
 
-const mapDispatchToProps = dispatch => ({
-    addQuestionnaire() {
-        dispatch(questionnaireActions.addQuestionnaire())
-    },
-    editQuestionnaire(index) {
-        dispatch(questionnaireActions.editQuestionnaire(index))
-    },
-    renameQuestionnaire(value, index) {
-        dispatch(questionnaireActions.renameQuestionnaire(value, index))
-    },
-    removeQuestionnaire(index) {
-        dispatch(questionnaireActions.removeQuestionnaire(index))
-    },
-    stopResponse(index) {
-        dispatch(questionnaireActions.stopResponse(index))
-    },
-})
-
-class HomeScreen extends React.Component {
     constructor() {
         super()
         this.state = {
@@ -81,6 +66,8 @@ class HomeScreen extends React.Component {
     }
 
     renderDropDownMenu(index) {
+        const { removeQuestionnaire, stopResponse } = this.props
+
         // toggle resonse button state
         const isStoped = this.props.questionnaires[index].stopResponse
         const start = { responseText: '开始回复', responseClassName: 'iconfont icon-start' }
@@ -111,13 +98,13 @@ class HomeScreen extends React.Component {
                 </a>
                 <a
                   className={styles['delete-button']}
-                  onClick={() => this.props.removeQuestionnaire(index)}
+                  onClick={() => removeQuestionnaire(index)}
                 >
                     <i className="iconfont icon-lajitong" /><span className={styles['icon-text']}>删除</span>
                 </a>
                 <a
                   className={styles['release-button']}
-                  onClick={() => this.props.stopResponse(index)}
+                  onClick={() => stopResponse(index)}
                 >
                     <i className={responseClassName} /><span className={styles['icon-text']}>{responseText}</span>
                 </a>
@@ -126,10 +113,14 @@ class HomeScreen extends React.Component {
     }
 
     render() {
-        const tableBody = this.props.questionnaires.map((questionnaire, index) => {
+        const { questionnaires, editQuestionnaire,
+            addQuestionnaire, renameQuestionnaire,
+        } = this.props
+
+        const tableBody = questionnaires.map((questionnaire, index) => {
             const { title, status, deadline } = questionnaire
             return [
-                titleItem(title, () => this.props.editQuestionnaire(index)),
+                titleItem(title, () => editQuestionnaire(index)),
                 statusItem(status),
                 deadlineItem(deadline),
                 this.renderDropDownMenu(index),
@@ -154,13 +145,11 @@ class HomeScreen extends React.Component {
             tableBody,
         }
 
-        const { questionnaires, addQuestionnaire } = this.props
-
         return (
             <div className={styles.homescreen}>
                 <div className={styles.header}>
                     <div className={styles.recent}>近期表单</div>
-                    { questionnaires.length !== 0 &&
+                    { questionnaires.length > 0 &&
                         (
                             <div className={styles['menu-bar-right']}>
                                 {creatFormButton(addQuestionnaire)}
@@ -169,17 +158,16 @@ class HomeScreen extends React.Component {
                     }
                 </div>
                 <div className={styles['docs-items']}>
-                    {questionnaires.length !== 0 ?
+                    { questionnaires.length > 0 ?
                         <Table
                           data={tableData}
                         />
                     : this.renderEmptyScreen()}
                 </div>
-                {
-                    this.state.showDialog &&
+                { this.state.showDialog &&
                     <Dialog
                       showDialog={this.handleshowDialog}
-                      renameQuestionnaire={this.props.renameQuestionnaire}
+                      renameQuestionnaire={renameQuestionnaire}
                     />
                 }
             </div>
@@ -187,14 +175,27 @@ class HomeScreen extends React.Component {
     }
 }
 
-HomeScreen.propTypes = {
-    questionnaires: PropTypes.array.isRequired,
-    addQuestionnaire: PropTypes.func.isRequired,
-    editQuestionnaire: PropTypes.func.isRequired,
-    renameQuestionnaire: PropTypes.func.isRequired,
-    removeQuestionnaire: PropTypes.func.isRequired,
-    stopResponse: PropTypes.func.isRequired,
-}
+const mapStateToProps = state => ({
+    questionnaires: state.list,
+})
+
+const mapDispatchToProps = dispatch => ({
+    addQuestionnaire() {
+        dispatch(questionnaireActions.addQuestionnaire())
+    },
+    editQuestionnaire(index) {
+        dispatch(questionnaireActions.editQuestionnaire(index))
+    },
+    renameQuestionnaire(value, index) {
+        dispatch(questionnaireActions.renameQuestionnaire(value, index))
+    },
+    removeQuestionnaire(index) {
+        dispatch(questionnaireActions.removeQuestionnaire(index))
+    },
+    stopResponse(index) {
+        dispatch(questionnaireActions.stopResponse(index))
+    },
+})
 
 const Home = connect(mapStateToProps, mapDispatchToProps)(HomeScreen)
 
