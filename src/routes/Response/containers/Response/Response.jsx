@@ -5,15 +5,16 @@ import { withRouter } from 'react-router-dom'
 import Chart from '../Chart/Chart'
 import styles from './Response.scss'
 
-const mapStateToProps = state => ({
-    editing: state.editing,
-    questionnaires: state.list || [],
-})
+class Response extends React.Component {
+    static propTypes = {
+        questionnaires: PropTypes.array.isRequired,
+        editing: PropTypes.object.isRequired,
+    }
 
-class Answer extends React.Component {
     renderChart(question, questionIndex, data) {
         const statistic = []
         const { type, options } = question
+
         switch (type) {
             case 'radio': {
                 let unfilled = 0
@@ -135,33 +136,31 @@ class Answer extends React.Component {
             default: break
         }
     }
+
     render() {
         const { questionnaires, editing } = this.props
         const questionnaire = questionnaires[editing.questionnaireId]
         const data = questionnaire ? questionnaire.data : []
+
         return (
             <div>
                 <p className={styles['response-number']}>{`（${data.length}条回复）`}</p>
                 {editing.stopResponse && <p className={styles.noresponse}>此表单已不接受回复</p>}
-                {
-                    data.length ?
+                {data.length > 0 &&
                     questionnaire.questions.map((question, index) => (
                         <div key={index}>
                             {this.renderChart(question, index, data)}
                         </div>
                     ))
-                    : null
                 }
             </div>
         )
     }
 }
 
-Answer.propTypes = {
-    questionnaires: PropTypes.array.isRequired,
-    editing: PropTypes.object.isRequired,
-}
+const mapStateToProps = state => ({
+    editing: state.editing,
+    questionnaires: state.list || [],
+})
 
-const Response = connect(mapStateToProps)(Answer)
-
-export default withRouter(Response)
+export default withRouter(connect(mapStateToProps)(Response))

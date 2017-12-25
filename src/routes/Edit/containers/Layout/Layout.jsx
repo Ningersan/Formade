@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import * as questionnaireActions from '../../../../actions/questionnaire'
 import styles from './Layout.scss'
 
-class LayoutScreen extends React.Component {
+class Layout extends React.Component {
     static propTypes = {
         editing: PropTypes.shape({
             title: PropTypes.string.isRequired,
@@ -157,6 +157,4 @@ const mapDispatchToProps = dispatch => ({
     },
 })
 
-const Layout = connect(mapStateToProps, mapDispatchToProps)(LayoutScreen)
-
-export default withRouter(Layout)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Layout))

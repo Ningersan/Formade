@@ -9,7 +9,7 @@ import Question from '../Question/Question'
 import * as questionnaireActions from '../../../../actions/questionnaire'
 import styles from './Main.scss'
 
-class EditMain extends React.Component {
+class Edit extends React.Component {
     static propTypes = {
         editing: PropTypes.shape({
             title: PropTypes.string.isRequired,
@@ -269,6 +269,4 @@ const mapDispatchToProps = dispatch => ({
     },
 })
 
-const Main = connect(mapStateToProps, mapDispatchToProps)(EditMain)
-
-export default withRouter(Main)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Edit))

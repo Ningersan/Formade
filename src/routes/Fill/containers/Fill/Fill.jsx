@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -6,33 +6,22 @@ import Question from '../Question/Question'
 import * as questionnaireActions from '../../../../actions/questionnaire'
 import styles from './Fill.scss'
 
-const mapStateToProps = state => ({
-    editing: state.editing,
-})
+class Fill extends Component {
+    static propTypes = {
+        editing: PropTypes.shape({
+            title: PropTypes.string.isRequired,
+            questions: PropTypes.array.isRequired,
+            data: PropTypes.array.isRequired,
+            stopResponse: PropTypes.bool.isRequired,
+        }).isRequired,
+        chooseOption: PropTypes.func.isRequired,
+        saveText: PropTypes.func.isRequired,
+        submitQuestionnaire: PropTypes.func.isRequired,
+    }
 
-const mapDispatchToProps = dispatch => ({
-    chooseOption(questionId) {
-        return (optionId, type) => {
-            dispatch(questionnaireActions.chooseOption(questionId, optionId, type))
-        }
-    },
-    saveText(questionId, type) {
-        return (text) => {
-            dispatch(questionnaireActions.saveText(text, type, questionId))
-        }
-    },
-    submitQuestionnaire() {
-        dispatch(questionnaireActions.submitQuestionnaire())
-    },
-})
-
-class FillMain extends React.Component {
     constructor() {
         super()
-        this.state = {
-            isSubmit: false,
-            isFilled: [],
-        }
+        this.state = { isSubmit: false, isFilled: [] }
         this.getUnfilledIndex = this.getUnfilledIndex.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleAddResponse = this.handleAddResponse.bind(this)
@@ -40,8 +29,9 @@ class FillMain extends React.Component {
     }
 
     componentWillMount() {
+        const length = this.props.editing.questions.length
         this.setState({
-            isFilled: Array(this.props.editing.questions.length).fill(false),
+            isFilled: Array(length).fill(false),
         })
     }
 
@@ -63,18 +53,14 @@ class FillMain extends React.Component {
     handleSubmit() {
         const unfilledIndexArr = this.getUnfilledIndex()
         if (unfilledIndexArr.length === 0) {
-            this.setState({
-                isSubmit: true,
-            })
+            this.setState({ isSubmit: true })
             this.props.submitQuestionnaire()
         } else {
             const { isFilled } = this.state
             unfilledIndexArr.forEach((index) => {
                 isFilled[index] = true
             })
-            this.setState({
-                isFilled,
-            })
+            this.setState({ isFilled })
         }
     }
 
@@ -106,12 +92,32 @@ class FillMain extends React.Component {
         )
     }
 
+    renderQuestions() {
+        const { editing, chooseOption, saveText } = this.props
+
+        return editing.questions.map((question, index) => (
+            <Question
+              key={index}
+              isFilled={this.state.isFilled[index]}
+              title={question.title}
+              type={question.type}
+              isRequired={question.isRequired}
+              options={question.options}
+              handleFill={() => { this.handleFill(index) }}
+              handleChooseOption={chooseOption(index)}
+              handleSaveText={saveText(index, 'answer')}
+            />
+        ))
+    }
+
+    renderContent() {
+        return !this.state.isSubmit ? this.renderQuestions() : this.renderMessage()
+    }
+
     render() {
-        const questions = this.props.editing.questions
-        const hasRequired = questions.some((question) => {
-            return question.isRequired
-        })
-        const isStop = this.props.editing.stopResponse
+        const { editing } = this.props
+        const { isStop, questions } = editing
+        const hasRequired = questions.some(question => question.isRequired)
 
         return (
             <div className={styles.wrap}>
@@ -128,38 +134,21 @@ class FillMain extends React.Component {
                 <form className={styles.main}>
                     <div className={styles.banner} />
                     <div className={styles.content}>
-                        <div className={styles['form-title']}>{this.props.editing.title}</div>
+                        <div className={styles['form-title']}>{editing.title}</div>
                         {hasRequired &&
-                        (<div className={styles.tips}><span className={styles['tips-text']}>*必填</span></div>)}
-                        {
-                            isStop ?
-                                (
-                                    <div className={styles.tips}>
-                                        <p>“未命名的表单” 表单已不再接受回复。</p>
-                                        <p>如果您认为不应该出现这种情况，请尝试与表单所有者联系。</p>
-                                    </div>
-                                )
-                            :
-                                !this.state.isSubmit ?
-                                questions.map((question, index) => (
-                                    <Question
-                                      key={index}
-                                      isFilled={this.state.isFilled[index]}
-                                      title={question.title}
-                                      type={question.type}
-                                      isRequired={question.isRequired}
-                                      options={question.options}
-                                      handleFill={() => { this.handleFill(index) }}
-                                      handleChooseOption={this.props.chooseOption(index)}
-                                      handleSaveText={this.props.saveText(index, 'answer')}
-                                    />
-                                ))
-                                :
-                                this.renderMessage()
+                            (<div className={styles.tips}><span className={styles['tips-text']}>*必填</span></div>)
+                        }
+                        {isStop
+                            ? (
+                                <div className={styles.tips}>
+                                    <p>“未命名的表单” 表单已不再接受回复。</p>
+                                    <p>如果您认为不应该出现这种情况，请尝试与表单所有者联系。</p>
+                                </div>
+                            )
+                            : this.renderContent()
                         }
                     </div>
-                    {
-                        (!this.state.isSubmit && !isStop) &&
+                    {(!this.state.isSubmit && !isStop) &&
                         (
                             <div className={styles['submit-field']}>
                                 <button
@@ -176,18 +165,24 @@ class FillMain extends React.Component {
     }
 }
 
-FillMain.propTypes = {
-    editing: PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        questions: PropTypes.array.isRequired,
-        data: PropTypes.array.isRequired,
-        stopResponse: PropTypes.bool.isRequired,
-    }).isRequired,
-    chooseOption: PropTypes.func.isRequired,
-    saveText: PropTypes.func.isRequired,
-    submitQuestionnaire: PropTypes.func.isRequired,
-}
+const mapStateToProps = state => ({
+    editing: state.editing,
+})
 
-const Fill = connect(mapStateToProps, mapDispatchToProps)(FillMain)
+const mapDispatchToProps = dispatch => ({
+    chooseOption(questionId) {
+        return (optionId, type) => {
+            dispatch(questionnaireActions.chooseOption(questionId, optionId, type))
+        }
+    },
+    saveText(questionId, type) {
+        return (text) => {
+            dispatch(questionnaireActions.saveText(text, type, questionId))
+        }
+    },
+    submitQuestionnaire() {
+        dispatch(questionnaireActions.submitQuestionnaire())
+    },
+})
 
-export default withRouter(Fill)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Fill))

@@ -9,20 +9,21 @@ import 'echarts/lib/component/legendScroll'
 import styles from './Chart.scss'
 
 class Chart extends React.Component {
+    static propTypes = {
+        option: PropTypes.object.isRequired,
+    }
+
     componentDidMount() {
         const myChart = echarts.init(this.div)
         myChart.setOption(this.props.option)
         window.addEventListener('resize', () => { myChart.resize() }, false)
     }
+
     render() {
         return (
             <div className={styles['chart-container']} ref={(el) => { this.div = el }} />
         )
     }
-}
-
-Chart.propTypes = {
-    option: PropTypes.object.isRequired,
 }
 
 export default Chart

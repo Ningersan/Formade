@@ -32,7 +32,7 @@ const creatFormButton = handleFunc => (
     >新建表单</Link>
 )
 
-class HomeScreen extends Component {
+class Home extends Component {
     static propTypes = {
         questionnaires: PropTypes.array.isRequired,
         addQuestionnaire: PropTypes.func.isRequired,
@@ -197,6 +197,4 @@ const mapDispatchToProps = dispatch => ({
     },
 })
 
-const Home = connect(mapStateToProps, mapDispatchToProps)(HomeScreen)
-
-export default Home
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

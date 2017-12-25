@@ -4,6 +4,17 @@ import Textarea from '../../../../components/Textarea/Textarea'
 import styles from './Question.scss'
 
 class Question extends React.Component {
+    static propTypes = {
+        isFilled: PropTypes.bool.isRequired,
+        title: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
+        isRequired: PropTypes.bool.isRequired,
+        options: PropTypes.array.isRequired,
+        handleFill: PropTypes.func.isRequired,
+        handleChooseOption: PropTypes.func.isRequired,
+        handleSaveText: PropTypes.func.isRequired,
+    }
+
     constructor() {
         super()
         this.renderOption = this.renderOption.bind(this)
@@ -41,45 +52,36 @@ class Question extends React.Component {
     }
 
     render() {
+        const { title, type, isFilled, isRequired, handleSaveText } = this.props
         const options = this.props.options.map(this.renderOption)
         const text = (
             <Textarea
               className={styles.textarea}
               placeholder="您的回答"
-              onSaveText={this.props.handleSaveText}
+              onSaveText={handleSaveText}
             />
         )
         const questionStyle = {
             backgroundColor: '#ffebee',
         }
+
         return (
-            <div className={styles.question} style={this.props.isFilled ? questionStyle : null}>
+            <div className={styles.question} style={isFilled ? questionStyle : null}>
                 <div className={styles.title}>
-                    {this.props.title}
-                    {this.props.isRequired &&
-                    (<span className={styles['tips-text']}>*</span>)}
+                    {title}
+                    {isRequired &&
+                        (<span className={styles['tips-text']}>*</span>)
+                    }
                 </div>
                 <div className={styles['option-list']}>
-                    {this.props.type === 'text' ? text : options}
+                    {type === 'text' ? text : options}
                 </div>
-                {
-                    this.props.isFilled &&
+                {this.props.isFilled &&
                     (<div className={styles['warning-text']}>此问题必须填写</div>)
                 }
             </div>
         )
     }
-}
-
-Question.propTypes = {
-    isFilled: PropTypes.bool.isRequired,
-    title: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    isRequired: PropTypes.bool.isRequired,
-    options: PropTypes.array.isRequired,
-    handleFill: PropTypes.func.isRequired,
-    handleChooseOption: PropTypes.func.isRequired,
-    handleSaveText: PropTypes.func.isRequired,
 }
 
 export default Question

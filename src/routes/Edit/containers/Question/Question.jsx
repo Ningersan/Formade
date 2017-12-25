@@ -1,15 +1,33 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import classnames from 'classnames'
 import Input from '../../../../components/Input/Input'
 import DropdownMenu from '../../../../components/DropdownMenu/DropdownMenu'
 import styles from './Question.scss'
 
-class Question extends React.Component {
+class Question extends Component {
+    static propTypes = {
+        title: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
+        hasOther: PropTypes.bool.isRequired,
+        options: PropTypes.array.isRequired,
+        handleDragStart: PropTypes.func.isRequired,
+        handleDragEnter: PropTypes.func.isRequired,
+        handleSaveTitle: PropTypes.func.isRequired,
+        handleAddOption: PropTypes.func.isRequired,
+        handleOptionChange: PropTypes.func.isRequired,
+        handleRemoveOption: PropTypes.func.isRequired,
+        handleCopyQuestion: PropTypes.func.isRequired,
+        handleSetQuestionType: PropTypes.func.isRequired,
+        handleToggleQuestion: PropTypes.func.isRequired,
+        handleRemoveQuestion: PropTypes.func.isRequired,
+        handleAddOther: PropTypes.func.isRequired,
+        handleRemoveOther: PropTypes.func.isRequired,
+    }
+
     constructor() {
         super()
-        this.state = {
-            isActive: false,
-        }
+        this.state = { isActive: false }
         this.handleClick = this.handleClick.bind(this)
         this.renderOption = this.renderOption.bind(this)
         this.renderTypeChooser = this.renderTypeChooser.bind(this)
@@ -71,7 +89,7 @@ class Question extends React.Component {
     }
 
     renderTypeChooser() {
-        const { type } = this.props
+        const { type, handleSetQuestionType } = this.props
         const { curType, curTypeClassName } = {
             radio: {
                 curType: '单选题',
@@ -94,9 +112,8 @@ class Question extends React.Component {
                 <i className="fa fa-lg fa-caret-down" />
             </div>
         )
-        const menuStyle = {
-            top: '-1em',
-        }
+
+        const menuStyle = { top: '-1em' }
 
         return (
             <DropdownMenu
@@ -108,7 +125,7 @@ class Question extends React.Component {
                   role="button"
                   tabIndex="0"
                   className={styles['type-item']}
-                  onClick={() => this.props.handleSetQuestionType('radio')}
+                  onClick={() => handleSetQuestionType('radio')}
                 >
                     <a className={styles['radio-button']}><i className="iconfont icon-radiobutton" /></a>
                     <span className={styles.content}>单选题</span>
@@ -117,7 +134,7 @@ class Question extends React.Component {
                   role="button"
                   tabIndex="0"
                   className={styles['type-item']}
-                  onClick={() => this.props.handleSetQuestionType('checkbox')}
+                  onClick={() => handleSetQuestionType('checkbox')}
                 >
                     <a className={styles['checkbox-button']}><i className="iconfont icon-check-box" /></a>
                     <span className={styles.content}>多选题</span>
@@ -126,7 +143,7 @@ class Question extends React.Component {
                   role="button"
                   tabIndex="0"
                   className={styles['type-item']}
-                  onClick={() => this.props.handleSetQuestionType('text')}
+                  onClick={() => handleSetQuestionType('text')}
                 >
                     <a className={styles['text-button']}><i className="iconfont icon-text" /></a>
                     <span className={styles.content}>文本</span>
@@ -136,7 +153,13 @@ class Question extends React.Component {
     }
 
     render() {
-        const questionClassName = this.state.isActive ? `${styles.main} ${styles['edit-active']}` : styles.main
+        const { handleAddOption, handleAddOther, handleSaveTitle,
+            handleCopyQuestion, handleRemoveQuestion, handleToggleQuestion,
+        } = this.props
+        const questionClassName = classnames({
+            [styles.main]: true,
+            [styles['edit-active']]: this.state.isActive,
+        })
         const options = this.props.options.map(this.renderOption)
         const addOptions = (
             <div className={styles.add}>
@@ -145,14 +168,14 @@ class Question extends React.Component {
                   role="button"
                   tabIndex="0"
                   className={styles['add-option']}
-                  onClick={this.props.handleAddOption}
+                  onClick={handleAddOption}
                 >添加选项</span>
                 <span className={styles.conjunction}>或</span>
                 <span
                   role="button"
                   tabIndex="0"
                   className={styles['add-option']}
-                  onClick={this.props.handleAddOther}
+                  onClick={handleAddOther}
                 >添加其他</span>
             </div>
         )
@@ -191,7 +214,7 @@ class Question extends React.Component {
                 <Input
                   className={styles.title}
                   defaultValue={this.props.title}
-                  saveTitle={this.props.handleSaveTitle}
+                  saveTitle={handleSaveTitle}
                 />
                 {this.renderTypeChooser()}
                 {this.props.type === 'text' ? textArea : optionArea}
@@ -201,7 +224,7 @@ class Question extends React.Component {
                           role="button"
                           tabIndex="0"
                           className={styles['copy-question']}
-                          onClick={this.props.handleCopyQuestion}
+                          onClick={handleCopyQuestion}
                         >
                             <a className={styles['copy-icon']}><i className="iconfont icon-copydownlink" /></a>
                         </div>
@@ -209,7 +232,7 @@ class Question extends React.Component {
                           role="button"
                           tabIndex="0"
                           className={styles['delete-question']}
-                          onClick={this.props.handleRemoveQuestion}
+                          onClick={handleRemoveQuestion}
                         >
                             <a className={styles['delete-icon']}><i className="iconfont icon-delete" /></a>
                         </div>
@@ -218,7 +241,7 @@ class Question extends React.Component {
                                 <input
                                   type="checkbox"
                                   className={styles.required}
-                                  onChange={this.props.handleToggleQuestion}
+                                  onChange={handleToggleQuestion}
                                 />
                                 必填
                             </label>
@@ -231,25 +254,6 @@ class Question extends React.Component {
             </div>
         )
     }
-}
-
-Question.propTypes = {
-    title: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    hasOther: PropTypes.bool.isRequired,
-    options: PropTypes.array.isRequired,
-    handleDragStart: PropTypes.func.isRequired,
-    handleDragEnter: PropTypes.func.isRequired,
-    handleSaveTitle: PropTypes.func.isRequired,
-    handleAddOption: PropTypes.func.isRequired,
-    handleOptionChange: PropTypes.func.isRequired,
-    handleRemoveOption: PropTypes.func.isRequired,
-    handleCopyQuestion: PropTypes.func.isRequired,
-    handleSetQuestionType: PropTypes.func.isRequired,
-    handleToggleQuestion: PropTypes.func.isRequired,
-    handleRemoveQuestion: PropTypes.func.isRequired,
-    handleAddOther: PropTypes.func.isRequired,
-    handleRemoveOther: PropTypes.func.isRequired,
 }
 
 export default Question
