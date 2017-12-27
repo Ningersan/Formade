@@ -33,6 +33,7 @@
                 font-size: 1.2rem;
                 color: $gray-light;
                 cursor: pointer;
+                outline: none;
                 text-align: right;
                 &:hover {
                     color: $edit-delete-button-hover-color;
@@ -51,7 +52,7 @@
             padding-left: .4em;
             line-height: 1.5em;
         }
-        .dialog-button-field {
+        .dialog-button-wrap {
             margin-top: 1.5em;
             button {
                 @include button;
@@ -60,14 +61,14 @@
                 border-radius: 2px;
                 font-size: .875rem;
             }
-            .confirm {
+            .confirm-button {
                 color: $white;
                 background-color: $blue;
                 &:hover {
                     background-color: #357ae8;
                 }
             }
-            .cancel {
+            .cancel-button {
                 background-color: $gray-white;
                 &:hover {
                     background-color: $gray-lighter;

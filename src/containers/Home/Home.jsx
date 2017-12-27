@@ -44,9 +44,7 @@ class Home extends Component {
 
     constructor() {
         super()
-        this.state = {
-            showDialog: false,
-        }
+        this.state = { showDialog: false }
         this.handleshowDialog = this.handleshowDialog.bind(this)
     }
 
@@ -166,8 +164,9 @@ class Home extends Component {
                 </div>
                 { this.state.showDialog &&
                     <Dialog
-                      showDialog={this.handleshowDialog}
-                      renameQuestionnaire={renameQuestionnaire}
+                      autoSelectInput
+                      handleShow={this.handleshowDialog}
+                      handleSubmit={renameQuestionnaire}
                     />
                 }
             </div>
