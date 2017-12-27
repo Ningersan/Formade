@@ -24,7 +24,7 @@
             height: inherit;
             line-height: 3.5em;
             padding-right: 2em;
-            .creat-form-btn {
+            .add-form-btn {
                 padding: 0;
                 font-size: .9em;
             }
@@ -46,7 +46,7 @@
             color: $gray-dark;
         }
     }
-    .creat-form-btn {
+    .add-form-btn {
         @include button;
         display: inline-block;
         padding: 0;
@@ -92,9 +92,13 @@
         .deadline {
             color: $gray;
         }
-        .dropdown-menu {
+        .dropdown {
             &:focus {
                 outline: none;
+            }
+            .dropdown-menu {
+                margin-top: .8em;
+                margin-left: -12.7em;
             }
             .dropdown-button {
                 display: block;

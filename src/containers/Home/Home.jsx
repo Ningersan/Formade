@@ -22,13 +22,14 @@ const statusItem = state => <div className={styles.state}>{state}</div>
 
 const deadlineItem = date => <div className={styles.deadline}>{date}</div>
 
-const creatFormButton = handleFunc => (
-    <Link
-      to="/edit"
-      className={styles['creat-form-btn']}
-      onClick={handleFunc}
-    >新建表单</Link>
-)
+// const icon = () => (
+//     <a
+//       className={styles['rename-button']}
+//       onClick={() => { this.handleshowDialog(true) }}
+//     >
+//         <i className="iconfont icon-aa" /><span className={styles['icon-text']}>重命名</span>
+//     </a>
+// )
 
 class Home extends Component {
     static propTypes = {
@@ -47,16 +48,26 @@ class Home extends Component {
     }
 
     handleshowDialog(flag) {
-        this.setState({
-            showDialog: flag,
-        })
+        this.setState({ showDialog: flag })
+    }
+
+    renderAddButton() {
+        return (
+            <Link
+              to="/edit"
+              className={styles['add-form-btn']}
+              onClick={this.props.addQuestionnaire}
+            >
+                新建表单
+            </Link>
+        )
     }
 
     renderEmptyScreen() {
         return (
             <div className={styles['docs-item-empty']}>
                 <h3 className={styles.note}>现在尚无表单呢，不如...</h3>
-                {creatFormButton(this.props.addQuestionnaire)}
+                {this.renderAddButton()}
             </div>
         )
     }
@@ -65,25 +76,22 @@ class Home extends Component {
         const { removeQuestionnaire, stopResponse } = this.props
 
         // toggle resonse button state
-        const isStoped = this.props.questionnaires[index].stopResponse
+        const isStop = this.props.questionnaires[index].stopResponse
         const start = { responseText: '开始回复', responseClassName: 'iconfont icon-start' }
         const stop = { responseText: '停止回复', responseClassName: 'iconfont icon-tingzhi' }
-        const { responseText, responseClassName } = isStoped ? start : stop
+        const { responseText, responseClassName } = isStop ? start : stop
 
-        // set style and button
-        const menuStyle = {
-            marginTop: '.8em',
-            marginLeft: '-12.7em',
-        }
+        // set  button
         const dropdownButton = (
             <a className={styles['dropdown-button']}><i className="iconfont icon-ellipsisv" /></a>
         )
 
         return (
             <DropdownMenu
-              wrapClassName={styles['dropdown-menu']}
+              wrapClassName={styles.dropdown}
+              menuClassName={styles['dropdown-menu']}
               dropdownButton={dropdownButton}
-              menuStyle={menuStyle}
+            //   menuStyle={menuStyle}
               buttonRef={this.buttonRef}
             >
                 <a
@@ -109,9 +117,7 @@ class Home extends Component {
     }
 
     render() {
-        const { questionnaires, editQuestionnaire,
-            addQuestionnaire, renameQuestionnaire,
-        } = this.props
+        const { questionnaires, editQuestionnaire, renameQuestionnaire } = this.props
 
         const tableBody = questionnaires.map((questionnaire, index) => {
             const { title, status, deadline } = questionnaire
@@ -148,7 +154,7 @@ class Home extends Component {
                     { questionnaires.length > 0 &&
                         (
                             <div className={styles['menu-bar-right']}>
-                                {creatFormButton(addQuestionnaire)}
+                                {this.renderAddButton()}
                             </div>
                         )
                     }

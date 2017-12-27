@@ -40,7 +40,6 @@ class Edit extends React.Component {
         this.state = { offsetY: 0 }
         this.handleTitleFocus = this.handleTitleFocus.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
-        this.handleDrag = this.handleDrag.bind(this)
         this.handleDragStart = this.handleDragStart.bind(this)
         this.handleDragEnter = this.handleDragEnter.bind(this)
     }
@@ -100,13 +99,6 @@ class Edit extends React.Component {
                 }
             }
         }
-    }
-
-    handleDrag(e) {
-        this.setState({
-            offsetY: e.pageY - this.currentMouseY,
-        })
-        console.log(e.pageY - this.currentMouseY)
     }
 
     creatPlaceholder(from, to) {
@@ -207,7 +199,6 @@ class Edit extends React.Component {
                       type={question.type}
                       options={question.options}
                       offsetY={this.state.offsetY}
-                      handleDrag={this.handleDrag}
                       handleDragStart={this.handleDragStart(index)}
                       handleDragEnter={this.handleDragEnter(index)}
                       hasOther={question.hasOther}

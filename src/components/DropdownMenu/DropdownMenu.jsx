@@ -6,10 +6,10 @@ import styles from './DropdownMenu.scss'
 
 class DropdownMenu extends Component {
     static propTypes = {
+        wrapClassName: PropTypes.string.isRequired,
+        menuClassName: PropTypes.string,
         children: PropTypes.array.isRequired,
         dropdownButton: PropTypes.element.isRequired,
-        wrapClassName: PropTypes.string.isRequired,
-        menuStyle: PropTypes.object.isRequired,
     }
 
     constructor() {
@@ -35,8 +35,9 @@ class DropdownMenu extends Component {
     }
 
     render() {
-        const { wrapClassName, dropdownButton, menuStyle, children } = this.props
-        const menuClassName = classnames({
+        const { wrapClassName, menuClassName, dropdownButton, children } = this.props
+        const menuClassNames = classnames({
+            [menuClassName]: menuClassName && true,
             [styles.menu]: true,
             hidden: !this.state.isActive,
         })
@@ -49,10 +50,7 @@ class DropdownMenu extends Component {
               ref={(ref) => { this.button = ref }}
             >
                 {dropdownButton}
-                <Menu
-                  wrapClassName={menuClassName}
-                  wrapStyle={menuStyle}
-                >
+                <Menu wrapClassName={menuClassNames}>
                     {children}
                 </Menu>
             </div>
