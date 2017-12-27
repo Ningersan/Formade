@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import Input from '../../../../components/Input/Input'
-import DropdownMenu from '../../../../components/DropdownMenu/DropdownMenu'
+import { Input, DropdownMenu } from '../../../../components/index'
 import styles from './Question.scss'
 
 class Question extends Component {
@@ -153,7 +152,8 @@ class Question extends Component {
     }
 
     render() {
-        const { handleAddOption, handleAddOther, handleSaveTitle,
+        const { offsetY, handleDrag, handleDragStart, handleDragEnter,
+            handleAddOption, handleAddOther, handleSaveTitle,
             handleCopyQuestion, handleRemoveQuestion, handleToggleQuestion,
         } = this.props
         const questionClassName = classnames({
@@ -197,6 +197,10 @@ class Question extends Component {
             </div>
         )
 
+        const questionStyle = {
+            transform: `translateY(${offsetY}px)`,
+        }
+
         return (
             <div
               role="button"
@@ -204,8 +208,10 @@ class Question extends Component {
               draggable="true"
               ref={el => (this.mainEle = el)}
               className={questionClassName}
-              onDragStart={this.props.handleDragStart}
-              onDragEnter={this.props.handleDragEnter}
+              style={questionStyle}
+              onDrag={handleDrag}
+              onDragStart={handleDragStart}
+              onDragEnter={handleDragEnter}
               onDrop={this.handleDrop}
             >
                 <div className={styles['drag-handle']}>

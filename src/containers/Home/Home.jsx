@@ -3,9 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as questionnaireActions from '../../actions/questionnaire'
-import Table from '../../components/Table/Table'
-import DropdownMenu from '../../components/DropdownMenu/DropdownMenu'
-import Dialog from '../../components/Dialog/Dialog'
+import { Table, Dialog, DropdownMenu } from '../../components/index'
 import styles from './Home.scss'
 
 const titleItem = (title, handle) => (

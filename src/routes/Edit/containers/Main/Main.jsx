@@ -2,9 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import Menu from '../../../../components/Menu/Menu'
-import Input from '../../../../components/Input/Input'
-import Textarea from '../../../../components/Textarea/Textarea'
+import { Menu, Input, Textarea } from '../../../../components/index'
 import Question from '../Question/Question'
 import * as questionnaireActions from '../../../../actions/questionnaire'
 import styles from './Main.scss'
@@ -39,8 +37,10 @@ class Edit extends React.Component {
 
     constructor() {
         super()
+        this.state = { offsetY: 0 }
         this.handleTitleFocus = this.handleTitleFocus.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
+        this.handleDrag = this.handleDrag.bind(this)
         this.handleDragStart = this.handleDragStart.bind(this)
         this.handleDragEnter = this.handleDragEnter.bind(this)
     }
@@ -55,6 +55,8 @@ class Edit extends React.Component {
 
     handleDragStart(index) {
         return (e) => {
+            this.currentMouseY = e.pageY
+            console.log(this.currentMouseY)
             e.dataTransfer.effectAllowed = 'move'
             this.dragElement = e.currentTarget
             this.dragElementIndex = index
@@ -100,6 +102,13 @@ class Edit extends React.Component {
         }
     }
 
+    handleDrag(e) {
+        this.setState({
+            offsetY: e.pageY - this.currentMouseY,
+        })
+        console.log(e.pageY - this.currentMouseY)
+    }
+
     creatPlaceholder(from, to) {
         const dragElement = this.dragElement
         const placeholder = document.createElement('div')
@@ -130,7 +139,11 @@ class Edit extends React.Component {
          } = this.props
 
         const header = (
-            <div tabIndex="-1" className={styles.header} onDragEnter={this.handleDragEnter(-1)}>
+            <div
+              tabIndex="-1"
+              className={styles.header}
+              onDragEnter={this.handleDragEnter(-1)}
+            >
                 <div className={styles.info}>
                     <Input
                       className={styles.title}
@@ -193,6 +206,8 @@ class Edit extends React.Component {
                       title={question.title}
                       type={question.type}
                       options={question.options}
+                      offsetY={this.state.offsetY}
+                      handleDrag={this.handleDrag}
                       handleDragStart={this.handleDragStart(index)}
                       handleDragEnter={this.handleDragEnter(index)}
                       hasOther={question.hasOther}

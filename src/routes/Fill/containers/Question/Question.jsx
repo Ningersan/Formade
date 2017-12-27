@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Textarea from '../../../../components/Textarea/Textarea'
+import { Textarea } from '../../../../components/index'
 import styles from './Question.scss'
 
-class Question extends React.Component {
+class Question extends Component {
     static propTypes = {
         isFilled: PropTypes.bool.isRequired,
         title: PropTypes.string.isRequired,
