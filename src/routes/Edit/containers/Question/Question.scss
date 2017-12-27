@@ -19,6 +19,7 @@
         font-size: .875rem;
         color: $gray-lighter;
         cursor: move;
+        outline: none;
         .drag-icon {
             display: inline-block;
             transform: rotate(90deg);

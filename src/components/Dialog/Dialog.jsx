@@ -3,33 +3,41 @@ import PropTypes from 'prop-types'
 import styles from './Dialog.scss'
 
 class Dialog extends Component {
+    static defaultValue = {
+        autoSelectInput: true,
+    }
+
     static propTypes = {
-        showDialog: PropTypes.func.isRequired,
-        renameQuestionnaire: PropTypes.func.isRequired,
+        autoSelectInput: PropTypes.bool.isRequired,
+        handleShow: PropTypes.func.isRequired,
+        handleSubmit: PropTypes.func,
     }
 
     constructor() {
         super()
-        this.state = { isDraging: false }
         this.handleClick = this.handleClick.bind(this)
         this.handleConfirm = this.handleConfirm.bind(this)
     }
 
     componentDidMount() {
-        this.input.select()
+        if (this.props.autoSelectInput) {
+            this.input.select()
+        }
     }
 
     close() {
-        this.props.showDialog(false)
-    }
-
-    handleConfirm() {
-        const value = this.input.value
-        this.props.renameQuestionnaire(value, 0)
-        this.close()
+        this.props.handleShow(false)
     }
 
     handleClick() {
+        this.close()
+    }
+
+    handleConfirm() {
+        if (this.props.handleSubmit) {
+            const value = this.input.value
+            this.props.handleSubmit(value, 0)
+        }
         this.close()
     }
 
@@ -58,9 +66,9 @@ class Dialog extends Component {
                       defaultValue="未命名的表单"
                       ref={(el) => { this.input = el }}
                     />
-                    <div className={styles['dialog-button-field']}>
-                        <button className={styles.confirm} onClick={this.handleConfirm}>确定</button>
-                        <button className={styles.cancel} onClick={this.handleClick}>取消</button>
+                    <div className={styles['dialog-button-wrap']}>
+                        <button className={styles['confirm-button']} onClick={this.handleConfirm}>确定</button>
+                        <button className={styles['cancel-button']} onClick={this.handleClick}>取消</button>
                     </div>
                 </div>
             </div>
