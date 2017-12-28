@@ -38,15 +38,11 @@ class Edit extends React.Component {
     constructor() {
         super()
         this.state = { offsetY: 0 }
-        this.handleTitleFocus = this.handleTitleFocus.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
         this.handleDragStart = this.handleDragStart.bind(this)
         this.handleDragEnter = this.handleDragEnter.bind(this)
     }
 
-    handleTitleFocus() {
-        this.titleInput.select()
-    }
 
     handleTitleChange(e) {
         this.props.saveTitle(null)(e.target.value, 'questionnaire')
@@ -55,7 +51,6 @@ class Edit extends React.Component {
     handleDragStart(index) {
         return (e) => {
             this.currentMouseY = e.pageY
-            console.log(this.currentMouseY)
             e.dataTransfer.effectAllowed = 'move'
             this.dragElement = e.currentTarget
             this.dragElementIndex = index
@@ -138,14 +133,15 @@ class Edit extends React.Component {
             >
                 <div className={styles.info}>
                     <Input
+                      autoSelect
                       className={styles.title}
                       value={editing.title}
-                      onChange={this.handleTitleChange}
+                      handleChange={this.handleTitleChange}
                     />
                     <Textarea
                       className={styles.description}
-                      placeholder="表单说明"
-                      onSaveText={saveText('description')}
+                      placeholder={editing.description}
+                      handleSaveText={saveText('description')}
                     />
                 </div>
             </div>
@@ -198,7 +194,6 @@ class Edit extends React.Component {
                       title={question.title}
                       type={question.type}
                       options={question.options}
-                      offsetY={this.state.offsetY}
                       handleDragStart={this.handleDragStart(index)}
                       handleDragEnter={this.handleDragEnter(index)}
                       hasOther={question.hasOther}

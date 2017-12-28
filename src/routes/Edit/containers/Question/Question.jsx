@@ -69,19 +69,21 @@ class Question extends Component {
     }
 
     renderOption(option, index) {
+        const { handleOptionChange, handleRemoveOption } = this.props
         return (
             <div className={styles.item} key={index}>
                 <div className={this.getInputClassName()} />
                 <Input
+                  autoSelect
                   className={styles.option}
                   value={option}
-                  onChange={this.props.handleOptionChange(index)}
+                  handleChange={handleOptionChange(index)}
                 />
                 <div
                   role="button"
                   tabIndex="0"
                   className={styles['delete-option']}
-                  onClick={() => this.props.handleRemoveOption(index)}
+                  onClick={() => handleRemoveOption(index)}
                 />
             </div>
         )
@@ -104,7 +106,7 @@ class Question extends Component {
             },
         }[type]
 
-        const button = (
+        const dropdownButton = (
             <div className={styles.type}>
                 <i className={curTypeClassName} />
                 <span className={styles.content}>{curType}</span>
@@ -118,7 +120,7 @@ class Question extends Component {
             <DropdownMenu
               wrapClassName={styles['type-chooser']}
               menuStyle={menuStyle}
-              dropdownButton={button}
+              button={dropdownButton}
             >
                 <div
                   role="button"
@@ -152,7 +154,7 @@ class Question extends Component {
     }
 
     render() {
-        const { offsetY, handleDrag, handleDragStart, handleDragEnter,
+        const { handleDragStart, handleDragEnter,
             handleAddOption, handleAddOther, handleSaveTitle,
             handleCopyQuestion, handleRemoveQuestion, handleToggleQuestion,
         } = this.props
@@ -197,10 +199,6 @@ class Question extends Component {
             </div>
         )
 
-        const questionStyle = {
-            transform: `translateY(${offsetY}px)`,
-        }
-
         return (
             <div
               role="button"
@@ -208,8 +206,6 @@ class Question extends Component {
               draggable="true"
               ref={el => (this.mainEle = el)}
               className={questionClassName}
-              style={questionStyle}
-              onDrag={handleDrag}
               onDragStart={handleDragStart}
               onDragEnter={handleDragEnter}
               onDrop={this.handleDrop}
@@ -218,9 +214,10 @@ class Question extends Component {
                     <a className={styles['drag-icon']}><i className="iconfont icon-drag" /></a>
                 </div>
                 <Input
+                  autoSelect
                   className={styles.title}
                   defaultValue={this.props.title}
-                  saveTitle={handleSaveTitle}
+                  handleSaveText={handleSaveTitle}
                 />
                 {this.renderTypeChooser()}
                 {this.props.type === 'text' ? textArea : optionArea}
@@ -244,7 +241,7 @@ class Question extends Component {
                         </div>
                         <div className={styles['required-toggle']}>
                             <label>
-                                <input
+                                <Input
                                   type="checkbox"
                                   className={styles.required}
                                   onChange={handleToggleQuestion}

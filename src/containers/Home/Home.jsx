@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as questionnaireActions from '../../actions/questionnaire'
-import { Table, Dialog, DropdownMenu } from '../../components/index'
+import { Table, Dialog, Icon, DropdownMenu } from '../../components/index'
 import styles from './Home.scss'
 
-const titleItem = (title, handle) => (
+const QuestionnaireTitle = (title, handle) => (
     <Link
       to="/edit"
       role="button"
@@ -18,18 +18,9 @@ const titleItem = (title, handle) => (
     </Link>
 )
 
-const statusItem = state => <div className={styles.state}>{state}</div>
+const QuestionnaireStatus = state => <div className={styles.state}>{state}</div>
 
-const deadlineItem = date => <div className={styles.deadline}>{date}</div>
-
-// const icon = () => (
-//     <a
-//       className={styles['rename-button']}
-//       onClick={() => { this.handleshowDialog(true) }}
-//     >
-//         <i className="iconfont icon-aa" /><span className={styles['icon-text']}>重命名</span>
-//     </a>
-// )
+const QuestionnaireDeadline = date => <div className={styles.deadline}>{date}</div>
 
 class Home extends Component {
     static propTypes = {
@@ -49,6 +40,20 @@ class Home extends Component {
 
     handleshowDialog(flag) {
         this.setState({ showDialog: flag })
+    }
+
+    getTableBodyData() {
+        const { questionnaires, editQuestionnaire } = this.props
+
+        return questionnaires.map((questionnaire, index) => {
+            const { title, status, deadline } = questionnaire
+            return [
+                QuestionnaireTitle(title, () => editQuestionnaire(index)),
+                QuestionnaireStatus(status),
+                QuestionnaireDeadline(deadline),
+                this.renderDropDownMenu(index),
+            ]
+        })
     }
 
     renderAddButton() {
@@ -72,65 +77,11 @@ class Home extends Component {
         )
     }
 
-    renderDropDownMenu(index) {
-        const { removeQuestionnaire, stopResponse } = this.props
-
-        // toggle resonse button state
-        const isStop = this.props.questionnaires[index].stopResponse
-        const start = { responseText: '开始回复', responseClassName: 'iconfont icon-start' }
-        const stop = { responseText: '停止回复', responseClassName: 'iconfont icon-tingzhi' }
-        const { responseText, responseClassName } = isStop ? start : stop
-
-        // set  button
-        const dropdownButton = (
-            <a className={styles['dropdown-button']}><i className="iconfont icon-ellipsisv" /></a>
-        )
-
-        return (
-            <DropdownMenu
-              wrapClassName={styles.dropdown}
-              menuClassName={styles['dropdown-menu']}
-              dropdownButton={dropdownButton}
-            //   menuStyle={menuStyle}
-              buttonRef={this.buttonRef}
-            >
-                <a
-                  className={styles['rename-button']}
-                  onClick={() => { this.handleshowDialog(true) }}
-                >
-                    <i className="iconfont icon-aa" /><span className={styles['icon-text']}>重命名</span>
-                </a>
-                <a
-                  className={styles['delete-button']}
-                  onClick={() => removeQuestionnaire(index)}
-                >
-                    <i className="iconfont icon-lajitong" /><span className={styles['icon-text']}>删除</span>
-                </a>
-                <a
-                  className={styles['release-button']}
-                  onClick={() => stopResponse(index)}
-                >
-                    <i className={responseClassName} /><span className={styles['icon-text']}>{responseText}</span>
-                </a>
-            </DropdownMenu>
-        )
-    }
-
-    render() {
-        const { questionnaires, editQuestionnaire, renameQuestionnaire } = this.props
-
-        const tableBody = questionnaires.map((questionnaire, index) => {
-            const { title, status, deadline } = questionnaire
-            return [
-                titleItem(title, () => editQuestionnaire(index)),
-                statusItem(status),
-                deadlineItem(deadline),
-                this.renderDropDownMenu(index),
-            ]
-        })
-
+    renderFormList() {
         const tableData = {
             className: styles['form-list'],
+            tableHead: ['表单名称', '状态', '截止日期', '操作'],
+            tableBody: this.getTableBodyData(),
             tableHeadStyle: [
                 { width: '60%', paddingLeft: '1.5em' },
                 { width: '12%', paddingLeft: '0.3em' },
@@ -143,9 +94,71 @@ class Home extends Component {
                 { width: '22%', paddingLeft: '1.5em' },
                 { paddingLeft: '1.8em' },
             ],
-            tableHead: ['表单名称', '状态', '截止日期', '操作'],
-            tableBody,
         }
+
+        return <Table data={tableData} />
+    }
+
+    renderDialog() {
+        const { renameQuestionnaire } = this.props
+        return this.state.showDialog &&
+            <Dialog
+              autoSelectInput
+              handleShow={this.handleshowDialog}
+              handleSubmit={renameQuestionnaire}
+            />
+    }
+
+    renderDropDownMenu(index) {
+        const { removeQuestionnaire, stopResponse } = this.props
+
+        // toggle resonse button state
+        const isStop = this.props.questionnaires[index].stopResponse
+        const start = { responseText: '开始回复', responseClassName: 'iconfont icon-start' }
+        const stop = { responseText: '停止回复', responseClassName: 'iconfont icon-tingzhi' }
+        const { responseText, responseClassName } = isStop ? start : stop
+
+        // set button
+        const dropdownButton = (
+            <Icon
+              wrapClassName={styles['dropdown-button']}
+              className={'iconfont icon-ellipsisv'}
+            />
+        )
+
+        return (
+            <DropdownMenu
+              wrapClassName={styles.dropdown}
+              menuClassName={styles['dropdown-menu']}
+              button={dropdownButton}
+            >
+                <Icon
+                  wrapClassName={styles['rename-button']}
+                  className={'iconfont icon-aa'}
+                  handleClick={() => { this.handleshowDialog(true) }}
+                >
+                    <span className={styles['icon-text']}>重命名</span>
+                </Icon>
+                <Icon
+                  wrapClassName={styles['delete-button']}
+                  className={'iconfont icon-lajitong'}
+                  handleClick={() => removeQuestionnaire(index)}
+                >
+                    <span className={styles['icon-text']}>删除</span>
+                </Icon>
+                <Icon
+                  wrapClassName={styles['release-button']}
+                  className={responseClassName}
+                  handleClick={() => stopResponse(index)}
+                >
+                    <span className={styles['icon-text']}>{responseText}</span>
+                </Icon>
+            </DropdownMenu>
+        )
+    }
+
+    render() {
+        const { questionnaires } = this.props
 
         return (
             <div className={styles.homescreen}>
@@ -160,19 +173,9 @@ class Home extends Component {
                     }
                 </div>
                 <div className={styles['docs-items']}>
-                    { questionnaires.length > 0 ?
-                        <Table
-                          data={tableData}
-                        />
-                    : this.renderEmptyScreen()}
+                    { questionnaires.length > 0 ? this.renderFormList() : this.renderEmptyScreen() }
                 </div>
-                { this.state.showDialog &&
-                    <Dialog
-                      autoSelectInput
-                      handleShow={this.handleshowDialog}
-                      handleSubmit={renameQuestionnaire}
-                    />
-                }
+                {this.renderDialog()}
             </div>
         )
     }

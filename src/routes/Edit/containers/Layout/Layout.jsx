@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Input } from '../../../../components/index'
 import * as questionnaireActions from '../../../../actions/questionnaire'
 import styles from './Layout.scss'
 
@@ -12,7 +13,7 @@ class Layout extends React.Component {
             title: PropTypes.string.isRequired,
         }).isRequired,
         children: PropTypes.element.isRequired,
-        saveText: PropTypes.func.isRequired,
+        saveTitle: PropTypes.func.isRequired,
         saveQuestionnaire: PropTypes.func.isRequired,
     }
 
@@ -33,7 +34,7 @@ class Layout extends React.Component {
     }
 
     handleTitleChange(e) {
-        this.props.saveText(e.target.value)
+        this.props.saveTitle(e.target.value, 'questionnaire')
     }
 
     handleScrollChange() {
@@ -46,10 +47,6 @@ class Layout extends React.Component {
         this.setState(prevState => ({
             editIsActive: !prevState.editIsActive,
         }))
-    }
-
-    handleInputFocus(e) {
-        e.currentTarget.select()
     }
 
     render() {
@@ -73,12 +70,11 @@ class Layout extends React.Component {
                 >
                     <i className="iconfont icon-arrow-left" />
                 </Link>
-                <input
-                  type="text"
+                <Input
+                  autoSelect
                   className={styles.title}
                   value={editing.title}
-                  onChange={this.handleTitleChange}
-                  onFocus={this.handleInputFocus}
+                  handleChange={this.handleTitleChange}
                 />
             </div>
         )
@@ -146,8 +142,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    saveText(title) {
-        dispatch(questionnaireActions.saveText(title))
+    saveTitle(title, type) {
+        dispatch(questionnaireActions.saveTitle(title, type))
     },
     saveQuestionnaire() {
         dispatch(questionnaireActions.saveQuestionnaire())

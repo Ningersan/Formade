@@ -85,6 +85,10 @@
         }
         .title-text {
             padding-left: 1em;
+            color: $black;
+            &:hover {
+                color: $brand-primary;
+            }
         }
         .state {
             color: $gray;

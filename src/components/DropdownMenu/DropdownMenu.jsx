@@ -9,12 +9,16 @@ class DropdownMenu extends Component {
         wrapClassName: PropTypes.string.isRequired,
         menuClassName: PropTypes.string,
         children: PropTypes.array.isRequired,
-        dropdownButton: PropTypes.element.isRequired,
+        button: PropTypes.element.isRequired,
+    }
+
+    static defaultProps = {
+        menuClassName: null,
     }
 
     constructor() {
         super()
-        this.state = { isActive: false }
+        this.state = { isOpen: false }
         this.handleClick = this.handleClick.bind(this)
     }
 
@@ -29,17 +33,16 @@ class DropdownMenu extends Component {
     handleClick(e) {
         if (this.button) {
             this.setState(prevState => ({
-                isActive: this.button.contains(e.target) && !prevState.isActive,
+                isOpen: this.button.contains(e.target) && !prevState.isOpen,
             }))
         }
     }
 
     render() {
-        const { wrapClassName, menuClassName, dropdownButton, children } = this.props
+        const { wrapClassName, menuClassName, button, children } = this.props
         const menuClassNames = classnames({
             [menuClassName]: menuClassName && true,
             [styles.menu]: true,
-            hidden: !this.state.isActive,
         })
 
         return (
@@ -47,12 +50,14 @@ class DropdownMenu extends Component {
               role="button"
               tabIndex="0"
               className={wrapClassName}
-              ref={(ref) => { this.button = ref }}
+              ref={(el) => { this.button = el }}
             >
-                {dropdownButton}
-                <Menu wrapClassName={menuClassNames}>
-                    {children}
-                </Menu>
+                {button}
+                {this.state.isOpen &&
+                    <Menu wrapClassName={menuClassNames}>
+                        {children}
+                    </Menu>
+                }
             </div>
         )
     }

@@ -5,7 +5,7 @@ class Textarea extends Component {
     static propTypes = {
         placeholder: PropTypes.string.isRequired,
         className: PropTypes.string.isRequired,
-        onSaveText: PropTypes.func.isRequired,
+        handleSaveText: PropTypes.func.isRequired,
     }
 
     constructor() {
@@ -15,15 +15,17 @@ class Textarea extends Component {
     }
 
     handleFocus() {
-        this.input.dataset.content = ''
+        if (this.props.placeholder === '表单说明') {
+            this.input.dataset.content = ''
+        }
     }
 
     handleBlur(e) {
         if (this.input.textContent === '') {
-            this.input.dataset.content = this.props.placeholder
+            this.input.dataset.content = '表单说明'
         }
-        if (this.props.onSaveText) {
-            this.props.onSaveText(e.target.textContent)
+        if (this.props.handleSaveText) {
+            this.props.handleSaveText(e.target.textContent)
         }
     }
 
@@ -36,7 +38,7 @@ class Textarea extends Component {
               className={className}
               onFocus={this.handleFocus}
               onBlur={this.handleBlur}
-              ref={(input) => { this.input = input }}
+              ref={(el) => { this.input = el }}
             />
         )
     }

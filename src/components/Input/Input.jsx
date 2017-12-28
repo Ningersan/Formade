@@ -2,11 +2,18 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 class Input extends Component {
+    static defaultProps = {
+        type: 'text',
+        autoSelect: false,
+    }
+
     static propTypes = {
-        defaultValue: PropTypes.string,
+        type: PropTypes.string,
+        autoSelect: PropTypes.bool,
         value: PropTypes.string,
-        onChange: PropTypes.func,
-        saveTitle: PropTypes.func,
+        defaultValue: PropTypes.string,
+        handleChange: PropTypes.func,
+        handleSaveText: PropTypes.func,
         className: PropTypes.string.isRequired,
     }
 
@@ -21,23 +28,24 @@ class Input extends Component {
     }
 
     handleBlur(e) {
-        if (this.props.saveTitle) {
-            this.props.saveTitle(e.target.value, 'question')
-        }
+        this.props.handleSaveText(e.target.value, 'question')
     }
 
     render() {
-        const { className, defaultValue, value, onChange } = this.props
+        const { type, autoSelect, className, defaultValue, value,
+            handleChange, handleSaveText,
+        } = this.props
+
         return (
             <input
-              type="text"
+              type={type}
               className={className}
-              ref={(input) => { this.input = input }}
-              defaultValue={defaultValue}
+              ref={(el) => { this.input = el }}
               value={value}
-              onFocus={this.handleFocus}
-              onChange={onChange}
-              onBlur={this.handleBlur}
+              defaultValue={defaultValue}
+              onFocus={autoSelect && this.handleFocus}
+              onChange={handleChange}
+              onBlur={handleSaveText && this.handleBlur}
             />
         )
     }

@@ -6,7 +6,7 @@ const list = localStorage.list ? JSON.parse(localStorage.list) : []
 const initEditing = {
     questionnaireId: -1,
     title: '未命名的表单',
-    description: '',
+    description: '表单说明',
     status: '发布中',
     stopResponse: false,
     deadline: '2017年7月26日',

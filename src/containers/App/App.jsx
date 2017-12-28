@@ -8,9 +8,7 @@ import styles from './App.scss'
 class App extends Component {
     constructor() {
         super()
-        this.state = {
-            isSiderbarShow: false,
-        }
+        this.state = { isOpen: false }
         this.showSiderbar = this.showSiderbar.bind(this)
         this.hideSiderbar = this.hideSiderbar.bind(this)
     }
@@ -26,16 +24,28 @@ class App extends Component {
 
     showSiderbar() {
         this.setState({
-            isSiderbarShow: true,
+            isOpen: true,
         })
     }
 
     hideSiderbar(e) {
         if (e.target !== this.siderbar && e.target !== this.menuBtn) {
             this.setState({
-                isSiderbarShow: false,
+                isOpen: false,
             })
         }
+    }
+
+    renderSiderbar() {
+        return (
+            <CSSTransitionGroup
+              transitionName="slide"
+              transitionEnterTimeout={300}
+              transitionLeaveTimeout={300}
+            >
+                { this.state.isOpen && <Siderbar navRef={el => (this.siderbar = el)} /> }
+            </CSSTransitionGroup>
+        )
     }
 
     render() {
@@ -45,7 +55,7 @@ class App extends Component {
               transitionEnterTimeout={300}
               transitionLeaveTimeout={300}
             >
-                {this.state.isSiderbarShow && <Siderbar navRef={el => (this.siderbar = el)} />}
+                {this.state.isOpen && <Siderbar navRef={el => (this.siderbar = el)} />}
             </CSSTransitionGroup>
         )
 

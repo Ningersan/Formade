@@ -3,33 +3,34 @@ import PropTypes from 'prop-types'
 import styles from './Table.scss'
 
 const renderThs = (contents, thStyles) => contents.map((content, index) => {
-    const thStyle = thStyles[index]
+    const style = thStyles[index]
     return (
-        <th key={index} className={styles['table-th']} style={thStyle}>{content}</th>
+        <th
+          key={index}
+          className={styles['table-th']}
+          style={style}
+        >
+            {content}
+        </th>
     )
 })
 
 const renderTds = (contents, tdStyles) => contents.map((content, index) => {
     const tdStyle = tdStyles[index]
-    return (
-        <td key={index} style={tdStyle}>{content}</td>
-    )
+    return <td key={index} style={tdStyle}>{content}</td>
 })
 
 const renderTrs = (contents, style) => contents.map((content, index) => (
-        <tr
-          key={index}
-          className={styles['table-tr']}
-        >
-            { renderTds(content, style) }
-        </tr>
+    <tr key={index} className={styles['table-tr']}>
+        { renderTds(content, style) }
+    </tr>
 ))
 
 const Table = (props) => {
     const { className, tableHead, tableBody, tableHeadStyle, tableBodyStyle } = props.data
     return (
         <table className={className}>
-            <thead className={styles['table-header']}>
+            <thead>
                 <tr>
                     {renderThs(tableHead, tableHeadStyle)}
                 </tr>
