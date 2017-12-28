@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import styles from './Dialog.scss'
 
 class Dialog extends Component {
-    static defaultValue = {
+    static defaultProps = {
         autoSelectInput: true,
+        handleSubmit: null,
     }
 
     static propTypes = {

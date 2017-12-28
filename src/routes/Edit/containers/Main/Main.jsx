@@ -37,7 +37,6 @@ class Edit extends React.Component {
 
     constructor() {
         super()
-        this.state = { offsetY: 0 }
         this.handleTitleChange = this.handleTitleChange.bind(this)
         this.handleDragStart = this.handleDragStart.bind(this)
         this.handleDragEnter = this.handleDragEnter.bind(this)
@@ -140,7 +139,8 @@ class Edit extends React.Component {
                     />
                     <Textarea
                       className={styles.description}
-                      placeholder={editing.description}
+                      placeholder="表单说明"
+                      value={editing.description}
                       handleSaveText={saveText('description')}
                     />
                 </div>

@@ -9,30 +9,26 @@ class App extends Component {
     constructor() {
         super()
         this.state = { isOpen: false }
-        this.showSiderbar = this.showSiderbar.bind(this)
-        this.hideSiderbar = this.hideSiderbar.bind(this)
+        this.handleOpenSiderbar = this.handleOpenSiderbar.bind(this)
+        this.handleCloseSiderbar = this.handleCloseSiderbar.bind(this)
     }
 
-    componentWillMount() {
+    componentDidMount() {
         // 点击siderbar外部区域，自动隐藏侧边栏
-        window.document.addEventListener('click', this.hideSiderbar)
+        document.addEventListener('click', this.handleCloseSiderbar)
     }
 
     componentWillUnmount() {
-        window.document.removeEventListener('click', this.hideSiderbar)
+        document.removeEventListener('click', this.handleCloseSiderbar)
     }
 
-    showSiderbar() {
-        this.setState({
-            isOpen: true,
-        })
+    handleOpenSiderbar() {
+        this.setState({ isOpen: true })
     }
 
-    hideSiderbar(e) {
-        if (e.target !== this.siderbar && e.target !== this.menuBtn) {
-            this.setState({
-                isOpen: false,
-            })
+    handleCloseSiderbar(e) {
+        if (e.target !== this.siderbar && e.target !== this.menu) {
+            this.setState({ isOpen: false })
         }
     }
 
@@ -43,26 +39,16 @@ class App extends Component {
               transitionEnterTimeout={300}
               transitionLeaveTimeout={300}
             >
-                { this.state.isOpen && <Siderbar navRef={el => (this.siderbar = el)} /> }
+                { this.state.isOpen && <Siderbar siderRef={el => (this.siderbar = el)} /> }
             </CSSTransitionGroup>
         )
     }
 
     render() {
-        const siderbar = (
-            <CSSTransitionGroup
-              transitionName="slide"
-              transitionEnterTimeout={300}
-              transitionLeaveTimeout={300}
-            >
-                {this.state.isOpen && <Siderbar navRef={el => (this.siderbar = el)} />}
-            </CSSTransitionGroup>
-        )
-
         return (
             <div className={styles.container}>
-                <Header onClick={this.showSiderbar} btnRef={el => (this.menuBtn = el)} />
-                {siderbar}
+                <Header onClick={this.handleOpenSiderbar} btnRef={el => (this.menu = el)} />
+                {this.renderSiderbar()}
                 <Home />
             </div>
         )

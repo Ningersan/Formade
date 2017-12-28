@@ -9,7 +9,7 @@ class DropdownMenu extends Component {
         wrapClassName: PropTypes.string.isRequired,
         menuClassName: PropTypes.string,
         children: PropTypes.array.isRequired,
-        button: PropTypes.element.isRequired,
+        toggle: PropTypes.element.isRequired,
     }
 
     static defaultProps = {
@@ -31,15 +31,15 @@ class DropdownMenu extends Component {
     }
 
     handleClick(e) {
-        if (this.button) {
+        if (this.toggle) {
             this.setState(prevState => ({
-                isOpen: this.button.contains(e.target) && !prevState.isOpen,
+                isOpen: this.toggle.contains(e.target) && !prevState.isOpen,
             }))
         }
     }
 
     render() {
-        const { wrapClassName, menuClassName, button, children } = this.props
+        const { wrapClassName, menuClassName, toggle, children } = this.props
         const menuClassNames = classnames({
             [menuClassName]: menuClassName && true,
             [styles.menu]: true,
@@ -50,9 +50,9 @@ class DropdownMenu extends Component {
               role="button"
               tabIndex="0"
               className={wrapClassName}
-              ref={(el) => { this.button = el }}
+              ref={(el) => { this.toggle = el }}
             >
-                {button}
+                {toggle}
                 {this.state.isOpen &&
                     <Menu wrapClassName={menuClassNames}>
                         {children}

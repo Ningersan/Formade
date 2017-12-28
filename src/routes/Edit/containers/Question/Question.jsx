@@ -120,7 +120,7 @@ class Question extends Component {
             <DropdownMenu
               wrapClassName={styles['type-chooser']}
               menuStyle={menuStyle}
-              button={dropdownButton}
+              toggle={dropdownButton}
             >
                 <div
                   role="button"

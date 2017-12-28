@@ -34,12 +34,12 @@ class Home extends Component {
 
     constructor() {
         super()
-        this.state = { showDialog: false }
-        this.handleshowDialog = this.handleshowDialog.bind(this)
+        this.state = { isDialogOpen: false }
+        this.handleToggleDialog = this.handleToggleDialog.bind(this)
     }
 
-    handleshowDialog(flag) {
-        this.setState({ showDialog: flag })
+    handleToggleDialog(flag) {
+        this.setState({ isDialogOpen: flag })
     }
 
     getTableBodyData() {
@@ -101,10 +101,10 @@ class Home extends Component {
 
     renderDialog() {
         const { renameQuestionnaire } = this.props
-        return this.state.showDialog &&
+        return this.state.isDialogOpen &&
             <Dialog
               autoSelectInput
-              handleShow={this.handleshowDialog}
+              handleShow={this.handleToggleDialog}
               handleSubmit={renameQuestionnaire}
             />
     }
@@ -130,12 +130,12 @@ class Home extends Component {
             <DropdownMenu
               wrapClassName={styles.dropdown}
               menuClassName={styles['dropdown-menu']}
-              button={dropdownButton}
+              toggle={dropdownButton}
             >
                 <Icon
                   wrapClassName={styles['rename-button']}
                   className={'iconfont icon-aa'}
-                  handleClick={() => { this.handleshowDialog(true) }}
+                  handleClick={() => { this.handleToggleDialog(true) }}
                 >
                     <span className={styles['icon-text']}>重命名</span>
                 </Icon>
