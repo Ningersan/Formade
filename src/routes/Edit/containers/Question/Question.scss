@@ -59,6 +59,7 @@
             }
         }
         .type-item {
+            display: inline-block;
             padding: .8em 1.5em;
             list-style: none;
             &:hover {
@@ -157,13 +158,9 @@
         overflow: hidden;
         .footer-right {
             float: right;
-            > div {
+            > a {
                 display: inline-block;
-                width: 3rem;
-                height: 3rem;
-                font-size: 22px;
-                text-align: center;
-                line-height: 3rem;
+                padding: .5em;
                 color: $edit-icon-color;
                 cursor: pointer;
             }
@@ -178,9 +175,8 @@
                 }
             }
             .required-toggle {
-                margin-top: -2px;
                 width: 4em;
-                vertical-align: bottom;
+                vertical-align: 2px;
                 font-size: 1rem;
                 .required {
                     display: inline-block;
@@ -190,11 +186,10 @@
                     vertical-align: middle;
                 }
             }
-            .more {
-                .more-icon {
-                    vertical-align: middle;
-                    font-size: .7em;
-                }
+            .show-more-button {
+                padding: 1em;
+                vertical-align: middle;
+                font-size: .7em;
             }
         }
     }

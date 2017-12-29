@@ -56,6 +56,26 @@ class Home extends Component {
         })
     }
 
+    getTableData() {
+        return {
+            className: styles['form-list'],
+            tableHead: ['表单名称', '状态', '截止日期', '操作'],
+            tableBody: this.getTableBodyData(),
+            tableHeadStyle: [
+                { width: '60%', paddingLeft: '1.5em' },
+                { width: '12%', paddingLeft: '0.3em' },
+                { width: '22%', paddingLeft: '2.5em' },
+                { paddingLeft: '1.5em' },
+            ],
+            tableBodyStyle: [
+                { width: '60%' },
+                { width: '12%' },
+                { width: '22%', paddingLeft: '1.5em' },
+                { paddingLeft: '1.8em' },
+            ],
+        }
+    }
+
     renderAddButton() {
         return (
             <Link
@@ -78,35 +98,18 @@ class Home extends Component {
     }
 
     renderFormList() {
-        const tableData = {
-            className: styles['form-list'],
-            tableHead: ['表单名称', '状态', '截止日期', '操作'],
-            tableBody: this.getTableBodyData(),
-            tableHeadStyle: [
-                { width: '60%', paddingLeft: '1.5em' },
-                { width: '12%', paddingLeft: '0.3em' },
-                { width: '22%', paddingLeft: '2.5em' },
-                { paddingLeft: '1.5em' },
-            ],
-            tableBodyStyle: [
-                { width: '60%' },
-                { width: '12%' },
-                { width: '22%', paddingLeft: '1.5em' },
-                { paddingLeft: '1.8em' },
-            ],
-        }
-
-        return <Table data={tableData} />
+        return <Table data={this.getTableData()} />
     }
 
     renderDialog() {
         const { renameQuestionnaire } = this.props
-        return this.state.isDialogOpen &&
+        return (
             <Dialog
               autoSelectInput
               handleShow={this.handleToggleDialog}
               handleSubmit={renameQuestionnaire}
             />
+        )
     }
 
     renderDropDownMenu(index) {
@@ -158,6 +161,7 @@ class Home extends Component {
     }
 
     render() {
+        const { isDialogOpen } = this.state
         const { questionnaires } = this.props
 
         return (
@@ -165,17 +169,15 @@ class Home extends Component {
                 <div className={styles.header}>
                     <div className={styles.recent}>近期表单</div>
                     { questionnaires.length > 0 &&
-                        (
-                            <div className={styles['menu-bar-right']}>
-                                {this.renderAddButton()}
-                            </div>
-                        )
+                        <div className={styles['menu-bar-right']}>
+                            {this.renderAddButton()}
+                        </div>
                     }
                 </div>
                 <div className={styles['docs-items']}>
                     { questionnaires.length > 0 ? this.renderFormList() : this.renderEmptyScreen() }
                 </div>
-                {this.renderDialog()}
+                {isDialogOpen && this.renderDialog()}
             </div>
         )
     }

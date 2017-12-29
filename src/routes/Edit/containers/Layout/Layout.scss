@@ -8,7 +8,7 @@ body {
     background-color: $edit-bg-color;
 }
 
-.top {
+.headerbar {
     position: absolute;
     top: 0;
     left: 0;
@@ -24,7 +24,7 @@ body {
         width: 100%;
         height: 2.5em;
         color: $white;
-        .left {
+        .header-left {
             float: left;
             text-align: center;
             .backup-link {
@@ -44,7 +44,7 @@ body {
                 }
             }
         }
-        .right {
+        .header-right {
             display: flex;
             align-items: center;
             float: right;
@@ -73,7 +73,7 @@ body {
             }
         }
     }
-    .footer {
+    .nav-tab {
         position: absolute;
         bottom: 0;
         width: 100%;
@@ -110,7 +110,7 @@ body {
     }
 }
 
-.main {
+.questionnaire {
     margin: 0 auto 12rem auto;
     width: 100%;
     background-color: $white;

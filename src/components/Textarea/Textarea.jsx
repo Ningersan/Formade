@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import classnames from 'classnames'
+import styles from './Textarea.scss'
 
 class Textarea extends Component {
+    static defaultProps = {
+        value: null,
+    }
+
     static propTypes = {
-        value: PropTypes.string.isRequired,
+        value: PropTypes.string,
         placeholder: PropTypes.string.isRequired,
         className: PropTypes.string.isRequired,
         handleSaveText: PropTypes.func.isRequired,
@@ -24,11 +30,16 @@ class Textarea extends Component {
 
     render() {
         const { className, placeholder, value, handleSaveText } = this.props
+        const classNames = classnames({
+            [styles.textarea]: true,
+            [className]: className && true,
+        })
+
         return (
             <div
               ref={(el) => { this.textarea = el }}
               placeholder={placeholder}
-              className={className}
+              className={classNames}
               onBlur={handleSaveText && this.handleBlur}
             >
                 {value}

@@ -54,30 +54,28 @@ class Question extends Component {
     render() {
         const { title, type, isFilled, isRequired, handleSaveText } = this.props
         const options = this.props.options.map(this.renderOption)
+        const questionStyle = { backgroundColor: '#ffebee' }
         const text = (
             <Textarea
               className={styles.textarea}
               placeholder="您的回答"
-              onSaveText={handleSaveText}
+              handleSaveText={handleSaveText}
             />
         )
-        const questionStyle = {
-            backgroundColor: '#ffebee',
-        }
 
         return (
             <div className={styles.question} style={isFilled ? questionStyle : null}>
                 <div className={styles.title}>
                     {title}
                     {isRequired &&
-                        (<span className={styles['tips-text']}>*</span>)
+                        <span className={styles['tips-text']}>*</span>
                     }
                 </div>
                 <div className={styles['option-list']}>
                     {type === 'text' ? text : options}
                 </div>
                 {this.props.isFilled &&
-                    (<div className={styles['warning-text']}>此问题必须填写</div>)
+                    <div className={styles['warning-text']}>此问题必须填写</div>
                 }
             </div>
         )

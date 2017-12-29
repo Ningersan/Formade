@@ -25,11 +25,6 @@
             width: 100%;
             margin-top: 1.5em;
             font-size: .875rem;
-            &:empty::before {
-                content: attr(placeholder);
-                display: inline-block;
-                color: $gray-light;
-            }
             &:focus {
                 border-bottom: 1.8px solid $brand-primary;
             }
@@ -58,7 +53,8 @@
                 width: 33%;
             }
         }
-        .add-question {
+        .add-question-button {
+            display: inline-block;
             width: 2em;
             height: 2.25em;
             margin: 0 auto;

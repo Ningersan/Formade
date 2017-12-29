@@ -40,8 +40,9 @@ class Fill extends Component {
         const { data, questions } = this.props.editing
         const checkRequiredIndex = (questionIndex) => {
             const answer = data[questionIndex]
-            return (answer === undefined || answer.length === 0)
+            return answer === undefined || answer.length === 0
         }
+
         questions.forEach((question, index) => {
             if (question.isRequired) {
                 requiredIndexs.push(index)
@@ -65,17 +66,13 @@ class Fill extends Component {
     }
 
     handleAddResponse() {
-        this.setState({
-            isSubmit: false,
-        })
+        this.setState({ isSubmit: false })
     }
 
     handleFill(index) {
         const { isFilled } = this.state
         isFilled[index] = false
-        this.setState({
-            isFilled,
-        })
+        this.setState({ isFilled })
     }
 
     renderMessage() {
@@ -87,7 +84,9 @@ class Fill extends Component {
                   tabIndex="-1"
                   className={styles['reanswer-link']}
                   onClick={this.handleAddResponse}
-                >另填写一份回复</a>
+                >
+                    另填写一份回复
+                </a>
             </div>
         )
     }
@@ -136,7 +135,7 @@ class Fill extends Component {
                     <div className={styles.content}>
                         <div className={styles['form-title']}>{editing.title}</div>
                         {hasRequired &&
-                            (<div className={styles.tips}><span className={styles['tips-text']}>*必填</span></div>)
+                            <div className={styles.tips}><span className={styles['tips-text']}>*必填</span></div>
                         }
                         {isStop
                             ? (

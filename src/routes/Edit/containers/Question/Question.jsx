@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import { Input, DropdownMenu } from '../../../../components/index'
+import { Input, Icon, DropdownMenu } from '../../../../components/index'
 import styles from './Question.scss'
 
 class Question extends Component {
@@ -29,7 +29,7 @@ class Question extends Component {
         this.state = { isActive: false }
         this.handleClick = this.handleClick.bind(this)
         this.renderOption = this.renderOption.bind(this)
-        this.renderTypeChooser = this.renderTypeChooser.bind(this)
+        this.renderTypeMenu = this.renderTypeMenu.bind(this)
     }
 
     componentWillMount() {
@@ -89,79 +89,8 @@ class Question extends Component {
         )
     }
 
-    renderTypeChooser() {
-        const { type, handleSetQuestionType } = this.props
-        const { curType, curTypeClassName } = {
-            radio: {
-                curType: '单选题',
-                curTypeClassName: 'iconfont icon-radiobutton',
-            },
-            checkbox: {
-                curType: '多选题',
-                curTypeClassName: 'iconfont icon-check-box',
-            },
-            text: {
-                curType: '文本',
-                curTypeClassName: 'iconfont icon-text',
-            },
-        }[type]
-
-        const dropdownButton = (
-            <div className={styles.type}>
-                <i className={curTypeClassName} />
-                <span className={styles.content}>{curType}</span>
-                <i className="fa fa-lg fa-caret-down" />
-            </div>
-        )
-
-        const menuStyle = { top: '-1em' }
-
-        return (
-            <DropdownMenu
-              wrapClassName={styles['type-chooser']}
-              menuStyle={menuStyle}
-              toggle={dropdownButton}
-            >
-                <div
-                  role="button"
-                  tabIndex="0"
-                  className={styles['type-item']}
-                  onClick={() => handleSetQuestionType('radio')}
-                >
-                    <a className={styles['radio-button']}><i className="iconfont icon-radiobutton" /></a>
-                    <span className={styles.content}>单选题</span>
-                </div>
-                <div
-                  role="button"
-                  tabIndex="0"
-                  className={styles['type-item']}
-                  onClick={() => handleSetQuestionType('checkbox')}
-                >
-                    <a className={styles['checkbox-button']}><i className="iconfont icon-check-box" /></a>
-                    <span className={styles.content}>多选题</span>
-                </div>
-                <div
-                  role="button"
-                  tabIndex="0"
-                  className={styles['type-item']}
-                  onClick={() => handleSetQuestionType('text')}
-                >
-                    <a className={styles['text-button']}><i className="iconfont icon-text" /></a>
-                    <span className={styles.content}>文本</span>
-                </div>
-            </DropdownMenu>
-        )
-    }
-
-    render() {
-        const { handleDragStart, handleDragEnter,
-            handleAddOption, handleAddOther, handleSaveTitle,
-            handleCopyQuestion, handleRemoveQuestion, handleToggleQuestion,
-        } = this.props
-        const questionClassName = classnames({
-            [styles.main]: true,
-            [styles['edit-active']]: this.state.isActive,
-        })
+    renderOptionArea() {
+        const { handleAddOption, handleAddOther } = this.props
         const options = this.props.options.map(this.renderOption)
         const addOptions = (
             <div className={styles.add}>
@@ -181,14 +110,18 @@ class Question extends Component {
                 >添加其他</span>
             </div>
         )
-        const optionArea = (
-            <div>
+
+        return (
+            <div className="option-list">
                 {options}
                 {this.props.hasOther && this.renderOther()}
                 {addOptions}
             </div>
         )
-        const textArea = (
+    }
+
+    renderTextArea() {
+        return (
             <div className={styles.textarea}>
                 <input
                   type="text"
@@ -198,6 +131,93 @@ class Question extends Component {
                 />
             </div>
         )
+    }
+
+    renderTypeMenu() {
+        const { type, handleSetQuestionType } = this.props
+        const { selectedType, selectedClassName } = {
+            radio: { selectedType: '单选题', selectedClassName: 'iconfont icon-radiobutton' },
+            checkbox: { selectedType: '多选题', selectedClassName: 'iconfont icon-check-box' },
+            text: { selectedType: '文本', selectedClassName: 'iconfont icon-text' },
+        }[type]
+
+        const dropdownButton = (
+            <Icon
+              wrapClassName={styles.type}
+              className={selectedClassName}
+            >
+                <span className={styles.content}>{selectedType}</span>
+            </Icon>
+        )
+
+        return (
+            <DropdownMenu
+              wrapClassName={styles['type-chooser']}
+              toggle={dropdownButton}
+            >
+                <Icon
+                  wrapClassName={styles['type-item']}
+                  className={'iconfont icon-radiobutton'}
+                  handleClick={() => handleSetQuestionType('radio')}
+                >
+                    <span className={styles.content}>单选题</span>
+                </Icon>
+                <Icon
+                  wrapClassName={styles['type-item']}
+                  className={'iconfont icon-check-box'}
+                  handleClick={() => handleSetQuestionType('checkbox')}
+                >
+                    <span className={styles.content}>单选题</span>
+                </Icon>
+                <Icon
+                  wrapClassName={styles['type-item']}
+                  className={'iconfont icon-text'}
+                  handleClick={() => handleSetQuestionType('text')}
+                >
+                    <span className={styles.content}>单选题</span>
+                </Icon>
+            </DropdownMenu>
+        )
+    }
+
+    renderActions() {
+        const { handleCopyQuestion, handleRemoveQuestion, handleToggleQuestion } = this.props
+        return (
+            <div className={styles.control}>
+                <div className={styles['footer-right']}>
+                    <Icon
+                      wrapClassName={styles['copy-question']}
+                      className={'iconfont icon-copydownlink'}
+                      handleClick={handleCopyQuestion}
+                    />
+                    <Icon
+                      wrapClassName={styles['delete-question']}
+                      className={'iconfont icon-delete'}
+                      handleClick={handleRemoveQuestion}
+                    />
+                    <label name="require" className={styles['required-toggle']}>
+                        <Input
+                          type="checkbox"
+                          className={styles.required}
+                          onChange={handleToggleQuestion}
+                        />
+                        <span>必填</span>
+                    </label>
+                    <Icon
+                      wrapClassName={styles['show-more-button']}
+                      className={'iconfont icon-ellipsis-v'}
+                    />
+                </div>
+            </div>
+        )
+    }
+
+    render() {
+        const { type, handleDragStart, handleDragEnter, handleSaveTitle } = this.props
+        const questionClassName = classnames({
+            [styles.main]: true,
+            [styles['edit-active']]: this.state.isActive,
+        })
 
         return (
             <div
@@ -211,7 +231,7 @@ class Question extends Component {
               onDrop={this.handleDrop}
             >
                 <div className={styles['drag-handle']}>
-                    <a className={styles['drag-icon']}><i className="iconfont icon-drag" /></a>
+                    <Icon wrapClassName={styles['drag-icon']} className={'iconfont icon-drag'} />
                 </div>
                 <Input
                   autoSelect
@@ -219,41 +239,9 @@ class Question extends Component {
                   defaultValue={this.props.title}
                   handleSaveText={handleSaveTitle}
                 />
-                {this.renderTypeChooser()}
-                {this.props.type === 'text' ? textArea : optionArea}
-                <div className={styles.control}>
-                    <div className={styles['footer-right']}>
-                        <div
-                          role="button"
-                          tabIndex="0"
-                          className={styles['copy-question']}
-                          onClick={handleCopyQuestion}
-                        >
-                            <a className={styles['copy-icon']}><i className="iconfont icon-copydownlink" /></a>
-                        </div>
-                        <div
-                          role="button"
-                          tabIndex="0"
-                          className={styles['delete-question']}
-                          onClick={handleRemoveQuestion}
-                        >
-                            <a className={styles['delete-icon']}><i className="iconfont icon-delete" /></a>
-                        </div>
-                        <div className={styles['required-toggle']}>
-                            <label>
-                                <Input
-                                  type="checkbox"
-                                  className={styles.required}
-                                  onChange={handleToggleQuestion}
-                                />
-                                必填
-                            </label>
-                        </div>
-                        <div className={styles.more}>
-                            <a className={styles['more-icon']}><i className="iconfont icon-ellipsis-v" /></a>
-                        </div>
-                    </div>
-                </div>
+                {this.renderTypeMenu()}
+                {type === 'text' ? this.renderTextArea() : this.renderOptionArea()}
+                {this.renderActions()}
             </div>
         )
     }

@@ -1,0 +1,8 @@
+@import '../../styles/variables.scss';
+
+.textarea {
+    &:empty::before {
+        content: attr(placeholder);
+        color: $gray-light;
+    }
+}

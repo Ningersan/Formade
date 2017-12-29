@@ -1,7 +1,11 @@
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
+import { createLogger } from 'redux-logger'
 import questionnaires from '../reducers/questionnaire'
 
-const store = createStore(questionnaires)
+const loggerMiddleware = createLogger()
+const store = createStore(questionnaires,
+    applyMiddleware(loggerMiddleware),
+)
 
 store.subscribe(() => {
     console.log(store.getState())

@@ -8,7 +8,7 @@ import styles from './App.scss'
 class App extends Component {
     constructor() {
         super()
-        this.state = { isOpen: false }
+        this.state = { isSiderbarOpen: false }
         this.handleOpenSiderbar = this.handleOpenSiderbar.bind(this)
         this.handleCloseSiderbar = this.handleCloseSiderbar.bind(this)
     }
@@ -23,12 +23,12 @@ class App extends Component {
     }
 
     handleOpenSiderbar() {
-        this.setState({ isOpen: true })
+        this.setState({ isSiderbarOpen: true })
     }
 
     handleCloseSiderbar(e) {
         if (e.target !== this.siderbar && e.target !== this.menu) {
-            this.setState({ isOpen: false })
+            this.setState({ isSiderbarOpen: false })
         }
     }
 
@@ -39,7 +39,7 @@ class App extends Component {
               transitionEnterTimeout={300}
               transitionLeaveTimeout={300}
             >
-                { this.state.isOpen && <Siderbar siderRef={el => (this.siderbar = el)} /> }
+                { this.state.isSiderbarOpen && <Siderbar siderRef={el => (this.siderbar = el)} /> }
             </CSSTransitionGroup>
         )
     }

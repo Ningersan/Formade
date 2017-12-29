@@ -3,11 +3,13 @@ import PropTypes from 'prop-types'
 
 class Input extends Component {
     static defaultProps = {
+        id: null,
         type: 'text',
         autoSelect: false,
     }
 
     static propTypes = {
+        id: PropTypes.string,
         type: PropTypes.string,
         autoSelect: PropTypes.bool,
         value: PropTypes.string,
@@ -32,12 +34,13 @@ class Input extends Component {
     }
 
     render() {
-        const { type, autoSelect, className, defaultValue, value,
+        const { id, type, autoSelect, className, defaultValue, value,
             handleChange, handleSaveText,
         } = this.props
 
         return (
             <input
+              id={id}
               type={type}
               className={className}
               ref={(el) => { this.input = el }}

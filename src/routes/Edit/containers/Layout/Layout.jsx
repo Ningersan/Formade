@@ -19,13 +19,13 @@ class Layout extends React.Component {
 
     constructor() {
         super()
-        this.state = { editIsActive: true }
+        this.state = { isEditing: true }
         this.handleScrollChange = this.handleScrollChange.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
         this.handleTabClick = this.handleTabClick.bind(this)
     }
 
-    componentWillMount() {
+    componentDidMount() {
         document.addEventListener('scroll', this.handleScrollChange, false)
     }
 
@@ -33,70 +33,71 @@ class Layout extends React.Component {
         document.removeEventListener('scroll', this.handleScrollChange, false)
     }
 
+    handleTabClick() {
+        this.setState(prevState => ({
+            isEditing: !prevState.isEditing,
+        }))
+    }
+
     handleTitleChange(e) {
         this.props.saveTitle(e.target.value, 'questionnaire')
     }
 
     handleScrollChange() {
-        const topArea = this.topArea
-        topArea.style.height = window.scrollY >= 58 ? '121px' : '176px'
-        topArea.style.position = window.scrollY >= 58 ? 'fixed' : 'absolute'
+        const headerbar = this.headerbar
+        headerbar.style.height = window.scrollY >= 58 ? '121px' : '176px'
+        headerbar.style.position = window.scrollY >= 58 ? 'fixed' : 'absolute'
     }
 
-    handleTabClick() {
-        this.setState(prevState => ({
-            editIsActive: !prevState.editIsActive,
-        }))
+    renderHeader() {
+        const { editing, saveQuestionnaire } = this.props
+
+        return (
+            <div className={styles.header}>
+                <div className={styles['header-left']}>
+                    <Link
+                      to="/"
+                      className={styles['backup-link']}
+                      onClick={() => saveQuestionnaire()}
+                    >
+                        <i className="iconfont icon-arrow-left" />
+                    </Link>
+                    <Input
+                      autoSelect
+                      className={styles.title}
+                      value={editing.title}
+                      handleChange={this.handleTitleChange}
+                    />
+                </div>
+                <div className={styles['header-right']}>
+                    <Link
+                      to="/fill"
+                      className={styles['fill-link']}
+                      onClick={saveQuestionnaire}
+                    >
+                        <i className="iconfont icon-tianxie" />
+                    </Link>
+                    <Link to="/" className={styles['home-link']}>
+                        <i className="iconfont icon-info" />
+                    </Link>
+                    <a className={styles.save}>保存</a>
+                </div>
+            </div>
+        )
     }
 
-    render() {
-        const { editing, saveQuestionnaire, children } = this.props
-
+    renderNavTab() {
         const editorTabClassName = classnames({
             [styles.content]: true,
-            [styles.active]: this.state.editIsActive,
+            [styles.active]: this.state.isEditing,
         })
         const responseTabClassName = classnames({
             [styles.content]: true,
-            [styles.active]: !this.state.editIsActive,
+            [styles.active]: !this.state.isEditing,
         })
 
-        const headerLeft = (
-            <div className={styles.left}>
-                <Link
-                  to="/"
-                  className={styles['backup-link']}
-                  onClick={() => saveQuestionnaire()}
-                >
-                    <i className="iconfont icon-arrow-left" />
-                </Link>
-                <Input
-                  autoSelect
-                  className={styles.title}
-                  value={editing.title}
-                  handleChange={this.handleTitleChange}
-                />
-            </div>
-        )
-
-        const headerRight = (
-            <div className={styles.right}>
-                <Link
-                  to="/fill"
-                  className={styles['fill-link']}
-                  onClick={saveQuestionnaire}
-                >
-                    <i className="iconfont icon-tianxie" />
-                </Link>
-                <Link to="/" className={styles['home-link']}>
-                    <i className="iconfont icon-info" />
-                </Link>
-                <a className={styles.save}>保存</a>
-            </div>
-        )
-
-        const topFooter = (
-            <div className={styles.footer}>
+        return (
+            <div className={styles['nav-tab']}>
                 <div className={styles.tab}>
                     <div className={styles['content-wrap']}>
                         <Link
@@ -113,25 +114,20 @@ class Layout extends React.Component {
                 </div>
             </div>
         )
+    }
 
-        const topAreaStyle = {
-            position: 'absolute',
-        }
-
+    render() {
         return (
-            <div>
+            <div className="layout">
                 <div
-                  ref={el => (this.topArea = el)}
-                  className={styles.top}
-                  style={topAreaStyle}
+                  ref={el => this.headerbar = el}
+                  className={styles.headerbar}
+                  style={{ position: 'absolute' }}
                 >
-                    <div className={styles.header}>
-                        {headerLeft}
-                        {headerRight}
-                    </div>
-                    {topFooter}
+                    {this.renderHeader()}
+                    {this.renderNavTab()}
                 </div>
-                <div className={styles.main}>{children}</div>
+                <div className={styles.questionnaire}>{this.props.children}</div>
             </div>
         )
     }

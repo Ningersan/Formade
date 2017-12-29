@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Menu, Input, Textarea } from '../../../../components/index'
+import { Menu, Icon, Input, Textarea } from '../../../../components/index'
 import Question from '../Question/Question'
 import * as questionnaireActions from '../../../../actions/questionnaire'
 import styles from './Main.scss'
@@ -41,7 +41,6 @@ class Edit extends React.Component {
         this.handleDragStart = this.handleDragStart.bind(this)
         this.handleDragEnter = this.handleDragEnter.bind(this)
     }
-
 
     handleTitleChange(e) {
         this.props.saveTitle(null)(e.target.value, 'questionnaire')
@@ -118,13 +117,9 @@ class Edit extends React.Component {
         return placeholder
     }
 
-    render() {
-        const { editing, saveText, addQuestion, saveTitle, setQuestionType,
-            toggleQuestion, copyQuestion, removeQuestion, addOption,
-            editOption, removeOption, addOther, removeOther,
-         } = this.props
-
-        const header = (
+    renderHeader() {
+        const { editing, saveText } = this.props
+        return (
             <div
               tabIndex="-1"
               className={styles.header}
@@ -146,48 +141,46 @@ class Edit extends React.Component {
                 </div>
             </div>
         )
+    }
 
-        const menu = (
+    renderMenu() {
+        const { addQuestion } = this.props
+        return (
             <Menu
               wrapClassName={styles.menu}
               itemClassName={styles['menu-item']}
             >
-                <div
-                  role="button"
-                  tabIndex="0"
-                  title="添加单选"
-                  className={styles['add-question']}
-                  onClick={() => addQuestion('radio')}
-                >
-                    <a className={styles['radio-button']}><i className="iconfont icon-radiobutton" /></a>
-                </div>
-                <div
-                  role="button"
-                  tabIndex="0"
-                  title="添加多选"
-                  className={styles['add-question']}
-                  onClick={() => addQuestion('checkbox')}
-                >
-                    <a className={styles['checkbox-button']}><i className="iconfont icon-check-box" /></a>
-                </div>
-                <div
-                  role="button"
-                  tabIndex="0"
-                  title="添加文本"
-                  className={styles['add-question']}
-                  onClick={() => addQuestion('text')}
-                >
-                    <a className={styles['text-button']}><i className="iconfont icon-text" /></a>
-                </div>
+                <Icon
+                  wrapClassName={styles['add-question-button']}
+                  className={'iconfont icon-radiobutton'}
+                  handleClick={() => addQuestion('radio')}
+                />
+                <Icon
+                  wrapClassName={styles['add-question-button']}
+                  className={'iconfont icon-check-box'}
+                  handleClick={() => addQuestion('checkbox')}
+                />
+                <Icon
+                  wrapClassName={styles['add-question-button']}
+                  className={'iconfont icon-text'}
+                  handleClick={() => addQuestion('text')}
+                />
             </Menu>
         )
+    }
 
-        const questions = editing.questions
+    render() {
+        const { editing, saveTitle, setQuestionType,
+            toggleQuestion, copyQuestion, removeQuestion, addOption,
+            editOption, removeOption, addOther, removeOther,
+         } = this.props
+
+        const { questions } = editing
 
         return (
             <div className={styles.wrap}>
-                {menu}
-                {header}
+                {this.renderMenu()}
+                {this.renderHeader()}
                 {questions.map((question, index) => (
                     <Question
                       key={question.id}
