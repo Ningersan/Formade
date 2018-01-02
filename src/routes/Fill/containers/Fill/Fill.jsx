@@ -26,6 +26,9 @@ class Fill extends Component {
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleAddResponse = this.handleAddResponse.bind(this)
         this.handleFill = this.handleFill.bind(this)
+        this.handleChooseOption = this.handleChooseOption.bind(this)
+        this.handleSaveText = this.handleSaveText.bind(this)
+        this.handleSubmitQuestionnaire = this.handleSubmitQuestionnaire.bind(this)
     }
 
     componentWillMount() {
@@ -55,7 +58,7 @@ class Fill extends Component {
         const unfilledIndexArr = this.getUnfilledIndex()
         if (unfilledIndexArr.length === 0) {
             this.setState({ isSubmit: true })
-            this.props.submitQuestionnaire()
+            this.handleSubmitQuestionnaire()
         } else {
             const { isFilled } = this.state
             unfilledIndexArr.forEach((index) => {
@@ -75,6 +78,21 @@ class Fill extends Component {
         this.setState({ isFilled })
     }
 
+    handleChooseOption(questionId) {
+        const { chooseOption } = this.props
+        return (optionId, type) => chooseOption(questionId, optionId, type)
+    }
+
+    handleSaveText(questionId, type) {
+        const { saveText } = this.props
+        return text => saveText(text, type, questionId)
+    }
+
+    handleSubmitQuestionnaire() {
+        const { submitQuestionnaire } = this.props
+        submitQuestionnaire()
+    }
+
     renderMessage() {
         return (
             <div className={styles['response-field']}>
@@ -92,7 +110,7 @@ class Fill extends Component {
     }
 
     renderQuestions() {
-        const { editing, chooseOption, saveText } = this.props
+        const { editing } = this.props
 
         return editing.questions.map((question, index) => (
             <Question
@@ -103,8 +121,8 @@ class Fill extends Component {
               isRequired={question.isRequired}
               options={question.options}
               handleFill={() => { this.handleFill(index) }}
-              handleChooseOption={chooseOption(index)}
-              handleSaveText={saveText(index, 'answer')}
+              handleChooseOption={this.handleChooseOption(index)}
+              handleSaveText={this.handleSaveText(index, 'answer')}
             />
         ))
     }
@@ -169,15 +187,11 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    chooseOption(questionId) {
-        return (optionId, type) => {
-            dispatch(questionnaireActions.chooseOption(questionId, optionId, type))
-        }
+    chooseOption(questionId, optionId, type) {
+        dispatch(questionnaireActions.chooseOption(questionId, optionId, type))
     },
-    saveText(questionId, type) {
-        return (text) => {
-            dispatch(questionnaireActions.saveText(text, type, questionId))
-        }
+    saveText(text, type, questionId) {
+        dispatch(questionnaireActions.saveText(text, type, questionId))
     },
     submitQuestionnaire() {
         dispatch(questionnaireActions.submitQuestionnaire())

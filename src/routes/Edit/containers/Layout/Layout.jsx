@@ -23,6 +23,7 @@ class Layout extends React.Component {
         this.handleScrollChange = this.handleScrollChange.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
         this.handleTabClick = this.handleTabClick.bind(this)
+        this.handleSaveQuestionnaire = this.handleSaveQuestionnaire.bind(this)
     }
 
     componentDidMount() {
@@ -40,7 +41,8 @@ class Layout extends React.Component {
     }
 
     handleTitleChange(e) {
-        this.props.saveTitle(e.target.value, 'questionnaire')
+        const { saveTitle } = this.props
+        saveTitle(e.target.value, 'questionnaire')
     }
 
     handleScrollChange() {
@@ -49,8 +51,13 @@ class Layout extends React.Component {
         headerbar.style.position = window.scrollY >= 58 ? 'fixed' : 'absolute'
     }
 
+    handleSaveQuestionnaire() {
+        const { saveQuestionnaire } = this.props
+        saveQuestionnaire()
+    }
+
     renderHeader() {
-        const { editing, saveQuestionnaire } = this.props
+        const { editing } = this.props
 
         return (
             <div className={styles.header}>
@@ -58,7 +65,7 @@ class Layout extends React.Component {
                     <Link
                       to="/"
                       className={styles['backup-link']}
-                      onClick={() => saveQuestionnaire()}
+                      onClick={this.handleSaveQuestionnaire}
                     >
                         <i className="iconfont icon-arrow-left" />
                     </Link>
@@ -73,7 +80,7 @@ class Layout extends React.Component {
                     <Link
                       to="/fill"
                       className={styles['fill-link']}
-                      onClick={saveQuestionnaire}
+                      onClick={this.handleSaveQuestionnaire}
                     >
                         <i className="iconfont icon-tianxie" />
                     </Link>
@@ -143,9 +150,6 @@ const mapDispatchToProps = dispatch => ({
     },
     saveQuestionnaire() {
         dispatch(questionnaireActions.saveQuestionnaire())
-    },
-    fillQuestionnaire() {
-        dispatch(questionnaireActions.fillQuestionnaire())
     },
 })
 

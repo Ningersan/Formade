@@ -35,6 +35,11 @@ class Home extends Component {
     constructor() {
         super()
         this.state = { isDialogOpen: false }
+        this.handleAddQuestionnaire = this.handleAddQuestionnaire.bind(this)
+        this.handleEditQuestionnaire = this.handleEditQuestionnaire.bind(this)
+        this.handleRenameQuestionnaire = this.handleRenameQuestionnaire.bind(this)
+        this.handleRemoveQuestionnaire = this.handleRemoveQuestionnaire.bind(this)
+        this.handleStopResponse = this.handleStopResponse.bind(this)
         this.handleToggleDialog = this.handleToggleDialog.bind(this)
     }
 
@@ -42,13 +47,38 @@ class Home extends Component {
         this.setState({ isDialogOpen: flag })
     }
 
+    handleAddQuestionnaire() {
+        const { addQuestionnaire } = this.props
+        addQuestionnaire()
+    }
+
+    handleEditQuestionnaire() {
+        const { editQuestionnaire } = this.props
+        return index => editQuestionnaire(index)
+    }
+
+    handleRenameQuestionnaire(value, index) {
+        const { renameQuestionnaire } = this.props
+        renameQuestionnaire(value, index)
+    }
+
+    handleRemoveQuestionnaire(index) {
+        const { removeQuestionnaire } = this.props
+        removeQuestionnaire(index)
+    }
+
+    handleStopResponse(index) {
+        const { stopResponse } = this.props
+        stopResponse(index)
+    }
+
     getTableBodyData() {
-        const { questionnaires, editQuestionnaire } = this.props
+        const { questionnaires } = this.props
 
         return questionnaires.map((questionnaire, index) => {
             const { title, status, deadline } = questionnaire
             return [
-                QuestionnaireTitle(title, () => editQuestionnaire(index)),
+                QuestionnaireTitle(title, this.handleEditQuestionnaire),
                 QuestionnaireStatus(status),
                 QuestionnaireDeadline(deadline),
                 this.renderDropDownMenu(index),
@@ -81,7 +111,7 @@ class Home extends Component {
             <Link
               to="/edit"
               className={styles['add-form-btn']}
-              onClick={this.props.addQuestionnaire}
+              onClick={this.handleAddQuestionnaire}
             >
                 新建表单
             </Link>
@@ -102,19 +132,16 @@ class Home extends Component {
     }
 
     renderDialog() {
-        const { renameQuestionnaire } = this.props
         return (
             <Dialog
               autoSelectInput
               handleShow={this.handleToggleDialog}
-              handleSubmit={renameQuestionnaire}
+              handleSubmit={this.handleRenameQuestionnaire}
             />
         )
     }
 
     renderDropDownMenu(index) {
-        const { removeQuestionnaire, stopResponse } = this.props
-
         // toggle resonse button state
         const isStop = this.props.questionnaires[index].stopResponse
         const start = { responseText: '开始回复', responseClassName: 'iconfont icon-start' }
@@ -145,14 +172,14 @@ class Home extends Component {
                 <Icon
                   wrapClassName={styles['delete-button']}
                   className={'iconfont icon-lajitong'}
-                  handleClick={() => removeQuestionnaire(index)}
+                  handleClick={() => this.handleRemoveQuestionnaire(index)}
                 >
                     <span className={styles['icon-text']}>删除</span>
                 </Icon>
                 <Icon
                   wrapClassName={styles['release-button']}
                   className={responseClassName}
-                  handleClick={() => stopResponse(index)}
+                  handleClick={() => this.handleStopResponse(index)}
                 >
                     <span className={styles['icon-text']}>{responseText}</span>
                 </Icon>

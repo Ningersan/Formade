@@ -37,13 +37,91 @@ class Edit extends React.Component {
 
     constructor() {
         super()
+        this.handleSaveText = this.handleSaveText.bind(this)
+        this.handleSaveTitle = this.handleSaveTitle.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
+        this.handleAddQuestion = this.handleAddQuestion.bind(this)
+        this.handleSetQuestionType = this.handleSetQuestionType.bind(this)
+        this.handleToggleQuestion = this.handleToggleQuestion.bind(this)
+        this.handleCopyQuestion = this.handleCopyQuestion.bind(this)
+        this.handleSortQuestion = this.handleSortQuestion.bind(this)
+        this.handleRemoveQuestion = this.handleRemoveQuestion.bind(this)
+        this.handleAddOption = this.handleAddOption.bind(this)
+        this.handleEditOption = this.handleEditOption.bind(this)
+        this.handleRemoveOption = this.handleRemoveOption.bind(this)
+        this.handleAddOther = this.handleAddOther.bind(this)
+        this.handleRemoveOther = this.handleRemoveOther.bind(this)
         this.handleDragStart = this.handleDragStart.bind(this)
         this.handleDragEnter = this.handleDragEnter.bind(this)
     }
 
     handleTitleChange(e) {
-        this.props.saveTitle(null)(e.target.value, 'questionnaire')
+        this.handleSaveTitle(null)(e.target.value.trim(), 'questionnaire')
+    }
+
+    handleSaveText(type) {
+        const { saveText } = this.props
+        return text => saveText(text, type)
+    }
+
+    handleSaveTitle(questionIndex) {
+        const { saveTitle } = this.props
+        return (title, type) => saveTitle(title, type, questionIndex)
+    }
+
+    handleAddQuestion(type) {
+        const { addQuestion } = this.props
+        addQuestion(type)
+    }
+
+    handleSetQuestionType(index) {
+        const { setQuestionType } = this.props
+        return type => setQuestionType(index, type)
+    }
+
+    handleToggleQuestion(index) {
+        const { toggleQuestion } = this.props
+        toggleQuestion(index)
+    }
+
+    handleCopyQuestion(index) {
+        const { copyQuestion } = this.props
+        copyQuestion(index)
+    }
+
+    handleSortQuestion(sourceIndex, targetIndex) {
+        const { sortQuestion } = this.props
+        sortQuestion(sourceIndex, targetIndex)
+    }
+
+    handleRemoveQuestion(index) {
+        const { removeQuestion } = this.props
+        removeQuestion(index)
+    }
+
+    handleAddOption(index) {
+        const { addOption } = this.props
+        addOption(index)
+    }
+
+    handleEditOption(questionIndex) {
+        const { editOption } = this.props
+        return optionIndex => e => editOption(questionIndex, optionIndex, e)
+    }
+
+    handleRemoveOption(questionIndex) {
+        const { removeOption } = this.props
+        return optionIndex => removeOption(questionIndex, optionIndex)
+    }
+
+    handleAddOther(index) {
+        const { addOther } = this.props
+        addOther(index)
+    }
+
+    handleRemoveOther(index) {
+        const { removeOther } = this.props
+        removeOther(index)
     }
 
     handleDragStart(index) {
@@ -103,7 +181,7 @@ class Edit extends React.Component {
         placeholder.style.height = `${dragElement.offsetHeight}px`
 
         placeholder.addEventListener('drop', () => {
-            this.props.sortQuestion(from, to)
+            this.handleSortQuestion(from, to)
             dragElement.style.display = 'block'
             dragElement.parentNode.removeChild(placeholder)
         }, false)
@@ -118,7 +196,7 @@ class Edit extends React.Component {
     }
 
     renderHeader() {
-        const { editing, saveText } = this.props
+        const { editing } = this.props
         return (
             <div
               tabIndex="-1"
@@ -136,7 +214,7 @@ class Edit extends React.Component {
                       className={styles.description}
                       placeholder="表单说明"
                       value={editing.description}
-                      handleSaveText={saveText('description')}
+                      handleSaveText={this.handleSaveText('description')}
                     />
                 </div>
             </div>
@@ -144,7 +222,6 @@ class Edit extends React.Component {
     }
 
     renderMenu() {
-        const { addQuestion } = this.props
         return (
             <Menu
               wrapClassName={styles.menu}
@@ -153,29 +230,24 @@ class Edit extends React.Component {
                 <Icon
                   wrapClassName={styles['add-question-button']}
                   className={'iconfont icon-radiobutton'}
-                  handleClick={() => addQuestion('radio')}
+                  handleClick={() => this.handleAddQuestion('radio')}
                 />
                 <Icon
                   wrapClassName={styles['add-question-button']}
                   className={'iconfont icon-check-box'}
-                  handleClick={() => addQuestion('checkbox')}
+                  handleClick={() => this.handleAddQuestion('checkbox')}
                 />
                 <Icon
                   wrapClassName={styles['add-question-button']}
                   className={'iconfont icon-text'}
-                  handleClick={() => addQuestion('text')}
+                  handleClick={() => this.handleAddQuestion('text')}
                 />
             </Menu>
         )
     }
 
     render() {
-        const { editing, saveTitle, setQuestionType,
-            toggleQuestion, copyQuestion, removeQuestion, addOption,
-            editOption, removeOption, addOther, removeOther,
-         } = this.props
-
-        const { questions } = editing
+        const { editing: { questions } } = this.props
 
         return (
             <div className={styles.wrap}>
@@ -190,16 +262,16 @@ class Edit extends React.Component {
                       handleDragStart={this.handleDragStart(index)}
                       handleDragEnter={this.handleDragEnter(index)}
                       hasOther={question.hasOther}
-                      handleSaveTitle={saveTitle(index)}
-                      handleSetQuestionType={setQuestionType(index)}
-                      handleToggleQuestion={() => toggleQuestion(index)}
-                      handleCopyQuestion={() => copyQuestion(index)}
-                      handleRemoveQuestion={() => removeQuestion(index)}
-                      handleAddOption={() => addOption(index)}
-                      handleOptionChange={editOption(index)}
-                      handleRemoveOption={removeOption(index)}
-                      handleAddOther={() => addOther(index)}
-                      handleRemoveOther={() => removeOther(index)}
+                      handleSaveTitle={this.handleSaveTitle(index)}
+                      handleSetQuestionType={this.handleSetQuestionType(index)}
+                      handleToggleQuestion={() => this.handleToggleQuestion(index)}
+                      handleCopyQuestion={() => this.handleCopyQuestion(index)}
+                      handleRemoveQuestion={() => this.handleRemoveQuestion(index)}
+                      handleAddOption={() => this.handleAddOption(index)}
+                      handleOptionChange={this.handleEditOption(index)}
+                      handleRemoveOption={this.handleRemoveOption(index)}
+                      handleAddOther={() => this.handleAddOther(index)}
+                      handleRemoveOther={() => this.handleRemoveOther(index)}
                     />
                 ))}
             </div>
@@ -212,23 +284,17 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    saveTitle(questionIndex) {
-        return (title, type) => {
-            dispatch(questionnaireActions.saveTitle(title, type, questionIndex))
-        }
+    saveTitle(title, type, questionIndex) {
+        dispatch(questionnaireActions.saveTitle(title, type, questionIndex))
     },
-    saveText(type) {
-        return (text) => {
-            dispatch(questionnaireActions.saveText(text, type))
-        }
+    saveText(text, type) {
+        dispatch(questionnaireActions.saveText(text, type))
     },
     addQuestion(type) {
         dispatch(questionnaireActions.addQuestion(type))
     },
-    setQuestionType(index) {
-        return (type) => {
-            dispatch(questionnaireActions.setQuestionType(index, type))
-        }
+    setQuestionType(index, type) {
+        dispatch(questionnaireActions.setQuestionType(index, type))
     },
     toggleQuestion(index) {
         dispatch(questionnaireActions.toggleQuestion(index))
@@ -245,15 +311,11 @@ const mapDispatchToProps = dispatch => ({
     addOption(index) {
         dispatch(questionnaireActions.addOption(index))
     },
-    editOption(questionIndex) {
-        return optionIndex => (e) => {
-            dispatch(questionnaireActions.editOption(questionIndex, optionIndex, e))
-        }
+    editOption(questionIndex, optionIndex, e) {
+        dispatch(questionnaireActions.editOption(questionIndex, optionIndex, e))
     },
-    removeOption(questionIndex) {
-        return (optionIndex) => {
-            dispatch(questionnaireActions.removeOption(questionIndex, optionIndex))
-        }
+    removeOption(questionIndex, optionIndex) {
+        dispatch(questionnaireActions.removeOption(questionIndex, optionIndex))
     },
     addOther(index) {
         dispatch(questionnaireActions.addOther(index))
