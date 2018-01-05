@@ -5,3 +5,5 @@ export function range(number) {
 export function deepCopy(obj) {
     return JSON.parse(JSON.stringify(obj))
 }
+
+export const generatorUid = () => `${new Date()}${Math.floor(Math.random())}`

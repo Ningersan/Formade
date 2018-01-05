@@ -1,4 +1,4 @@
-import { deepCopy } from '../scripts/utils'
+import { deepCopy, generatorUid } from '../scripts/utils'
 
 let nextQuestionId = 0
 const list = localStorage.list ? JSON.parse(localStorage.list) : []
@@ -115,7 +115,7 @@ const questionnaires = (state = initState, action) => {
             const { index } = action.payload
             const questions = editing.questions
             const targetQuestion = deepCopy(questions[index])
-            targetQuestion.id++
+            targetQuestion.id = generatorUid()
             questions.splice((index + 1), 0, targetQuestion)
             return { ...state, editing }
         }
