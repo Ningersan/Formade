@@ -1,5 +1,7 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Menu, Icon, Input, Textarea } from '../../../../components/index'
@@ -20,19 +22,21 @@ class Edit extends React.Component {
                     options: PropTypes.array.isRequired,
                 }).isRequired).isRequired,
         }).isRequired,
-        saveText: PropTypes.func.isRequired,
-        saveTitle: PropTypes.func.isRequired,
-        addQuestion: PropTypes.func.isRequired,
-        setQuestionType: PropTypes.func.isRequired,
-        toggleQuestion: PropTypes.func.isRequired,
-        copyQuestion: PropTypes.func.isRequired,
-        sortQuestion: PropTypes.func.isRequired,
-        removeQuestion: PropTypes.func.isRequired,
-        addOption: PropTypes.func.isRequired,
-        editOption: PropTypes.func.isRequired,
-        removeOption: PropTypes.func.isRequired,
-        addOther: PropTypes.func.isRequired,
-        removeOther: PropTypes.func.isRequired,
+        actions: PropTypes.shape({
+            saveText: PropTypes.func.isRequired,
+            saveTitle: PropTypes.func.isRequired,
+            addQuestion: PropTypes.func.isRequired,
+            setQuestionType: PropTypes.func.isRequired,
+            toggleQuestion: PropTypes.func.isRequired,
+            copyQuestion: PropTypes.func.isRequired,
+            sortQuestion: PropTypes.func.isRequired,
+            removeQuestion: PropTypes.func.isRequired,
+            addOption: PropTypes.func.isRequired,
+            editOption: PropTypes.func.isRequired,
+            removeOption: PropTypes.func.isRequired,
+            addOther: PropTypes.func.isRequired,
+            removeOther: PropTypes.func.isRequired,
+        }).isRequired,
     }
 
     constructor() {
@@ -60,67 +64,67 @@ class Edit extends React.Component {
     }
 
     handleSaveText(type) {
-        const { saveText } = this.props
+        const { saveText } = this.props.actions
         return text => saveText(text, type)
     }
 
     handleSaveTitle(questionIndex) {
-        const { saveTitle } = this.props
+        const { saveTitle } = this.props.actions
         return (title, type) => saveTitle(title, type, questionIndex)
     }
 
     handleAddQuestion(type) {
-        const { addQuestion } = this.props
+        const { addQuestion } = this.props.actions
         addQuestion(type)
     }
 
     handleSetQuestionType(index) {
-        const { setQuestionType } = this.props
+        const { setQuestionType } = this.props.actions
         return type => setQuestionType(index, type)
     }
 
     handleToggleQuestion(index) {
-        const { toggleQuestion } = this.props
+        const { toggleQuestion } = this.props.actions
         toggleQuestion(index)
     }
 
     handleCopyQuestion(index) {
-        const { copyQuestion } = this.props
+        const { copyQuestion } = this.props.actions
         copyQuestion(index)
     }
 
     handleSortQuestion(sourceIndex, targetIndex) {
-        const { sortQuestion } = this.props
+        const { sortQuestion } = this.props.actions
         sortQuestion(sourceIndex, targetIndex)
     }
 
     handleRemoveQuestion(index) {
-        const { removeQuestion } = this.props
+        const { removeQuestion } = this.props.actions
         removeQuestion(index)
     }
 
     handleAddOption(index) {
-        const { addOption } = this.props
+        const { addOption } = this.props.actions
         addOption(index)
     }
 
     handleEditOption(questionIndex) {
-        const { editOption } = this.props
+        const { editOption } = this.props.actions
         return optionIndex => e => editOption(questionIndex, optionIndex, e)
     }
 
     handleRemoveOption(questionIndex) {
-        const { removeOption } = this.props
+        const { removeOption } = this.props.actions
         return optionIndex => removeOption(questionIndex, optionIndex)
     }
 
     handleAddOther(index) {
-        const { addOther } = this.props
+        const { addOther } = this.props.actions
         addOther(index)
     }
 
     handleRemoveOther(index) {
-        const { removeOther } = this.props
+        const { removeOther } = this.props.actions
         removeOther(index)
     }
 
@@ -208,13 +212,13 @@ class Edit extends React.Component {
                       autoSelect
                       className={styles.title}
                       value={editing.title}
-                      handleChange={this.handleTitleChange}
+                      onChange={this.handleTitleChange}
                     />
                     <Textarea
                       className={styles.description}
                       placeholder="表单说明"
                       value={editing.description}
-                      handleSaveText={this.handleSaveText('description')}
+                      onSaveText={this.handleSaveText('description')}
                     />
                 </div>
             </div>
@@ -230,17 +234,17 @@ class Edit extends React.Component {
                 <Icon
                   wrapClassName={styles['add-question-button']}
                   className={'iconfont icon-radiobutton'}
-                  handleClick={() => this.handleAddQuestion('radio')}
+                  onClick={() => this.handleAddQuestion('radio')}
                 />
                 <Icon
                   wrapClassName={styles['add-question-button']}
                   className={'iconfont icon-check-box'}
-                  handleClick={() => this.handleAddQuestion('checkbox')}
+                  onClick={() => this.handleAddQuestion('checkbox')}
                 />
                 <Icon
                   wrapClassName={styles['add-question-button']}
                   className={'iconfont icon-text'}
-                  handleClick={() => this.handleAddQuestion('text')}
+                  onClick={() => this.handleAddQuestion('text')}
                 />
             </Menu>
         )
@@ -284,45 +288,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    saveTitle(title, type, questionIndex) {
-        dispatch(questionnaireActions.saveTitle(title, type, questionIndex))
-    },
-    saveText(text, type) {
-        dispatch(questionnaireActions.saveText(text, type))
-    },
-    addQuestion(type) {
-        dispatch(questionnaireActions.addQuestion(type))
-    },
-    setQuestionType(index, type) {
-        dispatch(questionnaireActions.setQuestionType(index, type))
-    },
-    toggleQuestion(index) {
-        dispatch(questionnaireActions.toggleQuestion(index))
-    },
-    copyQuestion(index) {
-        dispatch(questionnaireActions.copyQuestion(index))
-    },
-    sortQuestion(sourceIndex, targetIndex) {
-        dispatch(questionnaireActions.sortQuestion(sourceIndex, targetIndex))
-    },
-    removeQuestion(index) {
-        dispatch(questionnaireActions.removeQuestion(index))
-    },
-    addOption(index) {
-        dispatch(questionnaireActions.addOption(index))
-    },
-    editOption(questionIndex, optionIndex, e) {
-        dispatch(questionnaireActions.editOption(questionIndex, optionIndex, e))
-    },
-    removeOption(questionIndex, optionIndex) {
-        dispatch(questionnaireActions.removeOption(questionIndex, optionIndex))
-    },
-    addOther(index) {
-        dispatch(questionnaireActions.addOther(index))
-    },
-    removeOther(index) {
-        dispatch(questionnaireActions.removeOther(index))
-    },
+    actions: bindActionCreators(questionnaireActions, dispatch),
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Edit))

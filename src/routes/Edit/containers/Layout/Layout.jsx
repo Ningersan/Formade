@@ -73,7 +73,7 @@ class Layout extends React.Component {
                       autoSelect
                       className={styles.title}
                       value={editing.title}
-                      handleChange={this.handleTitleChange}
+                      onChange={this.handleTitleChange}
                     />
                 </div>
                 <div className={styles['header-right']}>

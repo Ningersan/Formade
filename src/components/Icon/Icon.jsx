@@ -2,11 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const Icon = (props) => {
-    const { wrapClassName, className, handleClick } = props
+    const { wrapClassName, className, onClick } = props
     return (
         <a
           className={wrapClassName}
-          onClick={handleClick}
+          onClick={onClick}
         >
             <i className={className} />
             {props.children}
@@ -16,14 +16,14 @@ const Icon = (props) => {
 
 Icon.defaultProps = {
     wrapClassName: null,
-    handleClick: null,
+    onClick: null,
     children: null,
 }
 
 Icon.propTypes = {
     wrapClassName: PropTypes.string,
     className: PropTypes.string.isRequired,
-    handleClick: PropTypes.func,
+    onClick: PropTypes.func,
     children: PropTypes.element,
 }
 

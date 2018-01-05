@@ -5,13 +5,13 @@ import styles from './Dialog.scss'
 class Dialog extends Component {
     static defaultProps = {
         autoSelectInput: true,
-        handleSubmit: null,
+        onSubmit: null,
     }
 
     static propTypes = {
         autoSelectInput: PropTypes.bool.isRequired,
-        handleShow: PropTypes.func.isRequired,
-        handleSubmit: PropTypes.func,
+        onShow: PropTypes.func.isRequired,
+        onSubmit: PropTypes.func,
     }
 
     constructor() {
@@ -27,7 +27,7 @@ class Dialog extends Component {
     }
 
     close() {
-        this.props.handleShow(false)
+        this.props.onShow(false)
     }
 
     handleClick() {
@@ -35,9 +35,9 @@ class Dialog extends Component {
     }
 
     handleConfirm() {
-        if (this.props.handleSubmit) {
+        if (this.props.onSubmit) {
             const value = this.input.value
-            this.props.handleSubmit(value, 0)
+            this.props.onSubmit(value, 0)
         }
         this.close()
     }

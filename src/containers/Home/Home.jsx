@@ -135,8 +135,8 @@ class Home extends Component {
         return (
             <Dialog
               autoSelectInput
-              handleShow={this.handleToggleDialog}
-              handleSubmit={this.handleRenameQuestionnaire}
+              onShow={this.handleToggleDialog}
+              onSubmit={this.handleRenameQuestionnaire}
             />
         )
     }
@@ -165,21 +165,21 @@ class Home extends Component {
                 <Icon
                   wrapClassName={styles['rename-button']}
                   className={'iconfont icon-aa'}
-                  handleClick={() => { this.handleToggleDialog(true) }}
+                  onClick={() => { this.handleToggleDialog(true) }}
                 >
                     <span className={styles['icon-text']}>重命名</span>
                 </Icon>
                 <Icon
                   wrapClassName={styles['delete-button']}
                   className={'iconfont icon-lajitong'}
-                  handleClick={() => this.handleRemoveQuestionnaire(index)}
+                  onClick={() => this.handleRemoveQuestionnaire(index)}
                 >
                     <span className={styles['icon-text']}>删除</span>
                 </Icon>
                 <Icon
                   wrapClassName={styles['release-button']}
                   className={responseClassName}
-                  handleClick={() => this.handleStopResponse(index)}
+                  onClick={() => this.handleStopResponse(index)}
                 >
                     <span className={styles['icon-text']}>{responseText}</span>
                 </Icon>

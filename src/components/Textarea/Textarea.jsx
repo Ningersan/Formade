@@ -6,13 +6,14 @@ import styles from './Textarea.scss'
 class Textarea extends Component {
     static defaultProps = {
         value: null,
+        onSaveText: null,
     }
 
     static propTypes = {
         value: PropTypes.string,
         placeholder: PropTypes.string.isRequired,
         className: PropTypes.string.isRequired,
-        handleSaveText: PropTypes.func.isRequired,
+        onSaveText: PropTypes.func,
     }
 
     constructor() {
@@ -25,11 +26,11 @@ class Textarea extends Component {
     }
 
     handleBlur(e) {
-        this.props.handleSaveText(e.target.textContent)
+        this.props.onSaveText(e.target.textContent)
     }
 
     render() {
-        const { className, placeholder, value, handleSaveText } = this.props
+        const { className, placeholder, value, onSaveText } = this.props
         const classNames = classnames({
             [styles.textarea]: true,
             [className]: className && true,
@@ -40,7 +41,7 @@ class Textarea extends Component {
               ref={(el) => { this.textarea = el }}
               placeholder={placeholder}
               className={classNames}
-              onBlur={handleSaveText && this.handleBlur}
+              onBlur={onSaveText && this.handleBlur}
             >
                 {value}
             </div>

@@ -22,6 +22,11 @@ const Menu = (props) => {
     )
 }
 
+Menu.defaultProps = {
+    itemClassName: null,
+    wrapStyle: null,
+}
+
 Menu.propTypes = {
     wrapClassName: PropTypes.string.isRequired,
     itemClassName: PropTypes.string,

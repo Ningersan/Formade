@@ -5,6 +5,8 @@ class Input extends Component {
     static defaultProps = {
         id: null,
         type: 'text',
+        onChange: null,
+        onSaveText: null,
         autoSelect: false,
     }
 
@@ -14,8 +16,8 @@ class Input extends Component {
         autoSelect: PropTypes.bool,
         value: PropTypes.string,
         defaultValue: PropTypes.string,
-        handleChange: PropTypes.func,
-        handleSaveText: PropTypes.func,
+        onChange: PropTypes.func,
+        onSaveText: PropTypes.func,
         className: PropTypes.string.isRequired,
     }
 
@@ -30,12 +32,12 @@ class Input extends Component {
     }
 
     handleBlur(e) {
-        this.props.handleSaveText(e.target.value, 'question')
+        this.props.onSaveText(e.target.value, 'question')
     }
 
     render() {
         const { id, type, autoSelect, className, defaultValue, value,
-            handleChange, handleSaveText,
+            onChange, onSaveText,
         } = this.props
 
         return (
@@ -47,8 +49,8 @@ class Input extends Component {
               value={value}
               defaultValue={defaultValue}
               onFocus={autoSelect && this.handleFocus}
-              onChange={handleChange}
-              onBlur={handleSaveText && this.handleBlur}
+              onChange={onChange}
+              onBlur={onSaveText && this.handleBlur}
             />
         )
     }

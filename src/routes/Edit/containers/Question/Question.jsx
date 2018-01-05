@@ -77,7 +77,7 @@ class Question extends Component {
                   autoSelect
                   className={styles.option}
                   value={option}
-                  handleChange={handleOptionChange(index)}
+                  onChange={handleOptionChange(index)}
                 />
                 <div
                   role="button"
@@ -158,21 +158,21 @@ class Question extends Component {
                 <Icon
                   wrapClassName={styles['type-item']}
                   className={'iconfont icon-radiobutton'}
-                  handleClick={() => handleSetQuestionType('radio')}
+                  onClick={() => handleSetQuestionType('radio')}
                 >
                     <span className={styles.content}>单选题</span>
                 </Icon>
                 <Icon
                   wrapClassName={styles['type-item']}
                   className={'iconfont icon-check-box'}
-                  handleClick={() => handleSetQuestionType('checkbox')}
+                  onClick={() => handleSetQuestionType('checkbox')}
                 >
                     <span className={styles.content}>单选题</span>
                 </Icon>
                 <Icon
                   wrapClassName={styles['type-item']}
                   className={'iconfont icon-text'}
-                  handleClick={() => handleSetQuestionType('text')}
+                  onClick={() => handleSetQuestionType('text')}
                 >
                     <span className={styles.content}>单选题</span>
                 </Icon>
@@ -188,12 +188,12 @@ class Question extends Component {
                     <Icon
                       wrapClassName={styles['copy-question']}
                       className={'iconfont icon-copydownlink'}
-                      handleClick={handleCopyQuestion}
+                      onClick={handleCopyQuestion}
                     />
                     <Icon
                       wrapClassName={styles['delete-question']}
                       className={'iconfont icon-delete'}
-                      handleClick={handleRemoveQuestion}
+                      onClick={handleRemoveQuestion}
                     />
                     <label name="require" className={styles['required-toggle']}>
                         <Input
@@ -237,7 +237,7 @@ class Question extends Component {
                   autoSelect
                   className={styles.title}
                   defaultValue={this.props.title}
-                  handleSaveText={handleSaveTitle}
+                  onSaveText={handleSaveTitle}
                 />
                 {this.renderTypeMenu()}
                 {type === 'text' ? this.renderTextArea() : this.renderOptionArea()}
