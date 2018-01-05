@@ -1,11 +1,11 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Menu, Icon, Input, Textarea } from '../../../../components/index'
 import Question from '../Question/Question'
+import { TYPES } from '../../../../constants/QuestionnaireTypes'
 import * as questionnaireActions from '../../../../actions/questionnaire'
 import styles from './Main.scss'
 
@@ -231,21 +231,14 @@ class Edit extends React.Component {
               wrapClassName={styles.menu}
               itemClassName={styles['menu-item']}
             >
-                <Icon
-                  wrapClassName={styles['add-question-button']}
-                  className={'iconfont icon-radiobutton'}
-                  onClick={() => this.handleAddQuestion('radio')}
-                />
-                <Icon
-                  wrapClassName={styles['add-question-button']}
-                  className={'iconfont icon-check-box'}
-                  onClick={() => this.handleAddQuestion('checkbox')}
-                />
-                <Icon
-                  wrapClassName={styles['add-question-button']}
-                  className={'iconfont icon-text'}
-                  onClick={() => this.handleAddQuestion('text')}
-                />
+                {Object.keys(TYPES).map((key, index) => (
+                    <Icon
+                      key={index}
+                      wrapClassName={styles['add-question-button']}
+                      className={TYPES[key].className}
+                      onClick={() => this.handleAddQuestion(key)}
+                    />
+                ))}
             </Menu>
         )
     }

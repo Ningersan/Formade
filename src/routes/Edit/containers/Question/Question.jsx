@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import { Input, Icon, DropdownMenu } from '../../../../components/index'
+import { TYPES } from '../../../../constants/QuestionnaireTypes'
 import styles from './Question.scss'
 
 class Question extends Component {
@@ -135,18 +136,12 @@ class Question extends Component {
 
     renderTypeMenu() {
         const { type, handleSetQuestionType } = this.props
-        const { selectedType, selectedClassName } = {
-            radio: { selectedType: '单选题', selectedClassName: 'iconfont icon-radiobutton' },
-            checkbox: { selectedType: '多选题', selectedClassName: 'iconfont icon-check-box' },
-            text: { selectedType: '文本', selectedClassName: 'iconfont icon-text' },
-        }[type]
-
         const dropdownButton = (
             <Icon
               wrapClassName={styles.type}
-              className={selectedClassName}
+              className={TYPES[type].className}
             >
-                <span className={styles.content}>{selectedType}</span>
+                <span className={styles.content}>{TYPES[type].content}</span>
             </Icon>
         )
 
@@ -155,27 +150,16 @@ class Question extends Component {
               wrapClassName={styles['type-chooser']}
               toggle={dropdownButton}
             >
-                <Icon
-                  wrapClassName={styles['type-item']}
-                  className={'iconfont icon-radiobutton'}
-                  onClick={() => handleSetQuestionType('radio')}
-                >
-                    <span className={styles.content}>单选题</span>
-                </Icon>
-                <Icon
-                  wrapClassName={styles['type-item']}
-                  className={'iconfont icon-check-box'}
-                  onClick={() => handleSetQuestionType('checkbox')}
-                >
-                    <span className={styles.content}>单选题</span>
-                </Icon>
-                <Icon
-                  wrapClassName={styles['type-item']}
-                  className={'iconfont icon-text'}
-                  onClick={() => handleSetQuestionType('text')}
-                >
-                    <span className={styles.content}>单选题</span>
-                </Icon>
+                {Object.keys(TYPES).map((key, index) => (
+                    <Icon
+                      key={index}
+                      wrapClassName={styles['type-item']}
+                      className={TYPES[key].className}
+                      onClick={() => handleSetQuestionType(key)}
+                    >
+                        <span className={styles.content}>{TYPES[key].content}</span>
+                    </Icon>
+                ))}
             </DropdownMenu>
         )
     }

@@ -21,7 +21,7 @@ const initEditing = {
     {
         title: '未命名的问题',
         id: nextQuestionId++,
-        type: 'checkbox',
+        type: 'radio',
         isRequired: false,
         hasOther: false,
         options: ['选项 1', '选项 2'],
