@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import { Input, Icon, DropdownMenu } from '../../../../components/index'
-import { TYPES } from '../../../../constants/QuestionnaireTypes'
+import { RADIO, CHECKBOX, TYPES } from '../../../../constants/QuestionnaireTypes'
 import styles from './Question.scss'
 
 class Question extends Component {
@@ -38,14 +38,16 @@ class Question extends Component {
     }
 
     getInputClassName() {
-        return { radio: styles['symbol-radio'], checkbox: styles['symbol-checkbox'] }[this.props.type]
+        const { type } = this.props
+        return classnames({
+            [styles['symbol-radio']]: type === RADIO,
+            [styles['symbol-checkbox']]: type === CHECKBOX,
+        })
     }
 
     handleClick(e) {
         if (this.mainEle) {
-            this.setState({
-                isActive: this.mainEle.contains(e.target),
-            })
+            this.setState({ isActive: this.mainEle.contains(e.target) })
         }
     }
 
