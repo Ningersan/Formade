@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Question from '../Question/Question'
 import * as questionnaireActions from '../../../../actions/questionnaire'
@@ -14,9 +15,11 @@ class Fill extends Component {
             data: PropTypes.array.isRequired,
             stopResponse: PropTypes.bool.isRequired,
         }).isRequired,
-        chooseOption: PropTypes.func.isRequired,
-        saveText: PropTypes.func.isRequired,
-        submitQuestionnaire: PropTypes.func.isRequired,
+        actions: PropTypes.shape({
+            chooseOption: PropTypes.func.isRequired,
+            saveText: PropTypes.func.isRequired,
+            submitQuestionnaire: PropTypes.func.isRequired,
+        }).isRequired,
     }
 
     constructor() {
@@ -79,17 +82,17 @@ class Fill extends Component {
     }
 
     handleChooseOption(questionId) {
-        const { chooseOption } = this.props
+        const { chooseOption } = this.props.actions
         return (optionId, type) => chooseOption(questionId, optionId, type)
     }
 
     handleSaveText(questionId, type) {
-        const { saveText } = this.props
+        const { saveText } = this.props.actions
         return text => saveText(text, type, questionId)
     }
 
     handleSubmitQuestionnaire() {
-        const { submitQuestionnaire } = this.props
+        const { submitQuestionnaire } = this.props.actions
         submitQuestionnaire()
     }
 
@@ -187,15 +190,11 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    chooseOption(questionId, optionId, type) {
-        dispatch(questionnaireActions.chooseOption(questionId, optionId, type))
-    },
-    saveText(text, type, questionId) {
-        dispatch(questionnaireActions.saveText(text, type, questionId))
-    },
-    submitQuestionnaire() {
-        dispatch(questionnaireActions.submitQuestionnaire())
-    },
+    actions: bindActionCreators({
+        chooseOption: questionnaireActions.chooseOption,
+        saveText: questionnaireActions.saveText,
+        submitQuestionnaire: questionnaireActions.submitQuestionnaire,
+    }, dispatch),
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Fill))

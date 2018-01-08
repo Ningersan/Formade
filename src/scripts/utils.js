@@ -7,3 +7,12 @@ export function deepCopy(obj) {
 }
 
 export const generatorUid = () => `${new Date()}${Math.floor(Math.random())}`
+
+export const contains = (child, parent) => {
+    while (child = child.parentNode) {
+        if (child === parent) {
+            return true
+        }
+    }
+    return false
+}

@@ -47,6 +47,7 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "material-ui": "^0.20.0",
     "redux-logger": "^3.0.6"
   }
 }

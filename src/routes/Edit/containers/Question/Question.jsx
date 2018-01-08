@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
+import Toggle from 'material-ui/Toggle'
 import { Input, Icon, DropdownMenu } from '../../../../components/index'
 import { RADIO, CHECKBOX, TYPES } from '../../../../constants/QuestionnaireTypes'
 import styles from './Question.scss'
@@ -33,7 +34,7 @@ class Question extends Component {
         this.renderTypeMenu = this.renderTypeMenu.bind(this)
     }
 
-    componentWillMount() {
+    componentDidMount() {
         document.addEventListener('click', this.handleClick, false)
     }
 
@@ -168,6 +169,7 @@ class Question extends Component {
 
     renderActions() {
         const { handleCopyQuestion, handleRemoveQuestion, handleToggleQuestion } = this.props
+        const label = '必填'
         return (
             <div className={styles.control}>
                 <div className={styles['footer-right']}>
@@ -181,17 +183,17 @@ class Question extends Component {
                       className={'iconfont icon-delete'}
                       onClick={handleRemoveQuestion}
                     />
-                    <label name="require" className={styles['required-toggle']}>
-                        <Input
-                          type="checkbox"
-                          className={styles.required}
-                          onChange={handleToggleQuestion}
-                        />
-                        <span>必填</span>
-                    </label>
                     <Icon
                       wrapClassName={styles['show-more-button']}
                       className={'iconfont icon-ellipsis-v'}
+                    />
+                    <Toggle
+                      style={{ float: 'right', width: '90px', marginTop: '10px' }}
+                      onToggle={handleToggleQuestion}
+                      label={label}
+                      labelStyle={{ fontSize: '16px' }}
+                      trackSwitchedStyle={{ background: '#673ab7a8' }}
+                      thumbSwitchedStyle={{ background: '#673ab7' }}
                     />
                 </div>
             </div>

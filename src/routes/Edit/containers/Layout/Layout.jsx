@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import { Link, withRouter } from 'react-router-dom'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Input } from '../../../../components/index'
 import * as questionnaireActions from '../../../../actions/questionnaire'
@@ -13,8 +14,10 @@ class Layout extends React.Component {
             title: PropTypes.string.isRequired,
         }).isRequired,
         children: PropTypes.element.isRequired,
-        saveTitle: PropTypes.func.isRequired,
-        saveQuestionnaire: PropTypes.func.isRequired,
+        actions: PropTypes.shape({
+            saveTitle: PropTypes.func.isRequired,
+            saveQuestionnaire: PropTypes.func.isRequired,
+        }).isRequired,
     }
 
     constructor() {
@@ -41,7 +44,7 @@ class Layout extends React.Component {
     }
 
     handleTitleChange(e) {
-        const { saveTitle } = this.props
+        const { saveTitle } = this.props.actions
         saveTitle(e.target.value, 'questionnaire')
     }
 
@@ -52,7 +55,7 @@ class Layout extends React.Component {
     }
 
     handleSaveQuestionnaire() {
-        const { saveQuestionnaire } = this.props
+        const { saveQuestionnaire } = this.props.actions
         saveQuestionnaire()
     }
 
@@ -145,12 +148,10 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    saveTitle(title, type) {
-        dispatch(questionnaireActions.saveTitle(title, type))
-    },
-    saveQuestionnaire() {
-        dispatch(questionnaireActions.saveQuestionnaire())
-    },
+    actions: bindActionCreators({
+        saveTitle: questionnaireActions.saveTitle,
+        saveQuestionnaire: questionnaireActions.saveQuestionnaire,
+    }, dispatch),
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Layout))

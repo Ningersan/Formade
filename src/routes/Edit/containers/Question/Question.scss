@@ -3,6 +3,7 @@
 
 .main {
     @include editorViewCard;
+    margin-bottom: 1em;
     padding-bottom: .2em;
     transition: all .3s ease;
     &:focus {
