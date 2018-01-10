@@ -24,7 +24,6 @@ class Response extends React.Component {
 
     handleToggle() {
         const { stopResponse } = this.props.actions
-        console.log(stopResponse)
         stopResponse()
     }
 

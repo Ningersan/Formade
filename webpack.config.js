@@ -11,14 +11,13 @@ module.exports = {
     // 编译出口
     output: {
         path: path.resolve(__dirname, './build'),
-        publicPath: '/',
+        publicPath: '/build',
         filename: 'bundle.js',
     },
 
     // 引用但是不打包的文件
     externals: {
         'react.min.js': 'window.React',
-        'echarts': 'window.echarts',
     },
 
     plugins: [
@@ -122,6 +121,7 @@ module.exports = {
     devServer: {
         hot: true,
         inline: true,
+        contentBase: './',
         historyApiFallback: true,
     },
 }
