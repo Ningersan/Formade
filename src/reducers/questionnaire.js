@@ -40,10 +40,14 @@ const questionnaires = (state = initState, action) => {
     switch (action.type) {
         case 'STOP_RESPONSE': {
             const list = deepCopy(state.list)
+            const editing = deepCopy(state.editing)
             const { index } = action.payload
-            const status = list[index].stopResponse
-            list[index].stopResponse = !status
-            return { ...state, list }
+            if (index) {
+                list[index].stopResponse = !list[index].stopResponse
+                return { ...state, list }
+            }
+            editing.stopResponse = !editing.stopResponse
+            return { ...state, editing }
         }
         case 'ADD_QUESTIONNAIRE': {
             const { list } = state

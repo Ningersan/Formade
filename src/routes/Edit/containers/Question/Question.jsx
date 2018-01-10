@@ -28,8 +28,9 @@ class Question extends Component {
 
     constructor() {
         super()
-        this.state = { isActive: false }
+        this.state = { isActive: false, isRequired: false }
         this.handleClick = this.handleClick.bind(this)
+        this.handleToggle = this.handleToggle.bind(this)
         this.renderOption = this.renderOption.bind(this)
         this.renderTypeMenu = this.renderTypeMenu.bind(this)
     }
@@ -50,6 +51,14 @@ class Question extends Component {
         if (this.mainEle) {
             this.setState({ isActive: this.mainEle.contains(e.target) })
         }
+    }
+
+    handleToggle() {
+        const { handleToggleQuestion } = this.props
+        handleToggleQuestion()
+        this.setState(prevState => ({
+            isRequired: !prevState.isRequired,
+        }))
     }
 
     renderOther() {
@@ -168,8 +177,8 @@ class Question extends Component {
     }
 
     renderActions() {
-        const { handleCopyQuestion, handleRemoveQuestion, handleToggleQuestion } = this.props
-        const label = '必填'
+        const { handleCopyQuestion, handleRemoveQuestion } = this.props
+        const label = !this.state.isRequired ? '选填' : '必填'
         return (
             <div className={styles.control}>
                 <div className={styles['footer-right']}>
@@ -189,7 +198,7 @@ class Question extends Component {
                     />
                     <Toggle
                       style={{ float: 'right', width: '90px', marginTop: '10px' }}
-                      onToggle={handleToggleQuestion}
+                      onToggle={this.handleToggle}
                       label={label}
                       labelStyle={{ fontSize: '16px' }}
                       trackSwitchedStyle={{ background: '#673ab7a8' }}

@@ -2,13 +2,30 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import { bindActionCreators } from 'redux'
+import Toggle from 'material-ui/Toggle'
 import Chart from '../Chart/Chart'
+import * as questionnaireActions from '../../../../actions/questionnaire'
 import styles from './Response.scss'
 
 class Response extends React.Component {
     static propTypes = {
         questionnaires: PropTypes.array.isRequired,
         editing: PropTypes.object.isRequired,
+        actions: PropTypes.shape({
+            stopResponse: PropTypes.func.isRequired,
+        }).isRequired,
+    }
+
+    constructor() {
+        super()
+        this.handleToggle = this.handleToggle.bind(this)
+    }
+
+    handleToggle() {
+        const { stopResponse } = this.props.actions
+        console.log(stopResponse)
+        stopResponse()
     }
 
     renderChart(question, questionIndex, data) {
@@ -143,8 +160,15 @@ class Response extends React.Component {
         const data = questionnaire ? questionnaire.data : []
 
         return (
-            <div>
+            <div className={styles['response-content']}>
                 <p className={styles['response-number']}>{`（${data.length}条回复）`}</p>
+                <Toggle
+                  style={{ float: 'right', width: '130px', margin: '10px 20px' }}
+                  onToggle={this.handleToggle}
+                  label={'停止回复'}
+                  trackSwitchedStyle={{ background: '#673ab7a8' }}
+                  thumbSwitchedStyle={{ background: '#673ab7' }}
+                />
                 {editing.stopResponse && <p className={styles.noresponse}>此表单已不接受回复</p>}
                 {data.length > 0 &&
                     questionnaire.questions.map((question, index) => (
@@ -163,4 +187,10 @@ const mapStateToProps = state => ({
     questionnaires: state.list || [],
 })
 
-export default withRouter(connect(mapStateToProps)(Response))
+const mapDispatchToProps = dispatch => ({
+    actions: bindActionCreators({
+        stopResponse: questionnaireActions.stopResponse,
+    }, dispatch),
+})
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Response))

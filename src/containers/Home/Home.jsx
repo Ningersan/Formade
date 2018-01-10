@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import * as questionnaireActions from '../../actions/questionnaire'
 import { Table, Dialog, Icon, DropdownMenu } from '../../components/index'
 import styles from './Home.scss'
@@ -25,11 +26,13 @@ const QuestionnaireDeadline = date => <div className={styles.deadline}>{date}</d
 class Home extends Component {
     static propTypes = {
         questionnaires: PropTypes.array.isRequired,
-        addQuestionnaire: PropTypes.func.isRequired,
-        editQuestionnaire: PropTypes.func.isRequired,
-        renameQuestionnaire: PropTypes.func.isRequired,
-        removeQuestionnaire: PropTypes.func.isRequired,
-        stopResponse: PropTypes.func.isRequired,
+        actions: PropTypes.shape({
+            addQuestionnaire: PropTypes.func.isRequired,
+            editQuestionnaire: PropTypes.func.isRequired,
+            renameQuestionnaire: PropTypes.func.isRequired,
+            removeQuestionnaire: PropTypes.func.isRequired,
+            stopResponse: PropTypes.func.isRequired,
+        }).isRequired,
     }
 
     constructor() {
@@ -48,27 +51,27 @@ class Home extends Component {
     }
 
     handleAddQuestionnaire() {
-        const { addQuestionnaire } = this.props
+        const { addQuestionnaire } = this.props.actions
         addQuestionnaire()
     }
 
     handleEditQuestionnaire() {
-        const { editQuestionnaire } = this.props
+        const { editQuestionnaire } = this.props.actions
         return index => editQuestionnaire(index)
     }
 
     handleRenameQuestionnaire(value, index) {
-        const { renameQuestionnaire } = this.props
+        const { renameQuestionnaire } = this.props.actions
         renameQuestionnaire(value, index)
     }
 
     handleRemoveQuestionnaire(index) {
-        const { removeQuestionnaire } = this.props
+        const { removeQuestionnaire } = this.props.actions
         removeQuestionnaire(index)
     }
 
     handleStopResponse(index) {
-        const { stopResponse } = this.props
+        const { stopResponse } = this.props.actions
         stopResponse(index)
     }
 
@@ -215,21 +218,13 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    addQuestionnaire() {
-        dispatch(questionnaireActions.addQuestionnaire())
-    },
-    editQuestionnaire(index) {
-        dispatch(questionnaireActions.editQuestionnaire(index))
-    },
-    renameQuestionnaire(value, index) {
-        dispatch(questionnaireActions.renameQuestionnaire(value, index))
-    },
-    removeQuestionnaire(index) {
-        dispatch(questionnaireActions.removeQuestionnaire(index))
-    },
-    stopResponse(index) {
-        dispatch(questionnaireActions.stopResponse(index))
-    },
+    actions: bindActionCreators({
+        addQuestionnaire: questionnaireActions.addQuestionnaire,
+        editQuestionnaire: questionnaireActions.editQuestionnaire,
+        renameQuestionnaire: questionnaireActions.renameQuestionnaire,
+        removeQuestionnaire: questionnaireActions.removeQuestionnaire,
+        stopResponse: questionnaireActions.stopResponse,
+    }, dispatch),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)
