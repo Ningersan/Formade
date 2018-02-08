@@ -1,5 +1,5 @@
 const path = require('path')
-// const webpack = require('webpack')
+const webpack = require('webpack')
 const autoprefixer = require('autoprefixer')
 
 module.exports = {
@@ -22,21 +22,27 @@ module.exports = {
 
     plugins: [
         // 设置LoaderOptionsPlugin 开启代码压缩
-        // new webpack.LoaderOptionsPlugin({
-        //     minimize: false,
-        //     debug: true,
-        // }),
+        new webpack.LoaderOptionsPlugin({
+            minimize: false,
+            debug: true,
+        }),
 
         // uglify 配置
-        // new webpack.optimize.UglifyJsPlugin({
-        //     beautify: false,
-        //     comments: false,
-        //     compress: {
-        //         warnings: false,
-        //         drop_console: true,
-        //         collapse_vars: true,
-        //     },
-        // }),
+        new webpack.optimize.UglifyJsPlugin({
+            beautify: false,
+            comments: false,
+            compress: {
+                warnings: false,
+                drop_console: true,
+                collapse_vars: true,
+            },
+        }),
+
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('production'),
+            },
+        }),
     ],
 
     resolve: {

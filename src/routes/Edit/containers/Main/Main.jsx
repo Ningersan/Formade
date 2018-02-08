@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Menu, Icon, Input, Textarea } from '../../../../components/index'
 import Question from '../Question/Question'
-import { TYPES } from '../../../../constants/QuestionnaireTypes'
+import { TYPES } from '../../../../constants/commonConstants'
 import * as questionnaireActions from '../../../../actions/questionnaire'
 import styles from './Main.scss'
 

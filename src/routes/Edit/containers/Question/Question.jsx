@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import Toggle from 'material-ui/Toggle'
 import { Input, Icon, DropdownMenu } from '../../../../components/index'
-import { RADIO, CHECKBOX, TYPES } from '../../../../constants/QuestionnaireTypes'
+import { RADIO, CHECKBOX, TYPES } from '../../../../constants/commonConstants'
 import styles from './Question.scss'
 
 class Question extends Component {

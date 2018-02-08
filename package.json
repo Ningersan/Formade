@@ -4,7 +4,7 @@
   "description": "A questionnaire system",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --config webpack.config.prod.js",
     "dev": "webpack-dev-server --devtool eval --progress --colors --hot --open --inline --content-base build"
   },
   "author": "Ningersan",
