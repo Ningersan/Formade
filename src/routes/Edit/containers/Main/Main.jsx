@@ -244,8 +244,8 @@ class Edit extends React.Component {
     }
 
     render() {
-        const { editing: { questions } } = this.props
-
+        const { editing } = this.props
+        const questions = []
         return (
             <div className={styles.wrap}>
                 {this.renderMenu()}

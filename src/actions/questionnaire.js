@@ -7,9 +7,17 @@ export const stopResponse = index => ({
     },
 })
 
-export const addQuestionnaire = () => ({
+export const addQuestionnaireAction = questionnaires => ({
     type: Types.ADD_QUESTIONNAIRE,
+    payload: {
+        questionnaires,
+    },
 })
+
+export const addQuestionnaire = () => (dispatch, getState) => {
+    const { forms: { allIds } } = getState()
+    dispatch(addQuestionnaireAction(allIds))
+}
 
 export const saveQuestionnaire = () => ({
     type: Types.SAVE_QUESTIONNAIRE,

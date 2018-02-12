@@ -1,4 +1,5 @@
 import { deepCopy, generatorUid } from '../scripts/utils'
+import * as actionTypes from '../constants/QuestionnaireActionTypes'
 
 let nextQuestionId = 0
 const list = localStorage.list ? JSON.parse(localStorage.list) : []
@@ -38,7 +39,7 @@ const initState = {
 
 const questionnaires = (state = initState, action) => {
     switch (action.type) {
-        case 'STOP_RESPONSE': {
+        case actionTypes.STOP_RESPONSE: {
             const list = deepCopy(state.list)
             const editing = deepCopy(state.editing)
             const { index } = action.payload
@@ -49,11 +50,11 @@ const questionnaires = (state = initState, action) => {
             editing.stopResponse = !editing.stopResponse
             return { ...state, editing }
         }
-        case 'ADD_QUESTIONNAIRE': {
+        case actionTypes.ADD_QUESTIONNAIRE: {
             const { list } = state
             return { ...state, editing: { ...initEditing, questionnaireId: list.length } }
         }
-        case 'SAVE_QUESTIONNAIRE': {
+        case actionTypes.SAVE_QUESTIONNAIRE: {
             const { list, editing } = state
             const questionnaire = list[editing.questionnaireId]
             const data = questionnaire ? deepCopy(questionnaire.data) : []
@@ -62,18 +63,18 @@ const questionnaires = (state = initState, action) => {
             editing.data = []
             return { ...state, list }
         }
-        case 'RENAME_QUESTIONNAIRE': {
+        case actionTypes.RENAME_QUESTIONNAIRE: {
             const list = deepCopy(state.list)
             const { index, value } = action.payload
             list[index].title = value
             return { ...state, list }
         }
-        case 'EDIT_QUESTIONNAIRE': {
+        case actionTypes.EDIT_QUESTIONNAIRE: {
             const { list, editing } = state
             const { index } = action.payload
             return { ...state, editing: { ...list[index] } }
         }
-        case 'SUBMIT_QUESTIONNAIRE': {
+        case actionTypes.SUBMIT_QUESTIONNAIRE: {
             const editing = deepCopy(state.editing)
             const list = deepCopy(state.list)
             const { questionnaireId, data } = editing
@@ -82,26 +83,26 @@ const questionnaires = (state = initState, action) => {
             editing.data = []
             return { ...state, list, editing }
         }
-        case 'REMOVE_QUESTIONNAIRE': {
+        case actionTypes.REMOVE_QUESTIONNAIRE: {
             const list = deepCopy(state.list)
             const { index } = action.payload
             list.splice(index, 1)
             localStorage.list = JSON.stringify(list)
             return { ...state, list }
         }
-        case 'SAVE_TEXT': {
+        case actionTypes.SAVE_TEXT: {
             const editing = deepCopy(state.editing)
             const { text, type, index } = action.payload
             type === 'answer' ? editing.data[index] = text : editing.description = text
             return { ...state, editing }
         }
-        case 'SAVE_TITLE': {
+        case actionTypes.SAVE_TITLE: {
             const editing = deepCopy(state.editing)
             const { text, type, questionIndex } = action.payload
             type === 'questionnaire' ? editing.title = text : editing.questions[questionIndex].title = text
             return { ...state, editing }
         }
-        case 'ADD_QUESTION': {
+        case actionTypes.ADD_QUESTION: {
             const editing = deepCopy(state.editing)
             const { type } = action.payload
             editing.questions.push({
@@ -114,7 +115,7 @@ const questionnaires = (state = initState, action) => {
             })
             return { ...state, editing }
         }
-        case 'COPY_QUESTION': {
+        case actionTypes.COPY_QUESTION: {
             const editing = deepCopy(state.editing)
             const { index } = action.payload
             const questions = editing.questions
@@ -123,7 +124,7 @@ const questionnaires = (state = initState, action) => {
             questions.splice((index + 1), 0, targetQuestion)
             return { ...state, editing }
         }
-        case 'SORT_QUESTION': {
+        case actionTypes.SORT_QUESTION: {
             const editing = deepCopy(state.editing)
             const { from, to } = action.payload
             const { questions } = editing
@@ -131,40 +132,40 @@ const questionnaires = (state = initState, action) => {
             questions.splice(to, 0, target)
             return { ...state, editing }
         }
-        case 'SET_QUESTION_TYPE': {
+        case actionTypes.SET_QUESTION_TYPE: {
             const editing = deepCopy(state.editing)
             const { index, type } = action.payload
             editing.questions[index].type = type
             return { ...state, editing }
         }
-        case 'TOGGLE_QUESTION': {
+        case actionTypes.TOGGLE_QUESTION: {
             const editing = deepCopy(state.editing)
             const { index } = action.payload
             const targetQuestion = editing.questions[index]
             targetQuestion.isRequired = !targetQuestion.isRequired
             return { ...state, editing }
         }
-        case 'REMOVE_QUESTION': {
+        case actionTypes.REMOVE_QUESTION: {
             const editing = deepCopy(state.editing)
             const { index } = action.payload
             editing.questions.splice(index, 1)
             return { ...state, editing }
         }
-        case 'ADD_OPTION': {
+        case actionTypes.ADD_OPTION: {
             const editing = deepCopy(state.editing)
             const { index } = action.payload
             const options = editing.questions[index].options
             options.push(`选项 ${options.length + 1}`)
             return { ...state, editing }
         }
-        case 'EDIT_OPTION': {
+        case actionTypes.EDIT_OPTION: {
             const editing = deepCopy(state.editing)
             const { questionIndex, optionIndex, event } = action.payload
             const options = editing.questions[questionIndex].options
             options[optionIndex] = event.target.value
             return { ...state, editing }
         }
-        case 'CHOOSE_OPTION': {
+        case actionTypes.CHOOSE_OPTION: {
             const editing = deepCopy(state.editing)
             const { data } = editing
             const { questionIndex, optionIndex, type } = action.payload
@@ -182,20 +183,20 @@ const questionnaires = (state = initState, action) => {
             }
             return { ...state, editing }
         }
-        case 'REMOVE_OPTION': {
+        case actionTypes.REMOVE_OPTION: {
             const editing = deepCopy(state.editing)
             const { questionIndex, optionIndex } = action.payload
             const options = editing.questions[questionIndex].options
             options.splice(optionIndex, 1)
             return { ...state, editing }
         }
-        case 'ADD_OTHER': {
+        case actionTypes.ADD_OTHER: {
             const editing = deepCopy(state.editing)
             const { index } = action.payload
             editing.questions[index].hasOther = true
             return { ...state, editing }
         }
-        case 'REMOVE_OTHER': {
+        case actionTypes.REMOVE_OTHER: {
             const editing = deepCopy(state.editing)
             const { index } = action.payload
             editing.questions[index].hasOther = false

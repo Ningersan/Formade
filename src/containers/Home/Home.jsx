@@ -76,10 +76,10 @@ class Home extends Component {
     }
 
     getTableBodyData() {
-        const { questionnaires } = this.props
+        const { forms, formIds } = this.props
 
-        return questionnaires.map((questionnaire, index) => {
-            const { title, status, deadline } = questionnaire
+        return formIds.map((id, index) => {
+            const { title, status, deadline } = forms[id]
             return [
                 QuestionnaireTitle(title, this.handleEditQuestionnaire),
                 QuestionnaireStatus(status),
@@ -146,7 +146,7 @@ class Home extends Component {
 
     renderDropDownMenu(index) {
         // toggle resonse button state
-        const isStop = this.props.questionnaires[index].stopResponse
+        const isStop = this.props.formIds[index].stopResponse
         const start = { responseText: '开始回复', responseClassName: 'iconfont icon-start' }
         const stop = { responseText: '停止回复', responseClassName: 'iconfont icon-tingzhi' }
         const { responseText, responseClassName } = isStop ? start : stop
@@ -192,20 +192,20 @@ class Home extends Component {
 
     render() {
         const { isDialogOpen } = this.state
-        const { questionnaires } = this.props
-
+        const { formIds } = this.props
+        console.log(this.props)
         return (
             <div className={styles.homescreen}>
                 <div className={styles.header}>
                     <div className={styles.recent}>近期表单</div>
-                    { questionnaires.length > 0 &&
+                    {formIds.length > 0 &&
                         <div className={styles['menu-bar-right']}>
                             {this.renderAddButton()}
                         </div>
                     }
                 </div>
                 <div className={styles['docs-items']}>
-                    { questionnaires.length > 0 ? this.renderFormList() : this.renderEmptyScreen() }
+                    {formIds.length > 0 ? this.renderFormList() : this.renderEmptyScreen() }
                 </div>
                 {isDialogOpen && this.renderDialog()}
             </div>
@@ -214,7 +214,8 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => ({
-    questionnaires: state.list,
+    forms: state.forms.byId,
+    formIds: state.forms.allIds,
 })
 
 const mapDispatchToProps = dispatch => ({
