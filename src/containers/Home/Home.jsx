@@ -7,7 +7,7 @@ import * as formActions from '../../actions/formActions'
 import { Table, Dialog, Icon, DropdownMenu } from '../../components/index'
 import styles from './Home.scss'
 
-const QuestionnaireTitle = (title, handle) => (
+const FormTitle = (title, handle) => (
     <Link
       to="/edit"
       role="button"
@@ -19,18 +19,19 @@ const QuestionnaireTitle = (title, handle) => (
     </Link>
 )
 
-const QuestionnaireStatus = state => <div className={styles.state}>{state}</div>
+const FormStatus = state => <div className={styles.state}>{state}</div>
 
-const QuestionnaireDeadline = date => <div className={styles.deadline}>{date}</div>
+const FormDeadline = date => <div className={styles.deadline}>{date}</div>
 
 class Home extends Component {
     static propTypes = {
-        questionnaires: PropTypes.array.isRequired,
+        forms: PropTypes.object.isRequired,
+        formIds: PropTypes.array.isRequired,
         actions: PropTypes.shape({
-            addQuestionnaire: PropTypes.func.isRequired,
-            editQuestionnaire: PropTypes.func.isRequired,
-            renameQuestionnaire: PropTypes.func.isRequired,
-            removeQuestionnaire: PropTypes.func.isRequired,
+            addForm: PropTypes.func.isRequired,
+            editForm: PropTypes.func.isRequired,
+            renameForm: PropTypes.func.isRequired,
+            removeForm: PropTypes.func.isRequired,
             stopResponse: PropTypes.func.isRequired,
         }).isRequired,
     }
@@ -41,10 +42,10 @@ class Home extends Component {
             isDialogOpen: false,
             renameId: null,
         }
-        this.handleAddQuestionnaire = this.handleAddQuestionnaire.bind(this)
-        this.handleEditQuestionnaire = this.handleEditQuestionnaire.bind(this)
-        this.handleRenameQuestionnaire = this.handleRenameQuestionnaire.bind(this)
-        this.handleRemoveQuestionnaire = this.handleRemoveQuestionnaire.bind(this)
+        this.handleAddForm = this.handleAddForm.bind(this)
+        this.handleEditForm = this.handleEditForm.bind(this)
+        this.handleRenameForm = this.handleRenameForm.bind(this)
+        this.handleRemoveForm = this.handleRemoveForm.bind(this)
         this.handleStopResponse = this.handleStopResponse.bind(this)
         this.handleToggleDialog = this.handleToggleDialog.bind(this)
     }
@@ -56,26 +57,26 @@ class Home extends Component {
         })
     }
 
-    handleAddQuestionnaire() {
-        const { addQuestionnaire } = this.props.actions
-        addQuestionnaire()
+    handleAddForm() {
+        const { addForm } = this.props.actions
+        addForm()
     }
 
-    handleEditQuestionnaire(index) {
-        const { editQuestionnaire } = this.props.actions
-        editQuestionnaire(index)
+    handleEditForm(index) {
+        const { editForm } = this.props.actions
+        editForm(index)
     }
 
-    handleRenameQuestionnaire(index) {
+    handleRenameForm(index) {
         return (value) => {
-            const { renameQuestionnaire } = this.props.actions
-            renameQuestionnaire(value, index)
+            const { renameForm } = this.props.actions
+            renameForm(value, index)
         }
     }
 
-    handleRemoveQuestionnaire(index) {
-        const { removeQuestionnaire } = this.props.actions
-        removeQuestionnaire(index)
+    handleRemoveForm(index) {
+        const { removeForm } = this.props.actions
+        removeForm(index)
     }
 
     handleStopResponse(index) {
@@ -89,9 +90,9 @@ class Home extends Component {
         return formIds.map((id) => {
             const { title, status, deadline } = forms[id]
             return [
-                QuestionnaireTitle(title, () => this.handleEditQuestionnaire(id)),
-                QuestionnaireStatus(status),
-                QuestionnaireDeadline(deadline),
+                FormTitle(title, () => this.handleEditForm(id)),
+                FormStatus(status),
+                FormDeadline(deadline),
                 this.renderDropDownMenu(id),
             ]
         })
@@ -122,7 +123,7 @@ class Home extends Component {
             <Link
               to="/edit"
               className={styles['add-form-btn']}
-              onClick={this.handleAddQuestionnaire}
+              onClick={this.handleAddForm}
             >
                 新建表单
             </Link>
@@ -150,7 +151,7 @@ class Home extends Component {
               autoSelectInput
               defaultValue={forms[renameId].title}
               onShow={this.handleToggleDialog}
-              onSubmit={this.handleRenameQuestionnaire(renameId)}
+              onSubmit={this.handleRenameForm(renameId)}
             />
         )
     }
@@ -158,7 +159,6 @@ class Home extends Component {
     renderDropDownMenu(id) {
         // toggle resonse button state
         // focus here
-        console.log(id)
         const isStop = this.props.forms[id].stopResponse
         const start = { responseText: '开始回复', responseClassName: 'iconfont icon-start' }
         const stop = { responseText: '停止回复', responseClassName: 'iconfont icon-tingzhi' }
@@ -188,7 +188,7 @@ class Home extends Component {
                 <Icon
                   wrapClassName={styles['delete-button']}
                   className={'iconfont icon-lajitong'}
-                  onClick={() => this.handleRemoveQuestionnaire(id)}
+                  onClick={() => this.handleRemoveForm(id)}
                 >
                     <span className={styles['icon-text']}>删除</span>
                 </Icon>
@@ -233,10 +233,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators({
-        addQuestionnaire: formActions.addQuestionnaire,
-        editQuestionnaire: formActions.editQuestionnaire,
-        renameQuestionnaire: formActions.renameQuestionnaire,
-        removeQuestionnaire: formActions.removeQuestionnaire,
+        addForm: formActions.addForm,
+        editForm: formActions.editForm,
+        renameForm: formActions.renameForm,
+        removeForm: formActions.removeForm,
         stopResponse: formActions.stopResponse,
     }, dispatch),
 })

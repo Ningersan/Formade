@@ -1,4 +1,4 @@
-import { saveQuestionnaireTitle } from './formActions'
+import { saveFormTitle } from './formActions'
 import * as Types from '../constants/ActionTypes'
 import * as utils from '../scripts/utils'
 
@@ -74,8 +74,8 @@ export const saveText = (text, type, index) => ({
 // })
 
 export const saveTitle = (text, type, questionId) => (dispatch) => {
-    if (type === 'questionnaire') {
-        dispatch(saveQuestionnaireTitle(text))
+    if (type === 'form') {
+        dispatch(saveFormTitle(text))
     } else {
         dispatch(saveQuestionTitle(text, questionId))
     }

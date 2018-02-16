@@ -61,7 +61,7 @@ class Edit extends React.Component {
     }
 
     handleTitleChange(e) {
-        this.handleSaveTitle(null)(e.target.value.trim(), 'questionnaire')
+        this.handleSaveTitle(null)(e.target.value.trim(), 'form')
     }
 
     handleSaveText(type) {

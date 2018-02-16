@@ -35,31 +35,31 @@ const stopResponse = (state, action) => {
     // return { ...state, editing }
 }
 
-const saveQuestionnaire = (state, action) => {
+const saveForm = (state, action) => {
     const { editing, formId } = action.payload
-    const questionnaire = state[formId]
+    const form = state[formId]
     return {
         ...state,
         [formId]: {
-            ...questionnaire,
+            ...form,
             ...editing,
         },
     }
 }
 
-const renameQuestionnaire = (state, action) => {
+const renameForm = (state, action) => {
     const { id, value } = action.payload
-    const questionnaire = state[id]
+    const form = state[id]
     return {
         ...state,
         [id]: {
-            ...questionnaire,
+            ...form,
             title: value,
         },
     }
 }
 
-const removeQuestionnaire = (state, action) => {
+const removeForm = (state, action) => {
     const { id } = action.payload
     const newState = Object.assign({}, state)
     delete newState[id]
@@ -67,16 +67,16 @@ const removeQuestionnaire = (state, action) => {
     // return (({ [index]: deleted, ...newState }) => newState)(state)
 }
 
-const questionnairesById = (state = initState, action) => {
+const formsById = (state = initState, action) => {
     switch (action.type) {
-        case actionTypes.SAVE_QUESTIONNAIRE:
-            return saveQuestionnaire(state, action)
-        case actionTypes.RENAME_QUESTIONNAIRE:
-            return renameQuestionnaire(state, action)
+        case actionTypes.SAVE_FORM:
+            return saveForm(state, action)
+        case actionTypes.RENAME_FORM:
+            return renameForm(state, action)
         case actionTypes.STOP_RESPONSE:
             return stopResponse(state, action)
-        case actionTypes.REMOVE_QUESTIONNAIRE:
-            return removeQuestionnaire(state, action)
+        case actionTypes.REMOVE_FORM:
+            return removeForm(state, action)
         default:
             return state
     }
@@ -93,11 +93,11 @@ const removeFormId = (state, action) => {
     return state.filter(formId => id !== formId)
 }
 
-const allQuestionnaires = (state = [], action) => {
+const allForms = (state = [], action) => {
     switch (action.type) {
-        case actionTypes.SAVE_QUESTIONNAIRE:
+        case actionTypes.SAVE_FORM:
             return saveFormId(state, action)
-        case actionTypes.REMOVE_QUESTIONNAIRE:
+        case actionTypes.REMOVE_FORM:
             return removeFormId(state, action)
         default:
             return state
@@ -105,6 +105,6 @@ const allQuestionnaires = (state = [], action) => {
 }
 
 export default combineReducers({
-    byId: questionnairesById,
-    allIds: allQuestionnaires,
+    byId: formsById,
+    allIds: allForms,
 })

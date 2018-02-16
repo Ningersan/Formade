@@ -17,7 +17,7 @@ class Layout extends React.Component {
         children: PropTypes.element.isRequired,
         actions: PropTypes.shape({
             saveTitle: PropTypes.func.isRequired,
-            saveQuestionnaire: PropTypes.func.isRequired,
+            saveForm: PropTypes.func.isRequired,
         }).isRequired,
     }
 
@@ -27,7 +27,7 @@ class Layout extends React.Component {
         this.handleScrollChange = this.handleScrollChange.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
         this.handleTabClick = this.handleTabClick.bind(this)
-        this.handleSaveQuestionnaire = this.handleSaveQuestionnaire.bind(this)
+        this.handleSaveForm = this.handleSaveForm.bind(this)
     }
 
     componentDidMount() {
@@ -46,7 +46,7 @@ class Layout extends React.Component {
 
     handleTitleChange(e) {
         const { saveTitle } = this.props.actions
-        saveTitle(e.target.value, 'questionnaire')
+        saveTitle(e.target.value, 'form')
     }
 
     handleScrollChange() {
@@ -55,9 +55,10 @@ class Layout extends React.Component {
         headerbar.style.position = window.scrollY >= 58 ? 'fixed' : 'absolute'
     }
 
-    handleSaveQuestionnaire() {
-        const { saveQuestionnaire } = this.props.actions
-        saveQuestionnaire()
+    handleSaveForm() {
+        const { saveForm } = this.props.actions
+        console.log(this.props.actions)
+        saveForm()
     }
 
     renderHeader() {
@@ -69,7 +70,7 @@ class Layout extends React.Component {
                     <Link
                       to="/"
                       className={styles['backup-link']}
-                      onClick={this.handleSaveQuestionnaire}
+                      onClick={this.handleSaveForm}
                     >
                         <i className="iconfont icon-arrow-left" />
                     </Link>
@@ -84,7 +85,7 @@ class Layout extends React.Component {
                     <Link
                       to="/fill"
                       className={styles['fill-link']}
-                      onClick={this.handleSaveQuestionnaire}
+                      onClick={this.handleSaveForm}
                     >
                         <i className="iconfont icon-tianxie" />
                     </Link>
@@ -151,7 +152,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators({
         saveTitle: questionActions.saveTitle,
-        saveQuestionnaire: formActions.saveQuestionnaire,
+        saveForm: formActions.saveForm,
     }, dispatch),
 })
 

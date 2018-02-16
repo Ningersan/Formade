@@ -9,80 +9,76 @@ export const stopResponse = id => ({
     },
 })
 
-const addFormsAction = formsId => ({
-    type: Types.ADD_FORMS,
+const addFormAction = formId => ({
+    type: Types.ADD_FORM,
     payload: {
-        formsId,
+        formId,
     },
 })
 
-export const addForms = () => (dispatch) => {
-    dispatch(addFormsAction(utils.guid()))
+export const addForm = () => (dispatch) => {
+    dispatch(addFormAction(utils.guid()))
 
     // init default questions
     dispatch(addQuestion('radio', utils.guid()))
     dispatch(addQuestion('radio', utils.guid()))
 }
 
-const saveFormsAction = (editing, formId, editingIds, allQuestions) => ({
-    type: Types.SAVE_FORMS,
+const saveFormAction = (editing, formId) => ({
+    type: Types.SAVE_FORM,
     payload: {
         editing,
         formId,
-        editingIds,
-        allQuestions,
     },
 })
 
-export const saveForms = () => (dispatch, getState) => {
+export const saveForm = () => (dispatch, getState) => {
     const {
         editing,
-        editing: { forms: formId },
-        questions: { byId: allQuestions },
-        questions: { editingIds },
+        editing: { form: formId },
     } = getState()
 
-    dispatch(saveFormsAction(editing, formId, editingIds, allQuestions))
+    dispatch(saveFormAction(editing, formId))
 }
 
-export const renameForms = (value, id) => ({
-    type: Types.RENAME_FORMS,
+export const renameForm = (value, id) => ({
+    type: Types.RENAME_FORM,
     payload: {
         value,
         id,
     },
 })
 
-const editFormsAction = (id, editing) => ({
-    type: Types.EDIT_FORMS,
+const editFormAction = (id, editing) => ({
+    type: Types.EDIT_FORM,
     payload: {
         id,
         editing,
     },
 })
 
-export const editForms = id => (dispatch, getState) => {
+export const editForm = id => (dispatch, getState) => {
     const { forms: { byId } } = getState()
-    dispatch(editFormsAction(id, byId[id]))
+    dispatch(editFormAction(id, byId[id]))
 }
 
-export const fillForms = () => ({
-    type: Types.FILL_FORMS,
+export const fillForm = () => ({
+    type: Types.FILL_FORM,
 })
 
-export const submitForms = () => ({
-    type: Types.SUBMIT_FORMS,
+export const submitForm = () => ({
+    type: Types.SUBMIT_FORM,
 })
 
-export const removeForms = id => ({
-    type: Types.REMOVE_FORMS,
+export const removeForm = id => ({
+    type: Types.REMOVE_FORM,
     payload: {
         id,
     },
 })
 
-export const saveFormsTitle = text => ({
-    type: Types.SAVE_FORMS_TITLE,
+export const saveFormTitle = text => ({
+    type: Types.SAVE_FORM_TITLE,
     payload: {
         text,
     },

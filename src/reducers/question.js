@@ -31,34 +31,34 @@ const initialAllIds = {
 }
 
 // reducer
-const initQuestion = (state, action) => {
-    const { id } = action.payload
-    const initial = {
-        [id]: {
-            id,
-            form: -1,
-            type: 'radio',
-            title: '未命名的问题',
-            isRequired: false,
-            hasOther: false,
-            options: ['选项 1', '选项 2'],
-        },
-        [id + 1]: {
-            id: id + 1,
-            form: -1,
-            type: 'radio',
-            title: '未命名的问题',
-            isRequired: false,
-            hasOther: false,
-            options: ['选项 1', '选项 2'],
-        },
-    }
+// const initQuestion = (state, action) => {
+//     const { id } = action.payload
+//     const initial = {
+//         [id]: {
+//             id,
+//             form: -1,
+//             type: 'radio',
+//             title: '未命名的问题',
+//             isRequired: false,
+//             hasOther: false,
+//             options: ['选项 1', '选项 2'],
+//         },
+//         [id + 1]: {
+//             id: id + 1,
+//             form: -1,
+//             type: 'radio',
+//             title: '未命名的问题',
+//             isRequired: false,
+//             hasOther: false,
+//             options: ['选项 1', '选项 2'],
+//         },
+//     }
 
-    return {
-        ...state,
-        ...initial,
-    }
-}
+//     return {
+//         ...state,
+//         ...initial,
+//     }
+// }
 
 const addQuestion = (state, action) => {
     const { id, type } = action.payload
@@ -80,18 +80,18 @@ const addQuestion = (state, action) => {
     }
 }
 
-const saveQuestion = (state, action) => {
-    const { formId, editingIds } = action.payload
-    const questions = editingIds.reduce((previous, current) => {
-        previous[current] = { ...state[current], form: formId }
-        return previous
-    }, {})
+// const saveQuestion = (state, action) => {
+//     const { formId, editingIds } = action.payload
+//     const questions = editingIds.reduce((previous, current) => {
+//         previous[current] = { ...state[current], form: formId }
+//         return previous
+//     }, {})
 
-    return {
-        ...state,
-        ...questions,
-    }
-}
+//     return {
+//         ...state,
+//         ...questions,
+//     }
+// }
 
 // problem cause
 const copyQuestion = (state, action) => {
@@ -256,11 +256,11 @@ const removeOther = (state, action) => {
 // reducer
 const questionsById = (state = initialState, action) => {
     switch (action.type) {
-        // case actionTypes.ADD_QUESTIONNAIRE:
+        // case actionTypes.ADD_FORM:
         //     return initQuestion(state, action)
         case actionTypes.ADD_QUESTION:
             return addQuestion(state, action)
-        // case actionTypes.SAVE_QUESTIONNAIRE:
+        // case actionTypes.SAVE_FORM:
             // return saveQuestion(state, action)
         case actionTypes.COPY_QUESTION:
             return copyQuestion(state, action)
@@ -293,9 +293,9 @@ const questionsById = (state = initialState, action) => {
 
 // all editing questions id
 // const initEditingIds = (state, action) => {
-//     const { questionnaireId } = action.payload
-//     console.log(questionnaireId)
-//     return [questionnaireId, questionnaireId + 1]
+//     const { formId } = action.payload
+//     console.log(formId)
+//     return [formId, formId + 1]
 // }
 
 // const addQuestionId = (state, action) => {
@@ -312,7 +312,7 @@ const questionsById = (state = initialState, action) => {
 //     switch (action.type) {
 //         case actionTypes.ADD_QUESTION:
 //             return addQuestionId(state, action)
-//         case actionTypes.ADD_QUESTIONNAIRE:
+//         case actionTypes.ADD_FORM:
 //             return initEditingIds(state, action)
 //         case actionTypes.REMOVE_QUESTION:
 //             return removeQuestionId(state, action)
@@ -335,7 +335,7 @@ const saveQuestionIds = (state, action) => {
 
 const allQuestions = (state = initialAllIds, action) => {
     switch (action.type) {
-        // case actionTypes.SAVE_QUESTIONNAIRE:
+        // case actionTypes.SAVE_FORM:
         //     return saveQuestionIds(state, action)
         default:
             return state
