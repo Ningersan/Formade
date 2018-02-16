@@ -5,7 +5,8 @@ import { Link, withRouter } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Input } from '../../../../components/index'
-import * as questionnaireActions from '../../../../actions/questionnaire'
+import * as formActions from '../../../../actions/formActions'
+import * as questionActions from '../../../../actions/questionActions'
 import styles from './Layout.scss'
 
 class Layout extends React.Component {
@@ -149,8 +150,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators({
-        saveTitle: questionnaireActions.saveTitle,
-        saveQuestionnaire: questionnaireActions.saveQuestionnaire,
+        saveTitle: questionActions.saveTitle,
+        saveQuestionnaire: formActions.saveQuestionnaire,
     }, dispatch),
 })
 

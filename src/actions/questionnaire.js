@@ -1,4 +1,4 @@
-import * as Types from '../constants/QuestionnaireActionTypes'
+import * as Types from '../constants/ActionTypes'
 import * as utils from '../scripts/utils'
 
 // 等待抽离
@@ -30,7 +30,7 @@ const addQuestionnaireAction = questionnaireId => ({
     },
 })
 
-export const addQuestionnaire = () => (dispatch, getState) => {
+export const addQuestionnaire = () => (dispatch) => {
     dispatch(addQuestionnaireAction(utils.guid()))
     dispatch(addQuestion('radio', utils.guid()))
     dispatch(addQuestion('radio', utils.guid()))

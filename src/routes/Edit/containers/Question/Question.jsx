@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import Toggle from 'material-ui/Toggle'
 import { Input, Icon, DropdownMenu } from '../../../../components/index'
-import { RADIO, CHECKBOX, TYPES } from '../../../../constants/commonConstants'
+import { RADIO, CHECKBOX, QUESTION_TYPES } from '../../../../constants/CommonConstants'
 import styles from './Question.scss'
 
 class Question extends Component {
@@ -151,9 +151,9 @@ class Question extends Component {
         const dropdownButton = (
             <Icon
               wrapClassName={styles.type}
-              className={TYPES[type].className}
+              className={QUESTION_TYPES[type].className}
             >
-                <span className={styles.content}>{TYPES[type].content}</span>
+                <span className={styles.content}>{QUESTION_TYPES[type].content}</span>
             </Icon>
         )
 
@@ -162,14 +162,14 @@ class Question extends Component {
               wrapClassName={styles['type-chooser']}
               toggle={dropdownButton}
             >
-                {Object.keys(TYPES).map((key, index) => (
+                {Object.keys(QUESTION_TYPES).map((key, index) => (
                     <Icon
                       key={index}
                       wrapClassName={styles['type-item']}
-                      className={TYPES[key].className}
+                      className={QUESTION_TYPES[key].className}
                       onClick={() => handleSetQuestionType(key)}
                     >
-                        <span className={styles.content}>{TYPES[key].content}</span>
+                        <span className={styles.content}>{QUESTION_TYPES[key].content}</span>
                     </Icon>
                 ))}
             </DropdownMenu>
@@ -221,7 +221,7 @@ class Question extends Component {
               role="button"
               tabIndex="-1"
               draggable="true"
-              ref={el => (this.mainEle = el)}
+              ref={el => this.mainEle = el}
               className={questionClassName}
               onDragStart={handleDragStart}
               onDragEnter={handleDragEnter}

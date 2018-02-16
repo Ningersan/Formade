@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as questionnaireActions from '../../actions/questionnaire'
+import * as formActions from '../../actions/formActions'
 import { Table, Dialog, Icon, DropdownMenu } from '../../components/index'
 import styles from './Home.scss'
 
@@ -233,11 +233,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators({
-        addQuestionnaire: questionnaireActions.addQuestionnaire,
-        editQuestionnaire: questionnaireActions.editQuestionnaire,
-        renameQuestionnaire: questionnaireActions.renameQuestionnaire,
-        removeQuestionnaire: questionnaireActions.removeQuestionnaire,
-        stopResponse: questionnaireActions.stopResponse,
+        addQuestionnaire: formActions.addQuestionnaire,
+        editQuestionnaire: formActions.editQuestionnaire,
+        renameQuestionnaire: formActions.renameQuestionnaire,
+        removeQuestionnaire: formActions.removeQuestionnaire,
+        stopResponse: formActions.stopResponse,
     }, dispatch),
 })
 

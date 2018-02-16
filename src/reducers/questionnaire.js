@@ -1,5 +1,5 @@
 import { deepCopy, generatorUid } from '../scripts/utils'
-import * as actionTypes from '../constants/QuestionnaireActionTypes'
+import * as actionTypes from '../constants/ActionTypes'
 
 let nextQuestionId = 0
 const list = localStorage.list ? JSON.parse(localStorage.list) : []

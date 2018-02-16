@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { generatorUid } from '../../src/scripts/utils'
-import * as actionTypes from '../constants/QuestionnaireActionTypes'
+import * as actionTypes from '../constants/ActionTypes'
 
 // initial state
 const initialState = {

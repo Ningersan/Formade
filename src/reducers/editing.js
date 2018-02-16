@@ -1,4 +1,4 @@
-import * as actionTypes from '../constants/QuestionnaireActionTypes'
+import * as actionTypes from '../constants/ActionTypes'
 
 const initState = {
     questionnaire: -1,

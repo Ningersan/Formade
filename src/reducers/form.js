@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import * as actionTypes from '../constants/QuestionnaireActionTypes'
+import * as actionTypes from '../constants/ActionTypes'
 
 const initState = {
     // 0: {
