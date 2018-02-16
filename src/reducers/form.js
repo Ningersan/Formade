@@ -9,15 +9,38 @@ const initState = {
     //     status: '发布中',
     //     stopResponse: false,
     //     deadline: '2017年7月26日',
+    //     questions: [],
     // },
 }
 
-const saveQuestionnaire = (state, action) => {
-    const { editing } = action.payload
-    const questionnaire = state(editing.questionnaireId)
+const stopResponse = (state, action) => {
+    const { id } = action.payload
+    const form = state[id]
+    const isStop = form.stopResponse
     return {
         ...state,
-        [editing.questionnaireId]: {
+        [id]: {
+            ...form,
+            stopResponse: !isStop,
+        },
+    }
+    // const list = deepCopy(state.list)
+    // const editing = deepCopy(state.editing)
+    // const { index } = action.payload
+    // if (index) {
+    //     list[index].stopResponse = !list[index].stopResponse
+    //     return { ...state, list }
+    // }
+    // editing.stopResponse = !editing.stopResponse
+    // return { ...state, editing }
+}
+
+const saveQuestionnaire = (state, action) => {
+    const { editing, formId } = action.payload
+    const questionnaire = state[formId]
+    return {
+        ...state,
+        [formId]: {
             ...questionnaire,
             ...editing,
         },
@@ -25,11 +48,11 @@ const saveQuestionnaire = (state, action) => {
 }
 
 const renameQuestionnaire = (state, action) => {
-    const { index, value } = action
-    const questionnaire = state[index]
+    const { id, value } = action.payload
+    const questionnaire = state[id]
     return {
         ...state,
-        [index]: {
+        [id]: {
             ...questionnaire,
             title: value,
         },
@@ -37,27 +60,45 @@ const renameQuestionnaire = (state, action) => {
 }
 
 const removeQuestionnaire = (state, action) => {
-    const { index } = action.payload
-    return (({ [index]: deleted, ...newState }) => newState)(state)
+    const { id } = action.payload
+    const newState = Object.assign({}, state)
+    delete newState[id]
+    return newState
+    // return (({ [index]: deleted, ...newState }) => newState)(state)
 }
 
 const questionnairesById = (state = initState, action) => {
     switch (action.type) {
         case actionTypes.SAVE_QUESTIONNAIRE:
             return saveQuestionnaire(state, action)
-        case actionTypes.RENAME_QUESTIONNAIRE: {
+        case actionTypes.RENAME_QUESTIONNAIRE:
             return renameQuestionnaire(state, action)
-        }
-        case actionTypes.REMOVE_QUESTIONNAIRE: {
+        case actionTypes.STOP_RESPONSE:
+            return stopResponse(state, action)
+        case actionTypes.REMOVE_QUESTIONNAIRE:
             return removeQuestionnaire(state, action)
-        }
         default:
             return state
     }
 }
 
+// all forms
+const saveFormId = (state, action) => {
+    const { formId } = action.payload
+    return [...new Set(state.concat(formId))]
+}
+
+const removeFormId = (state, action) => {
+    const { id } = action.payload
+    return state.filter(formId => id !== formId)
+}
+
 const allQuestionnaires = (state = [], action) => {
-    switch (actionTypes.type) {
+    switch (action.type) {
+        case actionTypes.SAVE_QUESTIONNAIRE:
+            return saveFormId(state, action)
+        case actionTypes.REMOVE_QUESTIONNAIRE:
+            return removeFormId(state, action)
         default:
             return state
     }

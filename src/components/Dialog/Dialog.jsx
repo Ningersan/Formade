@@ -5,11 +5,13 @@ import styles from './Dialog.scss'
 class Dialog extends Component {
     static defaultProps = {
         autoSelectInput: true,
+        defaultValue: '未命名的表单',
         onSubmit: null,
     }
 
     static propTypes = {
         autoSelectInput: PropTypes.bool.isRequired,
+        defaultValue: PropTypes.string.isRequired,
         onShow: PropTypes.func.isRequired,
         onSubmit: PropTypes.func,
     }
@@ -43,6 +45,7 @@ class Dialog extends Component {
     }
 
     render() {
+        const { defaultValue } = this.props
         return (
             <div className={styles['dialog-mask']}>
                 <div className={styles.dialog}>
@@ -64,7 +67,7 @@ class Dialog extends Component {
                     <input
                       type="text"
                       id={styles['user-input']}
-                      defaultValue="未命名的表单"
+                      defaultValue={defaultValue}
                       ref={(el) => { this.input = el }}
                     />
                     <div className={styles['dialog-button-wrap']}>

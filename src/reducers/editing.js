@@ -7,22 +7,32 @@ const initState = {
     status: '发布中',
     stopResponse: false,
     deadline: '2017年7月26日',
+    questions: [],
 }
 
 const addQuestionnaire = (state, action) => {
     // list is questionnaire's length
-    const { questionnaires } = action.payload
-    let id = questionnaires.length
-
-    if (id !== 0) {
-        id++
-    }
-    return { ...state, questionnaire: id }
+    const { questionnaireId: id } = action.payload
+    return { ...initState, questionnaire: id }
 }
 
 const editQuestionnaire = (state, action) => {
-    const { index, list } = action
-    return { ...state, ...list[index] }
+    const { editing } = action.payload
+    return { ...state, ...editing }
+}
+
+const addQuestionId = (state, action) => {
+    const { id } = action.payload
+    return { ...state, questions: state.questions.concat(id) }
+}
+
+const removeQuestionId = (state, action) => {
+    const { id } = action.payload
+    const questions = state.questions.filter(questionId => questionId !== id)
+    return {
+        ...state,
+        questions,
+    }
 }
 
 const saveText = (state, action) => {
@@ -30,7 +40,7 @@ const saveText = (state, action) => {
     return { ...state, description: text }
 }
 
-const saveTitle = (state, action) => {
+const saveQuestionnaireTitle = (state, action) => {
     const { text } = action.payload
     return { ...state, title: text }
 }
@@ -40,15 +50,16 @@ const editing = (state = initState, action) => {
     switch (action.type) {
         case actionTypes.ADD_QUESTIONNAIRE:
             return addQuestionnaire(state, action)
-        case actionTypes.EDIT_QUESTIONNAIRE: {
+        case actionTypes.EDIT_QUESTIONNAIRE:
             return editQuestionnaire(state, action)
-        }
-        case actionTypes.SAVE_TEXT: {
+        case actionTypes.ADD_QUESTION:
+            return addQuestionId(state, action)
+        case actionTypes.REMOVE_QUESTION:
+            return removeQuestionId(state, action)
+        case actionTypes.SAVE_TEXT:
             return saveText(state, action)
-        }
-        case actionTypes.SAVE_TITLE: {
-            return saveTitle(state, action)
-        }
+        case actionTypes.SAVE_QUESTIONNAIRE_TITLE:
+            return saveQuestionnaireTitle(state, action)
         default:
             return state
     }

@@ -2,36 +2,73 @@ import { combineReducers } from 'redux'
 import { generatorUid } from '../../src/scripts/utils'
 import * as actionTypes from '../constants/QuestionnaireActionTypes'
 
-let nextQuestionId = 0
+// initial state
 const initialState = {
-    0: {
-        id: 0,
-        form: -1,
-        type: 'radio',
-        title: '未命名的问题',
-        isRequired: false,
-        hasOther: false,
-        options: ['选项 1', '选项 2'],
-    },
-    1: {
-        id: 1,
-        form: -1,
-        type: 'radio',
-        title: '未命名的问题',
-        isRequired: false,
-        hasOther: false,
-        options: ['选项 1', '选项 2'],
-    },
+    // 0: {
+    //     id: 0,
+    //     form: -1,
+    //     type: 'radio',
+    //     title: '未命名的问题',
+    //     isRequired: false,
+    //     hasOther: false,
+    //     options: ['选项 1', '选项 2'],
+    // },
+    // 1: {
+    //     id: 1,
+    //     form: -1,
+    //     type: 'radio',
+    //     title: '未命名的问题',
+    //     isRequired: false,
+    //     hasOther: false,
+    //     options: ['选项 1', '选项 2'],
+    // },
+}
+
+// const initialEditingIds = [0, 1]
+
+const initialAllIds = {
+    // 0: [1, 2]
+}
+
+// reducer
+const initQuestion = (state, action) => {
+    const { id } = action.payload
+    const initial = {
+        [id]: {
+            id,
+            form: -1,
+            type: 'radio',
+            title: '未命名的问题',
+            isRequired: false,
+            hasOther: false,
+            options: ['选项 1', '选项 2'],
+        },
+        [id + 1]: {
+            id: id + 1,
+            form: -1,
+            type: 'radio',
+            title: '未命名的问题',
+            isRequired: false,
+            hasOther: false,
+            options: ['选项 1', '选项 2'],
+        },
+    }
+
+    return {
+        ...state,
+        ...initial,
+    }
 }
 
 const addQuestion = (state, action) => {
-    const { type, list } = action.payload
+    const { id, type } = action.payload
 
     // defalut question
     const question = {
-        id: nextQuestionId++,
-        title: '未命名的问题',
+        id,
+        form: -1,
         type,
+        title: '未命名的问题',
         isRequired: false,
         hasOther: false,
         options: ['选项 1', '选项 2'],
@@ -39,7 +76,20 @@ const addQuestion = (state, action) => {
 
     return {
         ...state,
-        [list.length]: question,
+        [id]: question,
+    }
+}
+
+const saveQuestion = (state, action) => {
+    const { formId, editingIds } = action.payload
+    const questions = editingIds.reduce((previous, current) => {
+        previous[current] = { ...state[current], form: formId }
+        return previous
+    }, {})
+
+    return {
+        ...state,
+        ...questions,
     }
 }
 
@@ -64,11 +114,11 @@ const sortQuestion = (state, action) => {
 }
 
 const setQuestionType = (state, action) => {
-    const { index, type } = action.payload
-    const question = state[index]
+    const { id, type } = action.payload
+    const question = state[id]
     return {
         ...state,
-        [index]: {
+        [id]: {
             ...question,
             type,
         },
@@ -76,11 +126,11 @@ const setQuestionType = (state, action) => {
 }
 
 const toggleQuestion = (state, action) => {
-    const { index } = action.payload
-    const question = state[index]
+    const { id } = action.payload
+    const question = state[id]
     return {
         ...state,
-        [index]: {
+        [id]: {
             ...question,
             isRequired: !question.isRequired,
         },
@@ -88,17 +138,35 @@ const toggleQuestion = (state, action) => {
 }
 
 const removeQuestion = (state, action) => {
-    const { index } = action.payload
-    return (({ [index]: deleted, ...newState }) => newState)(state)
+    const { id } = action.payload
+
+    // console.log((({ [id]: deleted, ...newState }) => newState)(state))
+    // return (({ [id]: deleted, ...newState }) => newState)(state)
+
+    const newState = Object.assign({}, state)
+    delete newState[id]
+    return newState
+}
+
+const saveQuestionTitle = (state, action) => {
+    const { text, id } = action.payload
+    const question = state[id]
+    return {
+        ...state,
+        [id]: {
+            ...question,
+            title: text,
+        },
+    }
 }
 
 const addOption = (state, action) => {
-    const { index } = action.payload
-    const question = state[index]
+    const { questionId } = action.payload
+    const question = state[questionId]
     const options = question.options
     return {
         ...state,
-        [index]: {
+        [questionId]: {
             ...question,
             options: options.concat(`选项 ${options.length + 1}`),
         },
@@ -106,12 +174,12 @@ const addOption = (state, action) => {
 }
 
 const editOption = (state, action) => {
-    const { questionIndex, optionIndex, event } = action.payload
-    const question = state[questionIndex]
+    const { questionId, optionId, event } = action.payload
+    const question = state[questionId]
 
     // new options
     const options = question.options.map((option, index) => {
-        if (option.id !== optionIndex) {
+        if (index !== optionId) {
             return option
         }
         return event.target.value
@@ -119,7 +187,7 @@ const editOption = (state, action) => {
 
     return {
         ...state,
-        [questionIndex]: {
+        [questionId]: {
             ...question,
             options,
         },
@@ -146,13 +214,13 @@ const chooseOption = (state, action) => {
 }
 
 const removeOption = (state, action) => {
-    const { questionIndex, optionIndex } = action.payload
-    const question = state[questionIndex]
-    const options = question.options.filter((option, index) => index !== optionIndex)
+    const { questionId, optionId } = action.payload
+    const question = state[questionId]
+    const options = question.options.filter((option, index) => index !== optionId)
 
     return {
         ...state,
-        [questionIndex]: {
+        [questionId]: {
             ...question,
             options,
         },
@@ -160,12 +228,12 @@ const removeOption = (state, action) => {
 }
 
 const addOther = (state, action) => {
-    const { index } = action.payload
-    const question = state[index]
+    const { questionId } = action.payload
+    const question = state[questionId]
 
     return {
         ...state,
-        [index]: {
+        [questionId]: {
             ...question,
             hasOther: true,
         },
@@ -173,12 +241,12 @@ const addOther = (state, action) => {
 }
 
 const removeOther = (state, action) => {
-    const { index } = action.payload
-    const question = state[index]
+    const { questionId } = action.payload
+    const question = state[questionId]
 
     return {
         ...state,
-        [index]: {
+        [questionId]: {
             ...question,
             hasOther: false,
         },
@@ -186,56 +254,96 @@ const removeOther = (state, action) => {
 }
 
 // reducer
-const questionById = (state = initialState, action) => {
+const questionsById = (state = initialState, action) => {
     switch (action.type) {
+        // case actionTypes.ADD_QUESTIONNAIRE:
+        //     return initQuestion(state, action)
         case actionTypes.ADD_QUESTION:
             return addQuestion(state, action)
-        case actionTypes.COPY_QUESTION: {
+        // case actionTypes.SAVE_QUESTIONNAIRE:
+            // return saveQuestion(state, action)
+        case actionTypes.COPY_QUESTION:
             return copyQuestion(state, action)
-        }
-        case actionTypes.SORT_QUESTION: {
+        case actionTypes.SORT_QUESTION:
             return sortQuestion(state, action)
-        }
-        case actionTypes.SET_QUESTION_TYPE: {
+        case actionTypes.SET_QUESTION_TYPE:
             return setQuestionType(state, action)
-        }
-        case actionTypes.TOGGLE_QUESTION: {
+        case actionTypes.TOGGLE_QUESTION:
             return toggleQuestion(state, action)
-        }
-        case actionTypes.REMOVE_QUESTION: {
+        case actionTypes.REMOVE_QUESTION:
             return removeQuestion(state, action)
-        }
-        case actionTypes.ADD_OPTION: {
+        case actionTypes.SAVE_QUESTION_TITLE:
+            return saveQuestionTitle(state, action)
+        case actionTypes.ADD_OPTION:
             return addOption(state, action)
-        }
-        case actionTypes.EDIT_OPTION: {
+        case actionTypes.EDIT_OPTION:
             return editOption(state, action)
-        }
-        case actionTypes.CHOOSE_OPTION: {
+        case actionTypes.CHOOSE_OPTION:
             return chooseOption(state, action)
-        }
-        case actionTypes.REMOVE_OPTION: {
+        case actionTypes.REMOVE_OPTION:
             return removeOption(state, action)
-        }
-        case actionTypes.ADD_OTHER: {
+        case actionTypes.ADD_OTHER:
             return addOther(state, action)
-        }
-        case actionTypes.REMOVE_OTHER: {
+        case actionTypes.REMOVE_OTHER:
             return removeOther(state, action)
-        }
         default:
             return state
     }
 }
 
-const allQuestion = (state = [0, 1], action) => {
-    switch (actionTypes.type) {
+// all editing questions id
+// const initEditingIds = (state, action) => {
+//     const { questionnaireId } = action.payload
+//     console.log(questionnaireId)
+//     return [questionnaireId, questionnaireId + 1]
+// }
+
+// const addQuestionId = (state, action) => {
+//     const { id } = action.payload
+//     return state.concat(id)
+// }
+
+// const removeQuestionId = (state, action) => {
+//     const { id } = action.payload
+//     return state.filter(questionId => questionId !== id)
+// }
+
+// const EditingQuestions = (state = initialEditingIds, action) => {
+//     switch (action.type) {
+//         case actionTypes.ADD_QUESTION:
+//             return addQuestionId(state, action)
+//         case actionTypes.ADD_QUESTIONNAIRE:
+//             return initEditingIds(state, action)
+//         case actionTypes.REMOVE_QUESTION:
+//             return removeQuestionId(state, action)
+//         default:
+//             return state
+//     }
+// }
+
+// all question ids
+const saveQuestionIds = (state, action) => {
+    const { formId, editingIds } = action.payload
+    // console.log(formId, allQuestions)
+    // const questionIds = Object.keys(state).filter(id => allQuestions[id].form === formId)
+
+    return {
+        ...state,
+        [formId]: editingIds.slice(),
+    }
+}
+
+const allQuestions = (state = initialAllIds, action) => {
+    switch (action.type) {
+        // case actionTypes.SAVE_QUESTIONNAIRE:
+        //     return saveQuestionIds(state, action)
         default:
             return state
     }
 }
 
 export default combineReducers({
-    byId: questionById,
-    allIds: allQuestion,
+    byId: questionsById,
+    // editingIds: EditingQuestions,
+    allIds: allQuestions,
 })

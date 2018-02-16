@@ -7,6 +7,7 @@ import { Menu, Icon, Input, Textarea } from '../../../../components/index'
 import Question from '../Question/Question'
 import { TYPES } from '../../../../constants/commonConstants'
 import * as questionnaireActions from '../../../../actions/questionnaire'
+import * as utils from '../../../../scripts/utils'
 import styles from './Main.scss'
 
 class Edit extends React.Component {
@@ -75,7 +76,7 @@ class Edit extends React.Component {
 
     handleAddQuestion(type) {
         const { addQuestion } = this.props.actions
-        addQuestion(type)
+        addQuestion(type, utils.guid())
     }
 
     handleSetQuestionType(index) {
@@ -244,31 +245,31 @@ class Edit extends React.Component {
     }
 
     render() {
-        const { editing } = this.props
-        const questions = []
+        const { editing, questionById, questionIds } = this.props
+
         return (
             <div className={styles.wrap}>
                 {this.renderMenu()}
                 {this.renderHeader()}
-                {questions.map((question, index) => (
+                {questionIds.map(id => (
                     <Question
-                      key={question.id}
-                      title={question.title}
-                      type={question.type}
-                      options={question.options}
-                      handleDragStart={this.handleDragStart(index)}
-                      handleDragEnter={this.handleDragEnter(index)}
-                      hasOther={question.hasOther}
-                      handleSaveTitle={this.handleSaveTitle(index)}
-                      handleSetQuestionType={this.handleSetQuestionType(index)}
-                      handleToggleQuestion={() => this.handleToggleQuestion(index)}
-                      handleCopyQuestion={() => this.handleCopyQuestion(index)}
-                      handleRemoveQuestion={() => this.handleRemoveQuestion(index)}
-                      handleAddOption={() => this.handleAddOption(index)}
-                      handleOptionChange={this.handleEditOption(index)}
-                      handleRemoveOption={this.handleRemoveOption(index)}
-                      handleAddOther={() => this.handleAddOther(index)}
-                      handleRemoveOther={() => this.handleRemoveOther(index)}
+                      key={questionById[id].id}
+                      title={questionById[id].title}
+                      type={questionById[id].type}
+                      options={questionById[id].options}
+                      handleDragStart={this.handleDragStart(id)}
+                      handleDragEnter={this.handleDragEnter(id)}
+                      hasOther={questionById[id].hasOther}
+                      handleSaveTitle={this.handleSaveTitle(id)}
+                      handleSetQuestionType={this.handleSetQuestionType(id)}
+                      handleToggleQuestion={() => this.handleToggleQuestion(id)}
+                      handleCopyQuestion={() => this.handleCopyQuestion(id)}
+                      handleRemoveQuestion={() => this.handleRemoveQuestion(id)}
+                      handleAddOption={() => this.handleAddOption(id)}
+                      handleOptionChange={this.handleEditOption(id)}
+                      handleRemoveOption={this.handleRemoveOption(id)}
+                      handleAddOther={() => this.handleAddOther(id)}
+                      handleRemoveOther={() => this.handleRemoveOther(id)}
                     />
                 ))}
             </div>
@@ -278,6 +279,8 @@ class Edit extends React.Component {
 
 const mapStateToProps = state => ({
     editing: state.editing,
+    questionIds: state.editing.questions,
+    questionById: state.questions.byId,
 })
 
 const mapDispatchToProps = dispatch => ({

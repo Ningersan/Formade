@@ -37,7 +37,10 @@ class Home extends Component {
 
     constructor() {
         super()
-        this.state = { isDialogOpen: false }
+        this.state = {
+            isDialogOpen: false,
+            renameId: null,
+        }
         this.handleAddQuestionnaire = this.handleAddQuestionnaire.bind(this)
         this.handleEditQuestionnaire = this.handleEditQuestionnaire.bind(this)
         this.handleRenameQuestionnaire = this.handleRenameQuestionnaire.bind(this)
@@ -46,8 +49,11 @@ class Home extends Component {
         this.handleToggleDialog = this.handleToggleDialog.bind(this)
     }
 
-    handleToggleDialog(flag) {
-        this.setState({ isDialogOpen: flag })
+    handleToggleDialog(flag, formId) {
+        this.setState({
+            isDialogOpen: flag,
+            renameId: formId,
+        })
     }
 
     handleAddQuestionnaire() {
@@ -55,14 +61,16 @@ class Home extends Component {
         addQuestionnaire()
     }
 
-    handleEditQuestionnaire() {
+    handleEditQuestionnaire(index) {
         const { editQuestionnaire } = this.props.actions
-        return index => editQuestionnaire(index)
+        editQuestionnaire(index)
     }
 
-    handleRenameQuestionnaire(value, index) {
-        const { renameQuestionnaire } = this.props.actions
-        renameQuestionnaire(value, index)
+    handleRenameQuestionnaire(index) {
+        return (value) => {
+            const { renameQuestionnaire } = this.props.actions
+            renameQuestionnaire(value, index)
+        }
     }
 
     handleRemoveQuestionnaire(index) {
@@ -78,13 +86,13 @@ class Home extends Component {
     getTableBodyData() {
         const { forms, formIds } = this.props
 
-        return formIds.map((id, index) => {
+        return formIds.map((id) => {
             const { title, status, deadline } = forms[id]
             return [
-                QuestionnaireTitle(title, this.handleEditQuestionnaire),
+                QuestionnaireTitle(title, () => this.handleEditQuestionnaire(id)),
                 QuestionnaireStatus(status),
                 QuestionnaireDeadline(deadline),
-                this.renderDropDownMenu(index),
+                this.renderDropDownMenu(id),
             ]
         })
     }
@@ -135,18 +143,23 @@ class Home extends Component {
     }
 
     renderDialog() {
+        const { forms } = this.props
+        const { renameId } = this.state
         return (
             <Dialog
               autoSelectInput
+              defaultValue={forms[renameId].title}
               onShow={this.handleToggleDialog}
-              onSubmit={this.handleRenameQuestionnaire}
+              onSubmit={this.handleRenameQuestionnaire(renameId)}
             />
         )
     }
 
-    renderDropDownMenu(index) {
+    renderDropDownMenu(id) {
         // toggle resonse button state
-        const isStop = this.props.formIds[index].stopResponse
+        // focus here
+        console.log(id)
+        const isStop = this.props.forms[id].stopResponse
         const start = { responseText: '开始回复', responseClassName: 'iconfont icon-start' }
         const stop = { responseText: '停止回复', responseClassName: 'iconfont icon-tingzhi' }
         const { responseText, responseClassName } = isStop ? start : stop
@@ -168,21 +181,21 @@ class Home extends Component {
                 <Icon
                   wrapClassName={styles['rename-button']}
                   className={'iconfont icon-aa'}
-                  onClick={() => { this.handleToggleDialog(true) }}
+                  onClick={() => { this.handleToggleDialog(true, id) }}
                 >
                     <span className={styles['icon-text']}>重命名</span>
                 </Icon>
                 <Icon
                   wrapClassName={styles['delete-button']}
                   className={'iconfont icon-lajitong'}
-                  onClick={() => this.handleRemoveQuestionnaire(index)}
+                  onClick={() => this.handleRemoveQuestionnaire(id)}
                 >
                     <span className={styles['icon-text']}>删除</span>
                 </Icon>
                 <Icon
                   wrapClassName={styles['release-button']}
                   className={responseClassName}
-                  onClick={() => this.handleStopResponse(index)}
+                  onClick={() => this.handleStopResponse(id)}
                 >
                     <span className={styles['icon-text']}>{responseText}</span>
                 </Icon>
@@ -193,7 +206,7 @@ class Home extends Component {
     render() {
         const { isDialogOpen } = this.state
         const { formIds } = this.props
-        console.log(this.props)
+
         return (
             <div className={styles.homescreen}>
                 <div className={styles.header}>

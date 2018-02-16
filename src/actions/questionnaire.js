@@ -1,42 +1,82 @@
 import * as Types from '../constants/QuestionnaireActionTypes'
+import * as utils from '../scripts/utils'
 
-export const stopResponse = index => ({
-    type: Types.STOP_RESPONSE,
+// 等待抽离
+export const addQuestion = (type, id) => ({
+    type: Types.ADD_QUESTION,
     payload: {
-        index,
+        type,
+        id,
     },
 })
 
-export const addQuestionnaireAction = questionnaires => ({
+// export const addQuestion = type => (dispatch, getState) => {
+//     const { questions: { editingIds } } = getState()
+//     dispatch(addQuestionAction(type, editingIds.length))
+// }
+
+// questionnaire actions
+export const stopResponse = id => ({
+    type: Types.STOP_RESPONSE,
+    payload: {
+        id,
+    },
+})
+
+const addQuestionnaireAction = questionnaireId => ({
     type: Types.ADD_QUESTIONNAIRE,
     payload: {
-        questionnaires,
+        questionnaireId,
     },
 })
 
 export const addQuestionnaire = () => (dispatch, getState) => {
-    const { forms: { allIds } } = getState()
-    dispatch(addQuestionnaireAction(allIds))
+    dispatch(addQuestionnaireAction(utils.guid()))
+    dispatch(addQuestion('radio', utils.guid()))
+    dispatch(addQuestion('radio', utils.guid()))
 }
 
-export const saveQuestionnaire = () => ({
+const saveQuestionnaireAction = (editing, formId, editingIds, allQuestions) => ({
     type: Types.SAVE_QUESTIONNAIRE,
+    payload: {
+        editing,
+        formId,
+        editingIds,
+        allQuestions,
+    },
 })
 
-export const renameQuestionnaire = (value, index) => ({
+export const saveQuestionnaire = () => (dispatch, getState) => {
+    const {
+        editing,
+        editing: { questionnaire: formId },
+        questions: { byId: allQuestions },
+        questions: { editingIds },
+    } = getState()
+
+    dispatch(saveQuestionnaireAction(editing, formId, editingIds, allQuestions))
+}
+
+export const renameQuestionnaire = (value, id) => ({
     type: Types.RENAME_QUESTIONNAIRE,
     payload: {
         value,
-        index,
+        id,
     },
 })
 
-export const editQuestionnaire = index => ({
+const editQuestionnaireAction = (id, editing) => ({
     type: Types.EDIT_QUESTIONNAIRE,
     payload: {
-        index,
+        id,
+        editing,
     },
 })
+
+export const editQuestionnaire = id => (dispatch, getState) => {
+    const { forms: { byId } } = getState()
+    dispatch(editQuestionnaireAction(id, byId[id]))
+}
 
 export const fillQuestionnaire = () => ({
     type: Types.FILL_QUESTIONNAIRE,
@@ -46,35 +86,26 @@ export const submitQuestionnaire = () => ({
     type: Types.SUBMIT_QUESTIONNAIRE,
 })
 
-export const removeQuestionnaire = index => ({
+export const removeQuestionnaire = id => ({
     type: Types.REMOVE_QUESTIONNAIRE,
     payload: {
-        index,
+        id,
     },
 })
 
-export const saveText = (text, type, index) => ({
-    type: Types.SAVE_TEXT,
+export const saveQuestionnaireTitle = text => ({
+    type: Types.SAVE_QUESTIONNAIRE_TITLE,
     payload: {
         text,
-        type,
-        index,
     },
 })
 
-export const saveTitle = (text, type, questionIndex) => ({
-    type: Types.SAVE_TITLE,
+// question actions
+export const saveQuestionTitle = (text, id) => ({
+    type: Types.SAVE_QUESTION_TITLE,
     payload: {
         text,
-        type,
-        questionIndex,
-    },
-})
-
-export const addQuestion = type => ({
-    type: Types.ADD_QUESTION,
-    payload: {
-        type,
+        id,
     },
 })
 
@@ -93,40 +124,66 @@ export const sortQuestion = (from, to) => ({
     },
 })
 
-export const setQuestionType = (index, type) => ({
+export const setQuestionType = (id, type) => ({
     type: Types.SET_QUESTION_TYPE,
     payload: {
-        index,
+        id,
         type,
     },
 })
 
-export const toggleQuestion = index => ({
+export const toggleQuestion = id => ({
     type: Types.TOGGLE_QUESTION,
     payload: {
-        index,
+        id,
     },
 })
 
-export const removeQuestion = index => ({
+export const removeQuestion = id => ({
     type: Types.REMOVE_QUESTION,
     payload: {
+        id,
+    },
+})
+
+export const saveText = (text, type, index) => ({
+    type: Types.SAVE_TEXT,
+    payload: {
+        text,
+        type,
         index,
     },
 })
 
-export const addOption = index => ({
+const saveTitleAction = (text, type, questionIndex) => ({
+    type: Types.SAVE_TITLE,
+    payload: {
+        text,
+        type,
+        questionIndex,
+    },
+})
+
+export const saveTitle = (text, type, questionId) => (dispatch, getState) => {
+    if (type === 'questionnaire') {
+        dispatch(saveQuestionnaireTitle(text))
+    } else {
+        dispatch(saveQuestionTitle(text, questionId))
+    }
+}
+
+export const addOption = questionId => ({
     type: Types.ADD_OPTION,
     payload: {
-        index,
+        questionId,
     },
 })
 
-export const editOption = (questionIndex, optionIndex, event) => ({
+export const editOption = (questionId, optionId, event) => ({
     type: Types.EDIT_OPTION,
     payload: {
-        questionIndex,
-        optionIndex,
+        questionId,
+        optionId,
         event,
     },
 })
@@ -140,24 +197,24 @@ export const chooseOption = (questionIndex, optionIndex, type) => ({
     },
 })
 
-export const removeOption = (questionIndex, optionIndex) => ({
+export const removeOption = (questionId, optionId) => ({
     type: Types.REMOVE_OPTION,
     payload: {
-        questionIndex,
-        optionIndex,
+        questionId,
+        optionId,
     },
 })
 
-export const addOther = index => ({
+export const addOther = questionId => ({
     type: Types.ADD_OTHER,
     payload: {
-        index,
+        questionId,
     },
 })
 
-export const removeOther = index => ({
+export const removeOther = questionId => ({
     type: Types.REMOVE_OTHER,
     payload: {
-        index,
+        questionId,
     },
 })
