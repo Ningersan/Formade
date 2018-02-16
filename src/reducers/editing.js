@@ -12,7 +12,7 @@ const initState = {
 
 const addForm = (state, action) => {
     // list is form's length
-    const { formId: id } = action.payload
+    const { id } = action.payload
     return { ...initState, form: id }
 }
 

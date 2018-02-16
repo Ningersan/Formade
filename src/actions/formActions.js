@@ -9,10 +9,10 @@ export const stopResponse = id => ({
     },
 })
 
-const addFormAction = formId => ({
+const addFormAction = id => ({
     type: Types.ADD_FORM,
     payload: {
-        formId,
+        id,
     },
 })
 
@@ -20,8 +20,8 @@ export const addForm = () => (dispatch) => {
     dispatch(addFormAction(utils.guid()))
 
     // init default questions
-    dispatch(addQuestion('radio', utils.guid()))
-    dispatch(addQuestion('radio', utils.guid()))
+    dispatch(addQuestion(utils.guid(), 'radio'))
+    dispatch(addQuestion(utils.guid(), 'radio'))
 }
 
 const saveFormAction = (editing, formId) => ({
@@ -41,11 +41,11 @@ export const saveForm = () => (dispatch, getState) => {
     dispatch(saveFormAction(editing, formId))
 }
 
-export const renameForm = (value, id) => ({
+export const renameForm = (id, name) => ({
     type: Types.RENAME_FORM,
     payload: {
-        value,
         id,
+        name,
     },
 })
 
@@ -59,7 +59,8 @@ const editFormAction = (id, editing) => ({
 
 export const editForm = id => (dispatch, getState) => {
     const { forms: { byId } } = getState()
-    dispatch(editFormAction(id, byId[id]))
+    const editing = byId[id]
+    dispatch(editFormAction(id, editing))
 }
 
 export const fillForm = () => ({

@@ -62,26 +62,26 @@ class Home extends Component {
         addForm()
     }
 
-    handleEditForm(index) {
+    handleEditForm(id) {
         const { editForm } = this.props.actions
-        editForm(index)
+        editForm(id)
     }
 
-    handleRenameForm(index) {
+    handleRenameForm(id) {
         return (value) => {
             const { renameForm } = this.props.actions
-            renameForm(value, index)
+            renameForm(id, value)
         }
     }
 
-    handleRemoveForm(index) {
+    handleRemoveForm(id) {
         const { removeForm } = this.props.actions
-        removeForm(index)
+        removeForm(id)
     }
 
-    handleStopResponse(index) {
+    handleStopResponse(id) {
         const { stopResponse } = this.props.actions
-        stopResponse(index)
+        stopResponse(id)
     }
 
     getTableBodyData() {

@@ -48,13 +48,13 @@ const saveForm = (state, action) => {
 }
 
 const renameForm = (state, action) => {
-    const { id, value } = action.payload
+    const { id, name } = action.payload
     const form = state[id]
     return {
         ...state,
         [id]: {
             ...form,
-            title: value,
+            title: name,
         },
     }
 }

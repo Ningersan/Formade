@@ -2,11 +2,11 @@ import { saveFormTitle } from './formActions'
 import * as Types from '../constants/ActionTypes'
 import * as utils from '../scripts/utils'
 
-export const addQuestion = (type, id) => ({
+export const addQuestion = (id, type) => ({
     type: Types.ADD_QUESTION,
     payload: {
-        type,
         id,
+        type,
     },
 })
 

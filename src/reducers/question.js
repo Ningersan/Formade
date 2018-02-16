@@ -322,16 +322,16 @@ const questionsById = (state = initialState, action) => {
 // }
 
 // all question ids
-const saveQuestionIds = (state, action) => {
-    const { formId, editingIds } = action.payload
-    // console.log(formId, allQuestions)
-    // const questionIds = Object.keys(state).filter(id => allQuestions[id].form === formId)
+// const saveQuestionIds = (state, action) => {
+//     const { formId, editingIds } = action.payload
+//     // console.log(formId, allQuestions)
+//     // const questionIds = Object.keys(state).filter(id => allQuestions[id].form === formId)
 
-    return {
-        ...state,
-        [formId]: editingIds.slice(),
-    }
-}
+//     return {
+//         ...state,
+//         [formId]: editingIds.slice(),
+//     }
+// }
 
 const allQuestions = (state = initialAllIds, action) => {
     switch (action.type) {

@@ -69,64 +69,64 @@ class Edit extends React.Component {
         return text => saveText(text, type)
     }
 
-    handleSaveTitle(questionIndex) {
+    handleSaveTitle(questionId) {
         const { saveTitle } = this.props.actions
-        return (title, type) => saveTitle(title, type, questionIndex)
+        return (title, type) => saveTitle(title, type, questionId)
     }
 
     handleAddQuestion(type) {
         const { addQuestion } = this.props.actions
-        addQuestion(type, utils.guid())
+        addQuestion(utils.guid(), type)
     }
 
-    handleSetQuestionType(index) {
+    handleSetQuestionType(id) {
         const { setQuestionType } = this.props.actions
-        return type => setQuestionType(index, type)
+        return type => setQuestionType(id, type)
     }
 
-    handleToggleQuestion(index) {
+    handleToggleQuestion(id) {
         const { toggleQuestion } = this.props.actions
-        toggleQuestion(index)
+        toggleQuestion(id)
     }
 
-    handleCopyQuestion(index) {
+    handleCopyQuestion(id) {
         const { copyQuestion } = this.props.actions
-        copyQuestion(index)
+        copyQuestion(id)
     }
 
-    handleSortQuestion(sourceIndex, targetIndex) {
+    handleSortQuestion(sourceId, targetId) {
         const { sortQuestion } = this.props.actions
-        sortQuestion(sourceIndex, targetIndex)
+        sortQuestion(sourceId, targetId)
     }
 
-    handleRemoveQuestion(index) {
+    handleRemoveQuestion(id) {
         const { removeQuestion } = this.props.actions
-        removeQuestion(index)
+        removeQuestion(id)
     }
 
-    handleAddOption(index) {
+    handleAddOption(questionId) {
         const { addOption } = this.props.actions
-        addOption(index)
+        addOption(questionId)
     }
 
-    handleEditOption(questionIndex) {
+    handleEditOption(questionId) {
         const { editOption } = this.props.actions
-        return optionIndex => e => editOption(questionIndex, optionIndex, e)
+        return optionId => e => editOption(questionId, optionId, e)
     }
 
-    handleRemoveOption(questionIndex) {
+    handleRemoveOption(questionId) {
         const { removeOption } = this.props.actions
-        return optionIndex => removeOption(questionIndex, optionIndex)
+        return optionId => removeOption(questionId, optionId)
     }
 
-    handleAddOther(index) {
+    handleAddOther(questionId) {
         const { addOther } = this.props.actions
-        addOther(index)
+        addOther(questionId)
     }
 
-    handleRemoveOther(index) {
+    handleRemoveOther(questionId) {
         const { removeOther } = this.props.actions
-        removeOther(index)
+        removeOther(questionId)
     }
 
     handleDragStart(index) {
@@ -246,7 +246,6 @@ class Edit extends React.Component {
 
     render() {
         const { editing, questionById, questionIds } = this.props
-
         return (
             <div className={styles.wrap}>
                 {this.renderMenu()}
