@@ -1,6 +1,5 @@
-import { saveFormTitle } from './formActions'
 import * as Types from '../constants/ActionTypes'
-import * as utils from '../scripts/utils'
+// import * as utils from '../scripts/utils'
 
 export const addQuestion = (id, type) => ({
     type: Types.ADD_QUESTION,
@@ -47,11 +46,11 @@ export const removeQuestion = id => ({
     },
 })
 
-export const saveQuestionTitle = (text, id) => ({
+export const saveQuestionTitle = (id, title) => ({
     type: Types.SAVE_QUESTION_TITLE,
     payload: {
-        text,
         id,
+        title,
     },
 })
 
@@ -73,13 +72,13 @@ export const saveText = (text, type, index) => ({
 //     },
 // })
 
-export const saveTitle = (text, type, questionId) => (dispatch) => {
-    if (type === 'form') {
-        dispatch(saveFormTitle(text))
-    } else {
-        dispatch(saveQuestionTitle(text, questionId))
-    }
-}
+// export const saveTitle = (text, type, questionId) => (dispatch) => {
+//     if (type === 'form') {
+//         dispatch(saveFormTitle(text))
+//     } else {
+//         dispatch(saveQuestionTitle(text, questionId))
+//     }
+// }
 
 export const addOption = questionId => ({
     type: Types.ADD_OPTION,

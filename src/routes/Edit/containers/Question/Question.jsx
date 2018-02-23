@@ -14,11 +14,11 @@ class Question extends Component {
         options: PropTypes.array.isRequired,
         handleDragStart: PropTypes.func.isRequired,
         handleDragEnter: PropTypes.func.isRequired,
-        handleSaveTitle: PropTypes.func.isRequired,
         handleAddOption: PropTypes.func.isRequired,
         handleOptionChange: PropTypes.func.isRequired,
         handleRemoveOption: PropTypes.func.isRequired,
         handleCopyQuestion: PropTypes.func.isRequired,
+        handleSaveQuestionTitle: PropTypes.func.isRequired,
         handleSetQuestionType: PropTypes.func.isRequired,
         handleToggleQuestion: PropTypes.func.isRequired,
         handleRemoveQuestion: PropTypes.func.isRequired,
@@ -210,7 +210,7 @@ class Question extends Component {
     }
 
     render() {
-        const { type, handleDragStart, handleDragEnter, handleSaveTitle } = this.props
+        const { type, handleDragStart, handleDragEnter, handleSaveQuestionTitle } = this.props
         const questionClassName = classnames({
             [styles.main]: true,
             [styles['edit-active']]: this.state.isActive,
@@ -234,7 +234,7 @@ class Question extends Component {
                   autoSelect
                   className={styles.title}
                   defaultValue={this.props.title}
-                  onSaveText={handleSaveTitle}
+                  onSaveText={handleSaveQuestionTitle}
                 />
                 {this.renderTypeMenu()}
                 {type === 'text' ? this.renderTextArea() : this.renderOptionArea()}

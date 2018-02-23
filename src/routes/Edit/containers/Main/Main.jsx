@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import { Menu, Icon, Input, Textarea } from '../../../../components/index'
 import Question from '../Question/Question'
 import { QUESTION_TYPES } from '../../../../constants/CommonConstants'
+import * as formActions from '../../../../actions/formActions'
 import * as questionActions from '../../../../actions/questionActions'
 import * as utils from '../../../../scripts/utils'
 import styles from './Main.scss'
@@ -25,7 +26,8 @@ class Edit extends React.Component {
         }).isRequired,
         actions: PropTypes.shape({
             saveText: PropTypes.func.isRequired,
-            saveTitle: PropTypes.func.isRequired,
+            saveFormTitle: PropTypes.func.isRequired,
+            saveQuestionTitle: PropTypes.func.isRequired,
             addQuestion: PropTypes.func.isRequired,
             setQuestionType: PropTypes.func.isRequired,
             toggleQuestion: PropTypes.func.isRequired,
@@ -43,7 +45,7 @@ class Edit extends React.Component {
     constructor() {
         super()
         this.handleSaveText = this.handleSaveText.bind(this)
-        this.handleSaveTitle = this.handleSaveTitle.bind(this)
+        this.handleSaveQuestionTitle = this.handleSaveQuestionTitle.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
         this.handleAddQuestion = this.handleAddQuestion.bind(this)
         this.handleSetQuestionType = this.handleSetQuestionType.bind(this)
@@ -61,7 +63,8 @@ class Edit extends React.Component {
     }
 
     handleTitleChange(e) {
-        this.handleSaveTitle(null)(e.target.value.trim(), 'form')
+        const title = e.target.value.trim()
+        this.handleSaveFormTitle(title)
     }
 
     handleSaveText(type) {
@@ -69,9 +72,14 @@ class Edit extends React.Component {
         return text => saveText(text, type)
     }
 
-    handleSaveTitle(questionId) {
-        const { saveTitle } = this.props.actions
-        return (title, type) => saveTitle(title, type, questionId)
+    handleSaveFormTitle(title) {
+        const { saveFormTitle } = this.props.formActions
+        saveFormTitle(title)
+    }
+
+    handleSaveQuestionTitle(id) {
+        const { saveQuestionTitle } = this.props.actions
+        return title => saveQuestionTitle(id, title)
     }
 
     handleAddQuestion(type) {
@@ -259,7 +267,7 @@ class Edit extends React.Component {
                       handleDragStart={this.handleDragStart(id)}
                       handleDragEnter={this.handleDragEnter(id)}
                       hasOther={questionById[id].hasOther}
-                      handleSaveTitle={this.handleSaveTitle(id)}
+                      handleSaveQuestionTitle={this.handleSaveQuestionTitle(id)}
                       handleSetQuestionType={this.handleSetQuestionType(id)}
                       handleToggleQuestion={() => this.handleToggleQuestion(id)}
                       handleCopyQuestion={() => this.handleCopyQuestion(id)}
@@ -284,6 +292,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(questionActions, dispatch),
+    formActions: bindActionCreators({
+        saveFormTitle: formActions.saveFormTitle,
+    }, dispatch),
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Edit))

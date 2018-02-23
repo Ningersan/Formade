@@ -41,8 +41,8 @@ const saveText = (state, action) => {
 }
 
 const saveFormTitle = (state, action) => {
-    const { text } = action.payload
-    return { ...state, title: text }
+    const { title } = action.payload
+    return { ...state, title }
 }
 
 // reducers

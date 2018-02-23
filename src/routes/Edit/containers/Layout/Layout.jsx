@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Input } from '../../../../components/index'
 import * as formActions from '../../../../actions/formActions'
-import * as questionActions from '../../../../actions/questionActions'
 import styles from './Layout.scss'
 
 class Layout extends React.Component {
@@ -16,7 +15,7 @@ class Layout extends React.Component {
         }).isRequired,
         children: PropTypes.element.isRequired,
         actions: PropTypes.shape({
-            saveTitle: PropTypes.func.isRequired,
+            saveFormTitle: PropTypes.func.isRequired,
             saveForm: PropTypes.func.isRequired,
         }).isRequired,
     }
@@ -45,8 +44,9 @@ class Layout extends React.Component {
     }
 
     handleTitleChange(e) {
-        const { saveTitle } = this.props.actions
-        saveTitle(e.target.value, 'form')
+        const { saveFormTitle } = this.props.actions
+        console.log(saveFormTitle)
+        saveFormTitle(e.target.value)
     }
 
     handleScrollChange() {
@@ -57,7 +57,6 @@ class Layout extends React.Component {
 
     handleSaveForm() {
         const { saveForm } = this.props.actions
-        console.log(this.props.actions)
         saveForm()
     }
 
@@ -151,8 +150,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators({
-        saveTitle: questionActions.saveTitle,
         saveForm: formActions.saveForm,
+        saveFormTitle: formActions.saveFormTitle,
     }, dispatch),
 })
 

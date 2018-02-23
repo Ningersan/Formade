@@ -78,9 +78,9 @@ export const removeForm = id => ({
     },
 })
 
-export const saveFormTitle = text => ({
+export const saveFormTitle = title => ({
     type: Types.SAVE_FORM_TITLE,
     payload: {
-        text,
+        title,
     },
 })

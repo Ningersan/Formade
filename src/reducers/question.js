@@ -149,13 +149,13 @@ const removeQuestion = (state, action) => {
 }
 
 const saveQuestionTitle = (state, action) => {
-    const { text, id } = action.payload
+    const { id, title } = action.payload
     const question = state[id]
     return {
         ...state,
         [id]: {
             ...question,
-            title: text,
+            title,
         },
     }
 }
@@ -261,7 +261,7 @@ const questionsById = (state = initialState, action) => {
         case actionTypes.ADD_QUESTION:
             return addQuestion(state, action)
         // case actionTypes.SAVE_FORM:
-            // return saveQuestion(state, action)
+        // return saveQuestion(state, action)
         case actionTypes.COPY_QUESTION:
             return copyQuestion(state, action)
         case actionTypes.SORT_QUESTION:
@@ -273,6 +273,7 @@ const questionsById = (state = initialState, action) => {
         case actionTypes.REMOVE_QUESTION:
             return removeQuestion(state, action)
         case actionTypes.SAVE_QUESTION_TITLE:
+        console.log('test')
             return saveQuestionTitle(state, action)
         case actionTypes.ADD_OPTION:
             return addOption(state, action)
