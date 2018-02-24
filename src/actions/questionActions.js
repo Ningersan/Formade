@@ -9,10 +9,19 @@ export const addQuestion = (id, type) => ({
     },
 })
 
-export const copyQuestion = index => ({
+export const saveQuestionTitle = (id, title) => ({
+    type: Types.SAVE_QUESTION_TITLE,
+    payload: {
+        id,
+        title,
+    },
+})
+
+export const copyQuestion = (id, newId) => ({
     type: Types.COPY_QUESTION,
     payload: {
-        index,
+        id,
+        newId,
     },
 })
 
@@ -45,40 +54,6 @@ export const removeQuestion = id => ({
         id,
     },
 })
-
-export const saveQuestionTitle = (id, title) => ({
-    type: Types.SAVE_QUESTION_TITLE,
-    payload: {
-        id,
-        title,
-    },
-})
-
-export const saveText = (text, type, index) => ({
-    type: Types.SAVE_TEXT,
-    payload: {
-        text,
-        type,
-        index,
-    },
-})
-
-// const saveTitleAction = (text, type, questionIndex) => ({
-//     type: Types.SAVE_TITLE,
-//     payload: {
-//         text,
-//         type,
-//         questionIndex,
-//     },
-// })
-
-// export const saveTitle = (text, type, questionId) => (dispatch) => {
-//     if (type === 'form') {
-//         dispatch(saveFormTitle(text))
-//     } else {
-//         dispatch(saveQuestionTitle(text, questionId))
-//     }
-// }
 
 export const addOption = questionId => ({
     type: Types.ADD_OPTION,

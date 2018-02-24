@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import { generatorUid } from '../../src/scripts/utils'
+import * as utils from '../../src/scripts/utils'
 import * as actionTypes from '../constants/ActionTypes'
 
-// initial state
+// question reducer
 const initialState = {
     // 0: {
     //     id: 0,
@@ -26,40 +26,6 @@ const initialState = {
 
 // const initialEditingIds = [0, 1]
 
-const initialAllIds = {
-    // 0: [1, 2]
-}
-
-// reducer
-// const initQuestion = (state, action) => {
-//     const { id } = action.payload
-//     const initial = {
-//         [id]: {
-//             id,
-//             form: -1,
-//             type: 'radio',
-//             title: '未命名的问题',
-//             isRequired: false,
-//             hasOther: false,
-//             options: ['选项 1', '选项 2'],
-//         },
-//         [id + 1]: {
-//             id: id + 1,
-//             form: -1,
-//             type: 'radio',
-//             title: '未命名的问题',
-//             isRequired: false,
-//             hasOther: false,
-//             options: ['选项 1', '选项 2'],
-//         },
-//     }
-
-//     return {
-//         ...state,
-//         ...initial,
-//     }
-// }
-
 const addQuestion = (state, action) => {
     const { id, type } = action.payload
 
@@ -80,37 +46,27 @@ const addQuestion = (state, action) => {
     }
 }
 
-// const saveQuestion = (state, action) => {
-//     const { formId, editingIds } = action.payload
-//     const questions = editingIds.reduce((previous, current) => {
-//         previous[current] = { ...state[current], form: formId }
-//         return previous
-//     }, {})
-
-//     return {
-//         ...state,
-//         ...questions,
-//     }
-// }
-
-// problem cause
-const copyQuestion = (state, action) => {
-    const { index } = action.payload
-    const id = generatorUid()
+const saveQuestionTitle = (state, action) => {
+    const { id, title } = action.payload
+    const question = state[id]
     return {
         ...state,
-        [id]: { ...state[index] },
+        [id]: {
+            ...question,
+            title,
+        },
     }
 }
 
-// same to up
-const sortQuestion = (state, action) => {
-    const editing = deepCopy(state.editing)
-    const { from, to } = action.payload
-    const { questions } = editing
-    const target = questions.splice(from, 1)[0]
-    questions.splice(to, 0, target)
-    return { ...state, editing }
+const copyQuestion = (state, action) => {
+    const { id, newId } = action.payload
+    return {
+        ...state,
+        [newId]: {
+            ...state[id],
+            id: newId,
+        },
+    }
 }
 
 const setQuestionType = (state, action) => {
@@ -146,18 +102,6 @@ const removeQuestion = (state, action) => {
     const newState = Object.assign({}, state)
     delete newState[id]
     return newState
-}
-
-const saveQuestionTitle = (state, action) => {
-    const { id, title } = action.payload
-    const question = state[id]
-    return {
-        ...state,
-        [id]: {
-            ...question,
-            title,
-        },
-    }
 }
 
 const addOption = (state, action) => {
@@ -256,25 +200,18 @@ const removeOther = (state, action) => {
 // reducer
 const questionsById = (state = initialState, action) => {
     switch (action.type) {
-        // case actionTypes.ADD_FORM:
-        //     return initQuestion(state, action)
         case actionTypes.ADD_QUESTION:
             return addQuestion(state, action)
-        // case actionTypes.SAVE_FORM:
-        // return saveQuestion(state, action)
+        case actionTypes.SAVE_QUESTION_TITLE:
+            return saveQuestionTitle(state, action)
         case actionTypes.COPY_QUESTION:
             return copyQuestion(state, action)
-        case actionTypes.SORT_QUESTION:
-            return sortQuestion(state, action)
         case actionTypes.SET_QUESTION_TYPE:
             return setQuestionType(state, action)
         case actionTypes.TOGGLE_QUESTION:
             return toggleQuestion(state, action)
         case actionTypes.REMOVE_QUESTION:
             return removeQuestion(state, action)
-        case actionTypes.SAVE_QUESTION_TITLE:
-        console.log('test')
-            return saveQuestionTitle(state, action)
         case actionTypes.ADD_OPTION:
             return addOption(state, action)
         case actionTypes.EDIT_OPTION:
@@ -292,47 +229,11 @@ const questionsById = (state = initialState, action) => {
     }
 }
 
-// all editing questions id
-// const initEditingIds = (state, action) => {
-//     const { formId } = action.payload
-//     console.log(formId)
-//     return [formId, formId + 1]
-// }
 
-// const addQuestionId = (state, action) => {
-//     const { id } = action.payload
-//     return state.concat(id)
-// }
-
-// const removeQuestionId = (state, action) => {
-//     const { id } = action.payload
-//     return state.filter(questionId => questionId !== id)
-// }
-
-// const EditingQuestions = (state = initialEditingIds, action) => {
-//     switch (action.type) {
-//         case actionTypes.ADD_QUESTION:
-//             return addQuestionId(state, action)
-//         case actionTypes.ADD_FORM:
-//             return initEditingIds(state, action)
-//         case actionTypes.REMOVE_QUESTION:
-//             return removeQuestionId(state, action)
-//         default:
-//             return state
-//     }
-// }
-
-// all question ids
-// const saveQuestionIds = (state, action) => {
-//     const { formId, editingIds } = action.payload
-//     // console.log(formId, allQuestions)
-//     // const questionIds = Object.keys(state).filter(id => allQuestions[id].form === formId)
-
-//     return {
-//         ...state,
-//         [formId]: editingIds.slice(),
-//     }
-// }
+// all ids reducer
+const initialAllIds = {
+    // 0: [1, 2]
+}
 
 const allQuestions = (state = initialAllIds, action) => {
     switch (action.type) {
@@ -345,6 +246,5 @@ const allQuestions = (state = initialAllIds, action) => {
 
 export default combineReducers({
     byId: questionsById,
-    // editingIds: EditingQuestions,
     allIds: allQuestions,
 })

@@ -24,15 +24,6 @@ const stopResponse = (state, action) => {
             stopResponse: !isStop,
         },
     }
-    // const list = deepCopy(state.list)
-    // const editing = deepCopy(state.editing)
-    // const { index } = action.payload
-    // if (index) {
-    //     list[index].stopResponse = !list[index].stopResponse
-    //     return { ...state, list }
-    // }
-    // editing.stopResponse = !editing.stopResponse
-    // return { ...state, editing }
 }
 
 const saveForm = (state, action) => {
@@ -69,12 +60,12 @@ const removeForm = (state, action) => {
 
 const formsById = (state = initState, action) => {
     switch (action.type) {
+        case actionTypes.STOP_RESPONSE:
+            return stopResponse(state, action)
         case actionTypes.SAVE_FORM:
             return saveForm(state, action)
         case actionTypes.RENAME_FORM:
             return renameForm(state, action)
-        case actionTypes.STOP_RESPONSE:
-            return stopResponse(state, action)
         case actionTypes.REMOVE_FORM:
             return removeForm(state, action)
         default:
@@ -82,7 +73,7 @@ const formsById = (state = initState, action) => {
     }
 }
 
-// all forms
+// all form ids
 const saveFormId = (state, action) => {
     const { formId } = action.payload
     return [...new Set(state.concat(formId))]

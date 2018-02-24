@@ -25,8 +25,8 @@ class Edit extends React.Component {
                 }).isRequired).isRequired,
         }).isRequired,
         actions: PropTypes.shape({
-            saveText: PropTypes.func.isRequired,
             saveFormTitle: PropTypes.func.isRequired,
+            saveFormDescription: PropTypes.func.isRequired,
             saveQuestionTitle: PropTypes.func.isRequired,
             addQuestion: PropTypes.func.isRequired,
             setQuestionType: PropTypes.func.isRequired,
@@ -44,8 +44,8 @@ class Edit extends React.Component {
 
     constructor() {
         super()
-        this.handleSaveText = this.handleSaveText.bind(this)
         this.handleSaveQuestionTitle = this.handleSaveQuestionTitle.bind(this)
+        this.handleSaveDescription = this.handleSaveDescription.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
         this.handleAddQuestion = this.handleAddQuestion.bind(this)
         this.handleSetQuestionType = this.handleSetQuestionType.bind(this)
@@ -67,9 +67,9 @@ class Edit extends React.Component {
         this.handleSaveFormTitle(title)
     }
 
-    handleSaveText(type) {
-        const { saveText } = this.props.actions
-        return text => saveText(text, type)
+    handleSaveDescription(text) {
+        const { saveFormDescription } = this.props.formActions
+        saveFormDescription(text)
     }
 
     handleSaveFormTitle(title) {
@@ -84,7 +84,8 @@ class Edit extends React.Component {
 
     handleAddQuestion(type) {
         const { addQuestion } = this.props.actions
-        addQuestion(utils.guid(), type)
+        const id = utils.guid()
+        addQuestion(id, type)
     }
 
     handleSetQuestionType(id) {
@@ -99,10 +100,12 @@ class Edit extends React.Component {
 
     handleCopyQuestion(id) {
         const { copyQuestion } = this.props.actions
-        copyQuestion(id)
+        const newId = utils.guid()
+        copyQuestion(id, newId)
     }
 
     handleSortQuestion(sourceId, targetId) {
+        console.log(sourceId, targetId)
         const { sortQuestion } = this.props.actions
         sortQuestion(sourceId, targetId)
     }
@@ -137,16 +140,16 @@ class Edit extends React.Component {
         removeOther(questionId)
     }
 
-    handleDragStart(index) {
+    handleDragStart(id) {
         return (e) => {
             this.currentMouseY = e.pageY
             e.dataTransfer.effectAllowed = 'move'
             this.dragElement = e.currentTarget
-            this.dragElementIndex = index
+            this.dragElementId = id
         }
     }
 
-    handleDragEnter(index) {
+    handleDragEnter(id) {
         return (e) => {
             event.preventDefault()
 
@@ -167,13 +170,13 @@ class Edit extends React.Component {
             if (e.target === upEnterElement || e.target === downEnterElement) {
                 let placeholder = null
                 const targetElement = e.target === upEnterElement ? dragElement.previousElementSibling : downEnterElement
-                let targetIndex = e.target === upEnterElement ? index + 1 : index - 1
+                let targetId = e.target === upEnterElement ? id + 1 : id - 1
 
                 if (e.target === downEnterElement && downEnterElement === lastChild) {
-                    targetIndex++
+                    targetId++
                 }
 
-                placeholder = this.creatPlaceholder(this.dragElementIndex, targetIndex)
+                placeholder = this.creatPlaceholder(this.dragElementId, targetId)
                 dragElement.style.display = 'none'
 
                 if (e.target === downEnterElement && downEnterElement === lastChild) {
@@ -227,7 +230,7 @@ class Edit extends React.Component {
                       className={styles.description}
                       placeholder="表单说明"
                       value={editing.description}
-                      onSaveText={this.handleSaveText('description')}
+                      onSaveText={this.handleSaveDescription}
                     />
                 </div>
             </div>
@@ -260,7 +263,7 @@ class Edit extends React.Component {
                 {this.renderHeader()}
                 {questionIds.map(id => (
                     <Question
-                      key={questionById[id].id}
+                      key={id}
                       title={questionById[id].title}
                       type={questionById[id].type}
                       options={questionById[id].options}
@@ -294,6 +297,7 @@ const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(questionActions, dispatch),
     formActions: bindActionCreators({
         saveFormTitle: formActions.saveFormTitle,
+        saveFormDescription: formActions.saveDescription,
     }, dispatch),
 })
 

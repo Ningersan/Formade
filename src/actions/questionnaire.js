@@ -10,11 +10,6 @@ export const addQuestion = (type, id) => ({
     },
 })
 
-// export const addQuestion = type => (dispatch, getState) => {
-//     const { questions: { editingIds } } = getState()
-//     dispatch(addQuestionAction(type, editingIds.length))
-// }
-
 // questionnaire actions
 export const stopResponse = id => ({
     type: Types.STOP_RESPONSE,
@@ -146,25 +141,25 @@ export const removeQuestion = id => ({
     },
 })
 
-export const saveText = (text, type, index) => ({
-    type: Types.SAVE_TEXT,
-    payload: {
-        text,
-        type,
-        index,
-    },
-})
+// export const saveText = (text, type, index) => ({
+//     type: Types.SAVE_TEXT,
+//     payload: {
+//         text,
+//         type,
+//         index,
+//     },
+// })
 
-const saveTitleAction = (text, type, questionIndex) => ({
-    type: Types.SAVE_TITLE,
-    payload: {
-        text,
-        type,
-        questionIndex,
-    },
-})
+// const saveTitleAction = (text, type, questionIndex) => ({
+//     type: Types.SAVE_TITLE,
+//     payload: {
+//         text,
+//         type,
+//         questionIndex,
+//     },
+// })
 
-export const saveTitle = (text, type, questionId) => (dispatch, getState) => {
+export const saveTitle = (text, type, questionId) => (dispatch) => {
     if (type === 'questionnaire') {
         dispatch(saveQuestionnaireTitle(text))
     } else {

@@ -21,12 +21,12 @@ const editForm = (state, action) => {
     return { ...state, ...editing }
 }
 
-const addQuestionId = (state, action) => {
+const addQuestion = (state, action) => {
     const { id } = action.payload
     return { ...state, questions: state.questions.concat(id) }
 }
 
-const removeQuestionId = (state, action) => {
+const removeQuestion = (state, action) => {
     const { id } = action.payload
     const questions = state.questions.filter(questionId => questionId !== id)
     return {
@@ -35,9 +35,34 @@ const removeQuestionId = (state, action) => {
     }
 }
 
-const saveText = (state, action) => {
-    const { text } = action.payload
-    return { ...state, description: text }
+const copyQuestion = (state, action) => {
+    const { questions } = state
+    const { id, newId } = action.payload
+    const index = questions.findIndex(questionId => questionId === id)
+    const newQuestions = [
+        ...questions.slice(0, index + 1),
+        newId,
+        ...questions.slice(index + 1),
+    ]
+    return {
+        ...state,
+        questions: newQuestions,
+    }
+}
+
+// const sortQuestion = (state, action) => {
+//     const editing = deepCopy(state.editing)
+//     const { from, to } = action.payload
+//     const { questions } = editing
+//     const target = questions.splice(from, 1)[0]
+//     questions.splice(to, 0, target)
+//     return { ...state, editing }
+// }
+
+
+const saveDescription = (state, action) => {
+    const { description } = action.payload
+    return { ...state, description }
 }
 
 const saveFormTitle = (state, action) => {
@@ -53,11 +78,15 @@ const editing = (state = initState, action) => {
         case actionTypes.EDIT_FORM:
             return editForm(state, action)
         case actionTypes.ADD_QUESTION:
-            return addQuestionId(state, action)
+            return addQuestion(state, action)
+        case actionTypes.COPY_QUESTION:
+            return copyQuestion(state, action)
+        // case actionTypes.SORT_QUESTION:
+        //     return sortQuestion(state, action)
         case actionTypes.REMOVE_QUESTION:
-            return removeQuestionId(state, action)
-        case actionTypes.SAVE_TEXT:
-            return saveText(state, action)
+            return removeQuestion(state, action)
+        case actionTypes.SAVE_DESCRIPTION:
+            return saveDescription(state, action)
         case actionTypes.SAVE_FORM_TITLE:
             return saveFormTitle(state, action)
         default:

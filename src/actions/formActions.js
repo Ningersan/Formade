@@ -2,13 +2,6 @@ import { addQuestion } from './questionActions'
 import * as Types from '../constants/ActionTypes'
 import * as utils from '../scripts/utils'
 
-export const stopResponse = id => ({
-    type: Types.STOP_RESPONSE,
-    payload: {
-        id,
-    },
-})
-
 const addFormAction = id => ({
     type: Types.ADD_FORM,
     payload: {
@@ -41,6 +34,20 @@ export const saveForm = () => (dispatch, getState) => {
     dispatch(saveFormAction(editing, formId))
 }
 
+export const saveFormTitle = title => ({
+    type: Types.SAVE_FORM_TITLE,
+    payload: {
+        title,
+    },
+})
+
+export const saveDescription = description => ({
+    type: Types.SAVE_DESCRIPTION,
+    payload: {
+        description,
+    },
+})
+
 export const renameForm = (id, name) => ({
     type: Types.RENAME_FORM,
     payload: {
@@ -63,6 +70,13 @@ export const editForm = id => (dispatch, getState) => {
     dispatch(editFormAction(id, editing))
 }
 
+export const stopResponse = id => ({
+    type: Types.STOP_RESPONSE,
+    payload: {
+        id,
+    },
+})
+
 export const fillForm = () => ({
     type: Types.FILL_FORM,
 })
@@ -75,12 +89,5 @@ export const removeForm = id => ({
     type: Types.REMOVE_FORM,
     payload: {
         id,
-    },
-})
-
-export const saveFormTitle = title => ({
-    type: Types.SAVE_FORM_TITLE,
-    payload: {
-        title,
     },
 })
